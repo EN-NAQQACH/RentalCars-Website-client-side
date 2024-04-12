@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -7,13 +7,12 @@ import PolicyIcon from '@mui/icons-material/Policy';
 import EmailIcon from '@mui/icons-material/Email';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import StyleContext from '../Stylecontext'
 
 
 function Navbar() {
-    const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
+  const [showPassword, setShowPassword] = React.useState(false);
+  const style = useContext(StyleContext);
   const handleSignUpClick = (e) => {
     e.preventDefault();
 
@@ -51,8 +50,8 @@ function Navbar() {
   }
   return (
     <>
-    {/* modal log in */}
-    <dialog id="my_modal_3" className="modal ">
+      {/* modal log in */}
+      <dialog id="my_modal_3" className="modal" >
         <div className="modal-box bg-white">
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
@@ -168,7 +167,7 @@ function Navbar() {
       </dialog>
 
 
-      <div className="navbar bg-base-100 sticky z-20">
+      <div className="navbar bg-base-100 sticky z-20" style={{fontFamily: style.fontFamily,fontWeight:style.fontWeight,letterSpacing:style.LetterSpacing}}>
         <div className="navbar-start">
           <a className="btn btn-ghost text-xl">daisyUI</a>
         </div>
@@ -181,18 +180,18 @@ function Navbar() {
         </div>
         <div className="navbar-end ">
           <div className="dropdown dropdown-hover dropdown-end ">
-            <div tabIndex={0} role="button" className="= border m-1 p-2 ">
+            <div tabIndex={0} role="button" className="= border m-1 p-2  bg-gray-900 text-white transition duration-500 hover:text-black hover:bg-white hover:border border-black ">
               <MenuIcon />
               <AccountCircleIcon />
             </div>
             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box min-w-80 mt-1">
-              <li className='hover:bg-slate-50 ' > <Link to="" onClick={() => document.getElementById('my_modal_3').showModal()} >Log in</Link></li>
-              <li className='hover:bg-slate-50'><Link to="" onClick={() => document.getElementById('my_modal_4').showModal()} >Sign up</Link></li>
+              <li className='transition duration-300 hover:bg-slate-100 ' > <Link to="" onClick={() => document.getElementById('my_modal_3').showModal()} >Log in</Link></li>
+              <li className='transition duration-300 hover:bg-slate-100'><Link to="" onClick={() => document.getElementById('my_modal_4').showModal()} >Sign up</Link></li>
               <div className="divider p-0 m-0 mr-1 ml-1"></div>
-              <li className='hover:bg-slate-50'><a><PolicyIcon />Policies</a></li>
-              <li className='hover:bg-slate-50'><a><EmailIcon />Contact</a></li>
-              <li className='hover:bg-slate-50'><a><DirectionsCarIcon />Our cars</a></li>
-              <li className='hover:bg-slate-50'><a><LocationOnIcon />Our locations</a></li>
+              <li className='transition duration-300 hover:bg-slate-100'><a><PolicyIcon />Policies</a></li>
+              <li className='transition duration-300 hover:bg-slate-100'><a><EmailIcon />Contact</a></li>
+              <li className='transition duration-300 hover:bg-slate-100'><a><DirectionsCarIcon />Our cars</a></li>
+              <li className='transition duration-300 hover:bg-slate-100'><a><LocationOnIcon />Our locations</a></li>
             </ul>
           </div>
         </div>
