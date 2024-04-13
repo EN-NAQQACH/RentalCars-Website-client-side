@@ -1,17 +1,48 @@
 import React from 'react'
+import { useState, useContext } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import StyleContext from '../Stylecontext'
+
 
 function Hero() {
+  const style = useContext(StyleContext);
   return (
-    <div className='bg-white  h-auto w-full top-18'>
-        <img src="./src//assets/home-img.png" alt="" className='m-auto object-top mt-[80px]' />
-        <div className='text-center ml-[px] mt-[50px]'>
-            <h1 className='text-2xl '>
-                Welcome to daisly
-            </h1>
-            <button className='border mt-5  p-2 text-center transition duration-500 hover:border-black'>
-                discover us
-            </button>
+    <div className='bg-white  h-auto w-full top-18 relative' style={{fontFamily: style.fontFamily,fontWeight:style.fontWeight,letterSpacing:style.LetterSpacing}}>
+      <Swiper
+        spaceBetween={15}
+        centeredSlides={true}
+        autoplay={{
+          delay: 6500,
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+        }}
+        navigation={false}
+        modules={[Autoplay, Pagination, Navigation]}
+        className="mySwiper"
+      >
+        <SwiperSlide>      <img src="./src/assets/carhero.jpg" alt="" className='m-auto object-top ' />
+        </SwiperSlide>
+        <SwiperSlide>      <img src="./src/assets/carhero2.jpg" alt="" className='m-auto object-top ' />
+        </SwiperSlide>
+        <SwiperSlide>      <img src="./src/assets/carhero3.jpg" alt="" className='m-auto object-top ' />
+        </SwiperSlide>
+      </Swiper>
+      <div className='text-center  flex flex-col items-center z-[15]'>
+        <div className='absolute bottom-[25%] z-[15]'>
+          <h1 className='text-2xl text-white uppercase '>
+            Welcome to daisly
+          </h1>
+          <button className='border mt-5 pl-6 pr-6 pb-3 pt-3 text-center transition duration-500 bg-white uppercase text-[12px]'>
+            discover us
+          </button>
         </div>
+      </div>
     </div>
   )
 }
