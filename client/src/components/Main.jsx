@@ -6,138 +6,494 @@ import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import "swiper/css";
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Autoplay,Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import './cardeffect.css';
+
+import { GiCarSeat } from "react-icons/gi";
+import { BsFuelPumpFill } from "react-icons/bs";
+import { PiSteeringWheelFill } from "react-icons/pi";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
 
 function Main() {
     const style = useContext(StyleContext);
     const swipper = useSwiper();
+    const [city, setcity] = useState('Agadir');
+    const [selectedDestination, setSelectedDestination] = useState('');
+    const handleDestinationClick = (destination) => {
+        setSelectedDestination(destination);
+        setcity(destination);
+    };
+
+
     return (
         <>
+            <main>
 
-            <div className='h-lvh mb-[150px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing }}>
-
-                <div className='mt-[80px] flex justify-center flex-col w-fit m-auto '>
-                    <h1 className='text-center mb-[50px] text-4xl z-[15]'>Find your Car</h1>
-                    <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[40%] m-auto'></div>
-                    <div className='flex items-center justify-center border rounded-3xl p-1 pl-4 pr-4  z-[10] bg-white shadow-sm'>
-                        <div className='flex flex-col w-[250px] border-gray-200 border-r-[1px] mr-[15px] '>
-                            <label htmlFor="">where</label>
-                            <input type="text" placeholder='agadir,marakkech' className='mr-5  text-gray-400' />
+                <section className='find-your-car-section'>
+                    <div className='h-lvh mb-[150px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing }}>
+                        <div className='mt-[80px] flex justify-center flex-col w-fit m-auto '>
+                            <h1 className='text-center mb-[50px] text-4xl z-[15]'>Find your Car</h1>
+                            <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[40%] m-auto'></div>
+                            <div className='flex items-center justify-center border rounded-3xl p-1 pl-4 pr-4  z-[10] bg-white shadow-sm'>
+                                <div className='flex flex-col w-[250px] border-gray-200 border-r-[1px] mr-[15px] '>
+                                    <label htmlFor="">where</label>
+                                    <input type="text" placeholder='agadir,marakkech' className='mr-5  text-gray-400' />
+                                </div>
+                                <div className='flex flex-col w-fit mr-[15px] border-gray-200 border-r-[1px]'>
+                                    <label htmlFor="">from</label>
+                                    <input type="date" className='mr-5 text-gray-400' />
+                                </div>
+                                <div className='flex flex-col w-fit'>
+                                    <label htmlFor="">untill</label>
+                                    <input type="date" className='mr-5  text-gray-400' />
+                                </div>
+                                <div className='flex flex-col w-fit'>
+                                    <button className='bg-black rounded-full p-2 text-white text-center'>
+                                        <SearchIcon className='m-auto' />
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div className='flex flex-col w-fit mr-[15px] border-gray-200 border-r-[1px]'>
-                            <label htmlFor="">from</label>
-                            <input type="date" className='mr-5 text-gray-400' />
-                        </div>
-                        <div className='flex flex-col w-fit'>
-                            <label htmlFor="">untill</label>
-                            <input type="date" className='mr-5  text-gray-400' />
-                        </div>
-                        <div className='flex flex-col w-fit'>
-                            <button className='bg-black rounded-full p-2 text-white text-center'>
-                                <SearchIcon className='m-auto' />
+                        <div className=' relative h-[520px] w-[full] mt-[50px]  m-auto mr-[60px] ml-[60px]  '>
+                            <img src="./src/assets/carmain50.jpg" alt="Description" className=" object-cover w-full h-full rounded-[10px] " />
+                            <button className='border border-[2px] rounded-[50px] p-3 absolute bottom-[50px] left-[50px] pl-8 pr-8 bg-transparent transition duration-500 hover:bg-transparent text-white'>
+                                <a href="">Explore our Cars</a>
                             </button>
                         </div>
                     </div>
-                </div>
-                <div className=' relative h-[520px] w-[full] mt-[50px]  m-auto mr-[50px] ml-[50px]  '>
-                    <img src="./src/assets/carmainn.jpg" alt="Description" className=" object-cover w-full h-full rounded-xl " />
-                    <button className='border p-3 absolute bottom-[50px] left-[50px] pl-8 pr-8 bg-white transition duration-500 hover:border-black'>
-                        <a href="">Explore our Cars</a>
-                    </button>
-                </div>
-            </div>
-            <div className=' h-[100vh] p-3 ' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
-                <div className='flex justify-center flex-col  m-auto'>
-                    <h1 className='text-center mb-[50px] text-4xl z-[1]'>Browse by make</h1>
-                    <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[23%] m-auto'></div>
-                </div>
+                </section>
 
-                <div className='cslider mt-[20px] relative'>
-                    <div className='flex gap-2 absolute right-0 z-[15] top-[-50px]'>
-                        <button className='review-swiper-button-prev border border-black rounded-full  pt-1 pb-1 pr-2 pl-2 bg-white' ><ChevronLeftIcon /></button>
-                        <button className='review-swiper-button-next border border-black rounded-full pt-1 pb-1 pr-2 pl-2 bg-white'><ChevronRightIcon /></button>
+                <section className='cars-slider h-fit mb-[85px]'>
+                    <div className='  p-3 ' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                        <div className='flex justify-center flex-col  m-auto'>
+                            <h1 className='text-center mb-[50px] text-4xl z-[1]'>Browse by make</h1>
+                            <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[23%] m-auto'></div>
+                        </div>
+                        <div className='cslider mt-[20px] relative mr-[25px] ml-[25px]'>
+                            <div className='flex gap-2 absolute right-0 z-[15] top-[-50px]'>
+                                <button className='review-swiper-button-prev border-transparent  rounded-full  pt-1 pb-1 pr-2 pl-2 bg-gray-100' ><ChevronLeftIcon /></button>
+                                <button className='review-swiper-button-next border-transparent  rounded-full pt-1 pb-1 pr-2 pl-2 bg-gray-100'><ChevronRightIcon /></button>
+                            </div>
+                            <Swiper
+                                navigation={{
+                                    nextEl: ".review-swiper-button-next",
+                                    prevEl: ".review-swiper-button-prev",
+
+                                }}
+                                pagination={false}
+                                mousewheel={true}
+
+                                spaceBetween={15} // Space between slides in pixels
+                                slidesPerView={4} // Number of slides per view (visible slides)
+                                loop={true} // Enable loop mode
+                                autoplay={{ // Autoplay settings
+                                    delay: 4000, // Delay between slides in milliseconds
+                                    disableOnInteraction: false // Disable autoplay when user interacts with swiper
+                                }}
+                                breakpoints={{ // Breakpoints for responsive design
+                                    640: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 20
+                                    },
+                                    600: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 20
+                                    },
+                                    530: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 20
+                                    },
+                                    500: {
+                                        slidesPerView: 3,
+                                        spaceBetween: 20
+                                    },
+                                    400: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 20
+                                    },
+                                    300: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 20
+                                    },
+                                    768: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 30
+                                    },
+                                    700: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 30
+                                    },
+                                    1024: {
+                                        slidesPerView: 4,
+                                        spaceBetween: 15
+                                    }
+                                }}
+                                modules={[Autoplay, Pagination, Navigation]}
+                                className="mySwiper mt-9"
+
+                            >
+
+                                {/* <ButtonsSlider /> */}
+                                <SwiperSlide className='card'>
+                                    {/* absolute z-[15] bottom-[100px] left-[36%]
+absolute z-[15] bottom-[100px] left-[36%]
+absolute z-[15] bottom-[100px] left-[36%]
+absolute z-[15] bottom-[100px] left-[36%]
+absolute z-[15] bottom-[100px] left-[36%] */}
+                                    <img src="./src/assets/carmain1.jpg" alt="" className='object-cover w-[350px] h-[250px] rounded-[12px]' />
+                                    <div className='overlay '>
+                                        <button className='border border-[3px] pr-3 pl-3 pt-1 pb-1 bg-white rounded-[30px]'>mercedes</button>
+                                    </div>
+                                </SwiperSlide>
+                                <SwiperSlide className='card'>
+                                    <img src="./src/assets/carmain2.jpg" alt="" className='object-cover w-[350px] h-[250px] rounded-[12px]' />
+                                    <div className='overlay '>
+                                        <button className=' border border-[3px] pr-3 pl-3 pt-1 pb-1 bg-white rounded-[30px]'>kia</button>
+                                    </div>
+                                </SwiperSlide>
+                                <SwiperSlide className='card'>
+                                    <img src="./src/assets/carmain3.jpg" alt="" className='object-cover w-[350px] h-[250px] rounded-[12px]' />
+                                    <div className='overlay '>
+                                        <button className=' border border-[3px] pr-3 pl-3 pt-1 pb-1 bg-white rounded-[30px]'>lexuz</button>
+                                    </div>
+                                </SwiperSlide>
+                                <SwiperSlide className='card'>
+                                    <img src="./src/assets/carmain4.jpg" alt="" className='object-cover w-[350px] h-[250px] rounded-[12px]' />
+                                    <div className='overlay '>
+                                        <button className=' border border-[3px] pr-3 pl-3 pt-1 pb-1 bg-white rounded-[30px]'>bmw</button>
+                                    </div>
+                                </SwiperSlide>
+                                <SwiperSlide className='card'>
+                                    <img src="./src/assets/carmain7.jpg" alt="" className='object-cover w-[350px] h-[250px] rounded-[12px]' />
+                                    <div className='overlay '>
+                                        <button className=' border border-[3px] pr-3 pl-3 pt-1 pb-1 bg-white rounded-[30px]'>audi</button>
+                                    </div>
+                                </SwiperSlide>
+                            </Swiper>
+
+                        </div>
                     </div>
-                    <Swiper
-                        navigation={{
-                            nextEl: ".review-swiper-button-next",
-                            prevEl: ".review-swiper-button-prev",
+                </section>
 
-                        }}
-                        pagination={false}
-                        mousewheel={true}
+                <section className='blogs mb-[85px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                    <div className='flex justify-center flex-col items-center mb-[20px]'>
+                        <h1 className='text-center mb-[50px] text-4xl z-[1]'>Explore the blog</h1>
+                        <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
+                        <p className='text-center w-[600px] mb-[5px]'>Peruse the latest features and photos of the best cars from around the marketplace.</p>
+                        <button className='border border-black pr-3 pl-3 pt-1 pb-1'>Explore the blog</button>
+                    </div>
+                    <div className='flex justify-center items-center relative'>
+                        <div className='bg-gray-50 w-[250px] h-[150px] absolute z-[15] left-[15%] flex  flex-col  rounded-[5px] p-5'>
+                            <div>
+                                <p className='font-bold'>FEATURED POST</p>
+                                <p className='mb-[6px]'>Look at this car: Dacia Duster</p>
+                            </div>
+                            <div className='underline'>
+                                <a href="">Read more</a>
+                            </div>
+                        </div>
+                        <div className=' '>
+                            <img src="./src/assets/carblog2.jpg" alt="" className='w-full h-full relat' />
+                        </div>
+                    </div>
 
-                        spaceBetween={15} // Space between slides in pixels
-                        slidesPerView={4} // Number of slides per view (visible slides)
-                        loop={true} // Enable loop mode
-                        autoplay={{ // Autoplay settings
-                            delay: 4000, // Delay between slides in milliseconds
-                            disableOnInteraction: false // Disable autoplay when user interacts with swiper
-                        }}
-                        breakpoints={{ // Breakpoints for responsive design
-                            640: {
-                                slidesPerView: 2,
-                                spaceBetween: 20
-                            },
-                            600: {
-                                slidesPerView: 2,
-                                spaceBetween: 20
-                            },
-                            530: {
-                                slidesPerView: 2,
-                                spaceBetween: 20
-                            },
-                            500: {
-                                slidesPerView: 3,
-                                spaceBetween: 20
-                            },
-                            400: {
-                                slidesPerView: 2,
-                                spaceBetween: 20
-                            },
-                            300: {
-                                slidesPerView: 2,
-                                spaceBetween: 20
-                            },
-                            768: {
-                                slidesPerView: 2,
-                                spaceBetween: 30
-                            },
-                            700: {
-                                slidesPerView: 2,
-                                spaceBetween: 30
-                            },
-                            1024: {
-                                slidesPerView: 4,
-                                spaceBetween: 10
-                            }
-                        }}
-                        modules={[Autoplay,Pagination, Navigation]}
-                        className="mySwiper mt-9"
+                </section>
 
-                    >
+                <section className='cars-list h-fit mb-[85px] ml-8 mt-8 ' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                    <div className='flex justify-center flex-col'>
+                        <h1 className='text-center mb-[50px] text-4xl z-[1]'>Explore by destination</h1>
+                        <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
+                    </div>
+                    <div className='cars-list-contents flex flex-col'>
+                        <div className='place-of-cars flex gap-[20px] justify-center mt-3'>
+                            <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Agadir')}>Agadir</button>
+                            <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Marrakech')}>Marrakech</button>
+                            <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Essaouira')}>Essaouira</button>
+                            <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Casablanca')}>Casablanca</button>
+                            <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Rabat')}>Rabat</button>
+                        </div>
+                        <div className='car-card flex gap-8 justify-center'>
+                            {selectedDestination === '' && (
+                                <>
+                                    <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
+                                        <div className='car-img  h-[180px] w-full bg-white'>
+                                            <img src="./src/assets/carmain9.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
+                                        </div>
+                                        <div className='car-contents mt-3 flex flex-col pl-2'>
+                                            <div>
+                                                <div>
+                                                    <h1 className='text-black'>Bmw SUV</h1>
+                                                    <p>car bmwx360 all</p>
+                                                </div>
+                                            </div>
+                                            <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <GiCarSeat />
+                                                    <p className='font-bold'>5</p>
+                                                </div>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <BsFuelPumpFill />
+                                                    <p className='font-bold'>Diesel</p>
+                                                </div>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <PiSteeringWheelFill />
+                                                    <p className='font-bold'>Automatic</p>
+                                                </div>
+                                            </div>
+                                            <div className='flex justify-between items-center'>
+                                                <div>
+                                                    <div className='price font-bold mt-2'>
+                                                        <p>50$ /Day</p>
+                                                    </div>
+                                                    <div className='font-bold text-gray-400'>
+                                                        <p>Agadir</p>
+                                                    </div>
+                                                </div>
+                                                <FavoriteBorderIcon />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
+                                        <div className='car-img  h-[180px] w-full bg-white'>
+                                            <img src="./src/assets/carmain10.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
+                                        </div>
+                                        <div className='car-contents mt-3 flex flex-col pl-2'>
+                                            <div>
+                                                <div>
+                                                    <h1 className='text-black'>Bmw SUV</h1>
+                                                    <p>car bmwx360 all</p>
+                                                </div>
+                                            </div>
+                                            <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <GiCarSeat />
+                                                    <p className='font-bold'>5</p>
+                                                </div>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <BsFuelPumpFill />
+                                                    <p className='font-bold'>Diesel</p>
+                                                </div>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <PiSteeringWheelFill />
+                                                    <p className='font-bold'>Automatic</p>
+                                                </div>
+                                            </div>
+                                            <div className='flex justify-between items-center'>
+                                                <div>
+                                                    <div className='price font-bold mt-2'>
+                                                        <p>50$ /Day</p>
+                                                    </div>
+                                                    <div className='font-bold text-gray-400'>
+                                                        <p>Agadir</p>
+                                                    </div>
+                                                </div>
+                                                <FavoriteBorderIcon />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
+                                        <div className='car-img  h-[180px] w-full bg-white'>
+                                            <img src="./src/assets/carmain14.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
+                                        </div>
+                                        <div className='car-contents mt-3 flex flex-col pl-2'>
+                                            <div>
+                                                <div>
+                                                    <h1 className='text-black'>Bmw SUV</h1>
+                                                    <p>car bmwx360 all</p>
+                                                </div>
+                                            </div>
+                                            <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <GiCarSeat />
+                                                    <p className='font-bold'>5</p>
+                                                </div>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <BsFuelPumpFill />
+                                                    <p className='font-bold'>Diesel</p>
+                                                </div>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <PiSteeringWheelFill />
+                                                    <p className='font-bold'>Automatic</p>
+                                                </div>
+                                            </div>
+                                            <div className='flex justify-between items-center'>
+                                                <div>
+                                                    <div className='price font-bold mt-2'>
+                                                        <p>50$ /Day</p>
+                                                    </div>
+                                                    <div className='font-bold text-gray-400'>
+                                                        <p>Agadir</p>
+                                                    </div>
+                                                </div>
+                                                <FavoriteBorderIcon />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
+                                        <div className='car-img  h-[180px] w-full bg-white'>
+                                            <img src="./src/assets/carblog2.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
+                                        </div>
+                                        <div className='car-contents mt-3 flex flex-col pl-2'>
+                                            <div>
+                                                <div>
+                                                    <h1 className='text-black'>Bmw SUV</h1>
+                                                    <p>car bmwx360 all</p>
+                                                </div>
+                                            </div>
+                                            <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <GiCarSeat />
+                                                    <p className='font-bold'>5</p>
+                                                </div>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <BsFuelPumpFill />
+                                                    <p className='font-bold'>Diesel</p>
+                                                </div>
+                                                <div className='icon flex gap-3 items-center'>
+                                                    <PiSteeringWheelFill />
+                                                    <p className='font-bold'>Automatic</p>
+                                                </div>
+                                            </div>
+                                            <div className='flex justify-between items-center'>
+                                                <div>
+                                                    <div className='price font-bold mt-2'>
+                                                        <p>50$ /Day</p>
+                                                    </div>
+                                                    <div className='font-bold text-gray-400'>
+                                                        <p>Agadir</p>
+                                                    </div>
+                                                </div>
+                                                <FavoriteBorderIcon />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
 
-                        {/* <ButtonsSlider /> */}
-                        <SwiperSlide>
-                            <img src="./src/assets/carmain1.jpg" alt="" className='object-cover w-[350px] h-[250px] rounded-[2px]' />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img src="./src/assets/carmain2.jpg" alt="" className='object-cover w-[350px] h-[250px]  rounded-[2px]' />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img src="./src/assets/carmain3.jpg" alt="" className='object-cover w-[350px] h-[250px]  rounded-[2px]' />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img src="./src/assets/carmain7.jpg" alt="" className='object-cover w-[350px] h-[250px]  rounded-[2px]' />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img src="./src/assets/carmain4.jpg" alt="" className='object-cover w-[350px] h-[250px]  rounded-[2px]' />
-                        </SwiperSlide>
-                    </Swiper>
+                            {selectedDestination === 'Agadir' && (
+                                <>
+                                    <div className='cars-list mt-[50px] h-[270px] w-[250px]  rounded-[10px] shadow-md '>
+                                        <div className='car-img  h-[150px] w-full bg-white'>
+                                            <img src="./src/assets/carmain9.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-tl-[10px]' />
+                                        </div>
+                                        <div className='car-contents'>
+                                            <h1 className='text-black '>car 1 </h1>
 
-                </div>
-            </div>
+                                        </div>
+                                    </div>
+                                    <div className='cars-list mt-[50px] h-[270px] w-[250px]  rounded-[10px] shadow-md '>
+                                        <div className='car-img  h-[150px] w-full bg-white'>
+                                            <img src="./src/assets/carmain10.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-tl-[10px]' />
+                                        </div>
+                                        <div className='car-contents'>
+                                        </div>
+                                    </div>
+                                    <div className='cars-list mt-[50px] h-[270px] w-[250px] rounded-[10px] shadow-md '>
+                                        <div className='car-img  h-[150px] w-full bg-white'>
+                                            <img src="./src/assets/carmain14.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-tl-[10px]' />
+                                        </div>
+                                        <div className='car-contents'>
+                                        </div>
+                                    </div>
+                                    <div className='cars-list mt-[50px] h-[270px] w-[250px]  rounded-[10px] shadow-md '>
+                                        <div className='car-img  h-[150px] w-full bg-white'>
+                                            <img src="./src/assets/carmain8.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-tl-[10px]' />
+                                        </div>
+                                        <div className='car-contents'>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
+                            {selectedDestination === 'Marrakech' && (
+                                <>
+                                    <div className='cars-list mt-[50px] h-[270px] w-[250px]  rounded-[10px] shadow-md '>
+                                        <div className='car-img  h-[150px] w-full bg-white'>
+                                            <img src="./src/assets/carmain1.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-tl-[10px]' />
+                                        </div>
+                                        <div className='car-contents'>
+                                        </div>
+                                    </div>
+                                    <div className='cars-list mt-[50px] h-[270px] w-[250px]  rounded-[10px] shadow-md '>
+                                        <div className='car-img  h-[150px] w-full bg-white'>
+                                            <img src="./src/assets/carmain1.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-tl-[10px]' />
+                                        </div>
+                                        <div className='car-contents'>
+                                        </div>
+                                    </div>
+                                    <div className='cars-list mt-[50px] h-[270px] w-[250px] rounded-[10px] shadow-md '>
+                                        <div className='car-img  h-[150px] w-full bg-white'>
+                                            <img src="./src/assets/carmain1.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-tl-[10px]' />
+                                        </div>
+                                        <div className='car-contents'>
+                                        </div>
+                                    </div>
+                                    <div className='cars-list mt-[50px] h-[270px] w-[250px]  rounded-[10px] shadow-md '>
+                                        <div className='car-img  h-[150px] w-full bg-white'>
+                                            <img src="./src/assets/carmain1.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-tl-[10px]' />
+                                        </div>
+                                        <div className='car-contents'>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                        <div className='flex justify-center mt-8'>
+                            <button className=' border border-[2px] pr-3 pl-3 pt-2 pb-2 bg-white ]'>See more about {city}'s Cars</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section className='frequently-questions-section'>
+                    <div className='h-[100vh] p-3 w-[800px] m-auto' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                        <div className='flex justify-center flex-col  m-auto'>
+                            <h1 className='text-center mb-[50px] text-4xl z-[1]'>Frequently asked questions</h1>
+                            <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <div className="collapse collapse-arrow bg-white text-black border">
+                                <input type="checkbox" />
+                                <div className="collapse-title text-xl font-medium">
+                                    Click me to show/hide content
+                                </div>
+                                <div className="collapse-content">
+                                    <p>hello</p>
+                                </div>
+                            </div>
+                            <div className="collapse collapse-arrow bg-white text-black border">
+                                <input type="checkbox" />
+                                <div className="collapse-title text-xl font-medium">
+                                    Click me to show/hide content
+                                </div>
+                                <div className="collapse-content">
+                                    <p>hello</p>
+                                </div>
+                            </div>
+                            <div className="collapse collapse-arrow bg-white text-black border">
+                                <input type="checkbox" />
+                                <div className="collapse-title text-xl font-medium">
+                                    Click me to show/hide content
+                                </div>
+                                <div className="collapse-content">
+                                    <p>hello</p>
+                                </div>
+                            </div>
+                            <div className="collapse collapse-arrow bg-white text-black border">
+                                <input type="checkbox" />
+                                <div className="collapse-title text-xl font-medium">
+                                    Click me to show/hide content
+                                </div>
+                                <div className="collapse-content">
+                                    <p>hello</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
         </>
     )
 }
@@ -145,7 +501,7 @@ function Main() {
 export default Main
 
 // const ButtonsSlider = () => {
-//     const swipper = useSwiper();
+//     con border pr-3 pl-3 pt-1 pb-1 bg-whitest swipper = useSwiper();
 //     return (
 //         <div className='buttons'>
 //             <div className='buttons absolute top-[10px] right-[10px] z-[20]'>

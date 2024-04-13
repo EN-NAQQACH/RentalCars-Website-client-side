@@ -1,0 +1,32 @@
+
+.card-slider{
+    display:flex;
+    gap: 10px;
+    animation: scroll 35s linear infinite;
+}
+.slider{
+    width: 450px;
+}
+.slider img{
+        opacity: 0.8; /* Set the initial opacity to fully opaque */
+        transition: opacity 0.5s ease; /* Add a transition for smooth opacity changes */
+}
+.card-slider:hover{
+    animation-play-state: paused;
+}
+.cslider{
+    display: flex;
+    gap: 10px;
+}
+.cslider:hover .card-slider{
+    animation-play-state: paused;
+}
+
+@keyframes scroll {
+    0%{
+        transform: translateX(0);
+    }
+    100%{
+        transform: translateX(-100%);
+    }
+}
