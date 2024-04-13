@@ -1,0 +1,41 @@
+
+.overlay button{
+    opacity: 0;
+    transition: 0.3s;
+    background-color: transparent;
+    font-weight: 800;
+    color: white;
+    text-transform: uppercase;
+    position: absolute;
+    bottom:30px;
+}
+.overlay{
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+.card:hover button{
+    opacity: 1;
+}
+.card img {
+    transition: filter 0.3s ease; /* Transition for image filter property */
+}
+.card:hover img{
+    filter:brightness(50%);
+}
+.car-contents .price{
+    font-weight: 500;
+    font-size: 15px;
+}
+.car-contents h1{
+    font-size: 17px;
+    color: rgb(66, 66, 66);
+    font-family: sans-serif;
+    font-weight: 550;
+    letter-spacing: 0;
+    margin-bottom: 5px;
+}
+.car-contents{
+    font-family: sans-serif;
+    font-size: 13px;
+}
