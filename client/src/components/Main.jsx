@@ -15,6 +15,7 @@ import { GiCarSeat } from "react-icons/gi";
 import { BsFuelPumpFill } from "react-icons/bs";
 import { PiSteeringWheelFill } from "react-icons/pi";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import styled, { keyframes, css } from "styled-components";
 
 
 function Main() {
@@ -26,6 +27,25 @@ function Main() {
         setSelectedDestination(destination);
         setcity(destination);
     };
+
+    const row1 = [
+        "https://i.ibb.co/SRTM1rk/Dacia-logo-2008-640x550-removebg-preview.png",
+        "https://i.ibb.co/Byw7HbZ/Land-Rover-logo-2011-640x335-removebg-preview.png",
+        "https://i.ibb.co/mCysbFy/audi-logo-2016-640.png",
+        "https://i.ibb.co/TbDpFfk/Kia-logo-640x321-removebg-preview.png",
+        "https://i.ibb.co/23b4PX9/bmw-logo-2020-gray.png",
+        "https://i.ibb.co/54ydBJK/Oin-j-QW4-RYuzgpg80-NGr9w-1500x844.png",
+    ];
+
+    const row2 = [
+        "https://i.ibb.co/vJyDpd8/hyundai-logo-2011-640.png",
+        "https://i.ibb.co/YbNXvMn/honda-logo-2000-full-640.png",
+        "https://i.ibb.co/kcPJ3Z0/Mercedes-Benz-logo-2011-640x369-removebg-preview.png",
+        "https://i.ibb.co/TWhmdpD/Skoda-logo-2016-640x550-removebg-preview.png",
+        "https://i.ibb.co/khSwjy5/Volkswagen-logo-2019-640x500-removebg-preview.png",
+        "https://i.ibb.co/mtGMm9G/Peugeot-logo-2010-640x451-removebg-preview.png",
+    ];
+
 
 
     return (
@@ -252,7 +272,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                                         <p>Agadir</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon />
+                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer'/>
                                             </div>
                                         </div>
                                     </div>
@@ -290,7 +310,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                                         <p>Agadir</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon />
+                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer'/>
                                             </div>
                                         </div>
                                     </div>
@@ -328,7 +348,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                                         <p>Agadir</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon />
+                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer'/>
                                             </div>
                                         </div>
                                     </div>
@@ -366,7 +386,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                                         <p>Agadir</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon />
+                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer'/>
                                             </div>
                                         </div>
                                     </div>
@@ -447,6 +467,50 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                     </div>
                 </section>
 
+                <section className='brand-slider mb-[86px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                    <div className='flex justify-center flex-col  m-auto mb-[10px]'>
+                        <h1 className='text-center mb-[50px] text-4xl z-[1]'>Our Partners</h1>
+                        <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[23%] m-auto'></div>
+                    </div>
+                    <AppContainer>
+                        <Wrapper>
+                            <Marquee>
+                                <MarqueeGroup>
+                                    {row1.map((el) => (
+                                        <ImageGroup>
+                                            <Image src={el} />
+                                        </ImageGroup>
+                                    ))}
+                                </MarqueeGroup>
+                                <MarqueeGroup>
+                                    {row1.map((el) => (
+                                        <ImageGroup>
+                                            <Image src={el} />
+                                        </ImageGroup>
+                                    ))}
+                                </MarqueeGroup>
+                            </Marquee>
+                            <Marquee>
+                                <MarqueeGroup2>
+                                    {row2.map((el) => (
+                                        <ImageGroup>
+                                            <Image src={el} />
+                                        </ImageGroup>
+                                    ))}
+                                </MarqueeGroup2>
+                                <MarqueeGroup2>
+                                    {row2.map((el) => (
+                                        <ImageGroup>
+                                            <Image src={el} />
+                                        </ImageGroup>
+                                    ))}
+                                </MarqueeGroup2>
+                            </Marquee>
+                        </Wrapper>
+                    </AppContainer>
+
+                </section>
+
                 <section className='frequently-questions-section'>
                     <div className='h-[100vh] p-3 w-[800px] m-auto' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
                         <div className='flex justify-center flex-col  m-auto'>
@@ -512,3 +576,92 @@ export default Main
 //         </div>
 //     )
 // }
+
+
+const AppContainer = styled.div`
+
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const Text = styled.div`
+  font-size: 35px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #02203c;
+`;
+
+const Note = styled.div`
+  font-size: 18px;
+  font-weight: 200;
+  margin-bottom: 40px;
+  color: #7c8e9a;
+`;
+
+const Marquee = styled.div`
+  display: flex;
+  width: 1200px;
+  overflow: hidden;
+  user-select: none;
+
+  mask-image: linear-gradient(
+    to right,
+    hsl(0 0% 0% / 0),
+    hsl(0 0% 0% / 1) 10%,
+    hsl(0 0% 0% / 1) 90%,
+    hsl(0 0% 0% / 0)
+  );
+`;
+
+const scrollX = keyframes`
+  from {
+    left: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+`;
+
+const common = css`
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  white-space: nowrap;
+  width: 100%;
+  animation: ${scrollX} 30s linear infinite;
+`;
+
+const MarqueeGroup = styled.div`
+  ${common}
+`;
+const MarqueeGroup2 = styled.div`
+  ${common}
+  animation-direction: reverse;
+  animation-delay: -3s;
+`;
+
+const ImageGroup = styled.div`
+  display: grid;
+  place-items: center;
+  width: clamp(10rem, 1rem + 40vmin, 30rem);
+  padding: calc(clamp(10rem, 1rem + 30vmin, 30rem) / 10);
+`;
+
+const Image = styled.img`
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  /* border: 1px solid black; */
+  border-radius: 0.5rem;
+  aspect-ratio: 16/9;
+  padding: 5px 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+`;
