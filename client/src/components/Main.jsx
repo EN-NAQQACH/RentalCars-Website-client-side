@@ -272,7 +272,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                                         <p>Agadir</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer'/>
+                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
                                             </div>
                                         </div>
                                     </div>
@@ -310,7 +310,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                                         <p>Agadir</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer'/>
+                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
                                             </div>
                                         </div>
                                     </div>
@@ -348,7 +348,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                                         <p>Agadir</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer'/>
+                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
                                             </div>
                                         </div>
                                     </div>
@@ -386,7 +386,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                                         <p>Agadir</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer'/>
+                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
                                             </div>
                                         </div>
                                     </div>
@@ -512,46 +512,61 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                 </section>
 
                 <section className='frequently-questions-section'>
-                    <div className='h-[100vh] p-3 w-[800px] m-auto' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
-                        <div className='flex justify-center flex-col  m-auto'>
+                    <div className='h-[100vh] p-3 m-auto' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                        <div className='flex justify-center flex-col  m-auto mb-4'>
                             <h1 className='text-center mb-[50px] text-4xl z-[1]'>Frequently asked questions</h1>
                             <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
                         </div>
-                        <div className='flex flex-col gap-2'>
-                            <div className="collapse collapse-arrow bg-white text-black border">
-                                <input type="checkbox" />
-                                <div className="collapse-title text-xl font-medium">
-                                    Click me to show/hide content
+                        <div className='flex  justify-center gap-3'>
+                            <div className='flex flex-col gap-2'>
+                                <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] max-w-[500px]">
+                                    <input type="checkbox" />
+                                    <div className="collapse-title text-xl font-medium">
+                                        Click me to show/hide content
+                                    </div>
+                                    <div className="collapse-content">
+                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto repudiandae dignissimos rerum, sapiente officiis velit atque rem adipisci dolores, quia nemo voluptatum esse consectetur harum placeat. Id accusantium maiores nihil?</p>
+                                    </div>
                                 </div>
-                                <div className="collapse-content">
-                                    <p>hello</p>
+
+                                <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] max-w-[500px]">
+                                    <input type="checkbox" />
+                                    <div className="collapse-title text-xl font-medium">
+                                        Click me to show/hide content
+                                    </div>
+                                    <div className="collapse-content">
+                                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos excepturi itaque quidem nesciunt! Aliquid expedita id, quam eum sapiente commodi non quos deleniti repudiandae aperiam rem reprehenderit officiis at eveniet.</p>
+                                    </div>
+                                </div>
+                                <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] max-w-[500px]">
+                                    <input type="checkbox" />
+                                    <div className="collapse-title text-xl font-medium">
+                                        Click me to show/hide content
+                                    </div>
+                                    <div className="collapse-content">
+                                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. In obcaecati omnis dolore ipsum. Exercitationem sint a illo, praesentium consectetur autem, quam qui dolorem iure nihil alias modi non blanditiis ullam!</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="collapse collapse-arrow bg-white text-black border">
-                                <input type="checkbox" />
-                                <div className="collapse-title text-xl font-medium">
-                                    Click me to show/hide content
+
+                            <div className='flex flex-col gap-2'>
+                                <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] w-[500px] ">
+                                    <input type="checkbox" />
+                                    <div className="collapse-title text-xl font-medium">
+                                        Click me to show/hide content
+                                    </div>
+                                    <div className="collapse-content">
+                                        <p>hello</p>
+                                    </div>
                                 </div>
-                                <div className="collapse-content">
-                                    <p>hello</p>
-                                </div>
-                            </div>
-                            <div className="collapse collapse-arrow bg-white text-black border">
-                                <input type="checkbox" />
-                                <div className="collapse-title text-xl font-medium">
-                                    Click me to show/hide content
-                                </div>
-                                <div className="collapse-content">
-                                    <p>hello</p>
-                                </div>
-                            </div>
-                            <div className="collapse collapse-arrow bg-white text-black border">
-                                <input type="checkbox" />
-                                <div className="collapse-title text-xl font-medium">
-                                    Click me to show/hide content
-                                </div>
-                                <div className="collapse-content">
-                                    <p>hello</p>
+                                <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] w-[500px]">
+                                    <input type="checkbox" />
+                                    <div className="collapse-title text-xl font-medium">
+                                        Click me to show/hide content
+                                    </div>
+                                    <div className="collapse-content">
+                                        <p>hello</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
