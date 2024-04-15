@@ -24,7 +24,7 @@
     filter:brightness(50%);
 }
 .car-contents .price{
-    font-weight: 500;
+    font-weight: 700;
     font-size: 15px;
 }
 .car-contents h1{
@@ -39,3 +39,15 @@
     font-family: sans-serif;
     font-size: 13px;
 }
+ nav h6{
+    color: black;
+    font-weight: 800;
+    font-size: 16px;
+ }
+ .socialmedia a{
+    transition: all 0.4s;
+ }
+
+ .socialmedia a:hover{
+    transform: translateY(-2px)
+ }

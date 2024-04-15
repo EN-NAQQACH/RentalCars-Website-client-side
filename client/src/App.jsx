@@ -1,21 +1,31 @@
-import { useState } from 'react'
+import { Route, Routes } from 'react-router-dom'
+import { useEffect } from 'react'
 import './App.css'
+import { gapi } from "gapi-script";
+import Home from './components/home'
+import Rentalcar from './components/Rentalcar'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import Main from './components/Main'
-import StyleContext from './Stylecontext'
+import Footer from './components/Footer'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    gapi.load("client:auth2", () => {
+      gapi.client.init({
+        clientId: "*****.apps.googleusercontent.com",
+        plugin_name: "chat",
+      });
+    });
+  }, []);
 
   return (
     <>
-    <StyleContext.Provider value={{fontFamily: '"Josefin Slab", serif',fontWeight: '700',LetterSpacing: '1px'}}>
     <Navbar />
-    <Hero />
-    <Main />
-    </StyleContext.Provider>
-      
+      <Routes>
+        <Route path='/' element={<Rentalcar />} />
+        <Route path='/home' element={<Home />} />
+      </Routes>
+      <Footer />
     </>
   )
 }
