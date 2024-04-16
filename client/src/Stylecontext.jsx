@@ -2,8 +2,8 @@ import React, { createContext } from 'react';
 
 
 const StyleContext = createContext({
-  fontFamily: '"Josefin Slab", serif',
-  fontWeight: '700',
+  fontFamily: '"Space Grotesk", sans-serif',
+  fontWeight: '500',
   LetterSpacing: '1px',
 });
 
