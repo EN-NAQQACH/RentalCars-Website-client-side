@@ -511,8 +511,8 @@ absolute z-[15] bottom-[100px] left-[36%] */}
 
                 </section>
 
-                <section className='frequently-questions-section'>
-                    <div className='h-[100vh] p-3 m-auto' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                <section className='frequently-questions-section mb-[50px]'>
+                    <div className='min-h-[100vh] p-3 m-auto' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
                         <div className='flex justify-center flex-col  m-auto mb-4'>
                             <h1 className='text-center mb-[50px] text-4xl z-[1]'>Frequently asked questions</h1>
                             <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
@@ -521,7 +521,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                             <div className='flex flex-col gap-2'>
                                 <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] max-w-[500px]">
                                     <input type="checkbox" />
-                                    <div className="collapse-title text-xl font-medium">
+                                    <div className="collapse-title text-[17px] font-medium">
                                         Click me to show/hide content
                                     </div>
                                     <div className="collapse-content">
@@ -531,7 +531,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
 
                                 <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] max-w-[500px]">
                                     <input type="checkbox" />
-                                    <div className="collapse-title text-xl font-medium">
+                                    <div className="collapse-title text-[17px] font-medium">
                                         Click me to show/hide content
                                     </div>
                                     <div className="collapse-content">
@@ -540,7 +540,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                 </div>
                                 <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] max-w-[500px]">
                                     <input type="checkbox" />
-                                    <div className="collapse-title text-xl font-medium">
+                                    <div className="collapse-title text-[17px] font-medium">
                                         Click me to show/hide content
                                     </div>
                                     <div className="collapse-content">
@@ -552,7 +552,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                             <div className='flex flex-col gap-2'>
                                 <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] w-[500px] ">
                                     <input type="checkbox" />
-                                    <div className="collapse-title text-xl font-medium">
+                                    <div className="collapse-title text-[17px] font-medium">
                                         Click me to show/hide content
                                     </div>
                                     <div className="collapse-content">
@@ -561,7 +561,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                 </div>
                                 <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] w-[500px]">
                                     <input type="checkbox" />
-                                    <div className="collapse-title text-xl font-medium">
+                                    <div className="collapse-title text-[17px] font-medium">
                                         Click me to show/hide content
                                     </div>
                                     <div className="collapse-content">
