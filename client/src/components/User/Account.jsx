@@ -8,14 +8,24 @@ import { PiSteeringWheelFill } from "react-icons/pi";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Loaderaccount from '../../utils/Loaderaccount';
+import Authorisation from '../../utils/Authorisation';
 function Profile() {
+    const navigate = useNavigate()
     const [loading, setloading] = useState(true);
+    const token = localStorage.getItem('token');
+    
+    useEffect(() => {
+        if(!token){
+          navigate('/')
+        }
+        return;
+      },[token])
     return (
         <>
-    
-                <div className='h-[100%] bg-[rgba(249,248,248,255)] text-black p-6 flex justify-center '>
+        {!token ? <Authorisation /> : (
+            <div className='h-[100%] bg-[rgba(249,248,248,255)] text-black p-6 flex justify-center '>
                     <div className='profile-section'>
                         <div className='profile-content flex gap-[50px]'>
                             <div className='side-content'>
@@ -191,6 +201,8 @@ function Profile() {
                         </div>
                     </div>
                 </div>
+        )}
+                
         </>
 
     )
