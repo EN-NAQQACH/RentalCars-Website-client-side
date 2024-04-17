@@ -11,7 +11,7 @@ import StyleContext from '../Stylecontext'
 function Hero() {
   const style = useContext(StyleContext);
   return (
-    <div className='bg-white  h-auto w-full top-18 relative' style={{fontFamily: style.fontFamily,fontWeight:style.fontWeight,letterSpacing:style.LetterSpacing}}>
+    <div className='bg-white h-auto w-full top-0 relative' style={{fontFamily: style.fontFamily,fontWeight:style.fontWeight,letterSpacing:style.LetterSpacing}}>
       <Swiper
         spaceBetween={15}
         centeredSlides={true}
@@ -26,14 +26,14 @@ function Hero() {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        <SwiperSlide>      <img src="./src/assets/carherocopy.jpg" alt="" className='m-auto object-top ' />
+        <SwiperSlide>      <img src="./src/assets/carherocopy.jpg" alt="" className='m-auto  object-top ' />
         </SwiperSlide>
         <SwiperSlide>      <img src="./src/assets/carhero2copy.jpg" alt="" className='m-auto object-top ' />
         </SwiperSlide>
         <SwiperSlide>      <img src="./src/assets/carhero3copy.jpg" alt="" className='m-auto object-top ' />
         </SwiperSlide>
       </Swiper>
-      <div className='text-center  flex flex-col items-center z-[15]' >
+      <div className='text-center flex flex-col items-center z-[15]' >
         <div className='absolute bottom-[25%] z-[15]'>
           <h1 className='text-2xl text-white uppercase '>
             Welcome to daisly

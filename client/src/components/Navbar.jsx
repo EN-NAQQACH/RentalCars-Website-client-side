@@ -60,6 +60,8 @@ function Navbar() {
       console.error('Error occurred while submitting the form:', error);
     }
   }
+
+  
   const handeLogin = async (e) => {
     e.preventDefault();
     try {
@@ -75,7 +77,10 @@ function Navbar() {
       });
       const data = await response.json();
       if (response.ok) {
+        setToken(data.token);
+        localStorage.setItem('token', data.token);
         console.log(data.message);
+        console.log(data.token);
         setIsLoggedIn(true);
       } else {
         console.error(data.error);
@@ -370,7 +375,7 @@ function Navbar() {
       ) : (
 
 
-        <div className="navbar bg-base-100 sticky z-20" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
+        <div className="navbar bg-base-100 z-20" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
           <div className="navbar-start">
             <a className="btn btn-ghost text-xl">daisyUI</a>
           </div>
