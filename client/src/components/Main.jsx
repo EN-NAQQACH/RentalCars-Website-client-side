@@ -52,12 +52,12 @@ function Main() {
         <>
             <main>
 
-                <section className='find-your-car-section'>
+                <section className='find-your-car-section '>
                     <div className='h-lvh mb-[150px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing }}>
-                        <div className='mt-[80px] flex justify-center flex-col w-fit m-auto '>
+                        <div className='location-section mt-[80px] flex justify-center flex-col w-fit m-auto '>
                             <h1 className='text-center mb-[50px] text-4xl z-[15]'>Find your Car</h1>
-                            <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[40%] m-auto'></div>
-                            <div className='flex items-center justify-center border rounded-3xl p-1 pl-4 pr-4  z-[10] bg-white shadow-sm'>
+                            <div className='divider-find bg-gray-100 h-6 mt-[-70px] mb-6 w-[40%] m-auto'></div>
+                            <div className='location-content-section flex items-center justify-center border rounded-3xl p-1 pl-4 pr-4  z-[10] bg-white shadow-sm '>
                                 <div className='flex flex-col w-[250px] border-gray-200 border-r-[1px] mr-[15px] '>
                                     <label htmlFor="">where</label>
                                     <input type="text" placeholder='agadir,marakkech' className='mr-5  text-gray-400' />
@@ -87,10 +87,10 @@ function Main() {
                 </section>
 
                 <section className='cars-slider h-fit mb-[85px]'>
-                    <div className='  p-3 ' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
-                        <div className='flex justify-center flex-col  m-auto'>
+                    <div className='car-slider-content p-3 ' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                        <div className='content flex justify-center flex-col  m-auto'>
                             <h1 className='text-center mb-[50px] text-4xl z-[1]'>Browse by make</h1>
-                            <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[23%] m-auto'></div>
+                            <div className='divider-slider bg-gray-100 h-6 mt-[-70px] mb-6 w-[23%] m-auto'></div>
                         </div>
                         <div className='cslider mt-[20px] relative mr-[25px] ml-[25px]'>
                             <div className='flex gap-2 absolute right-0 z-[15] top-[-50px]'>
@@ -222,12 +222,12 @@ absolute z-[15] bottom-[100px] left-[36%] */}
 
                 </section>
 
-                <section className='cars-list h-fit mb-[85px] ml-8 mt-8 ' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                <section className='cars-list h-fit mb-[85px]  mt-8 mr-[25px] ml-[25px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
                     <div className='flex justify-center flex-col'>
                         <h1 className='text-center mb-[50px] text-4xl z-[1]'>Explore by destination</h1>
                         <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
                     </div>
-                    <div className='cars-list-contents flex flex-col'>
+                    <div className='cars-list-contents flex flex-col mr-[25px] ml-[25px]'>
                         <div className='place-of-cars flex gap-[20px] justify-center mt-3'>
                             <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Agadir')}>Agadir</button>
                             <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Marrakech')}>Marrakech</button>
@@ -238,7 +238,8 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                         <div className='car-card flex gap-8 justify-center'>
                             {selectedDestination === '' && (
                                 <>
-                                    <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
+                                <div className='card-content-list car-card flex gap-8 justify-center'>
+                                <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
                                         <div className='car-img  h-[180px] w-full bg-white'>
                                             <img src="./src/assets/carmain9.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
                                         </div>
@@ -390,6 +391,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                             </div>
                                         </div>
                                     </div>
+                                    </div>
                                 </>
                             )}
 
@@ -462,7 +464,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                             )}
                         </div>
                         <div className='flex justify-center mt-8'>
-                            <button className=' border border-[2px] pr-3 pl-3 pt-2 pb-2 bg-white ]'>See more about {city}'s Cars</button>
+                            <button className='  border-[2px] pr-3 pl-3 pt-2 pb-2 bg-white ]'>See more about {city}'s Cars</button>
                         </div>
                     </div>
                 </section>
@@ -511,15 +513,15 @@ absolute z-[15] bottom-[100px] left-[36%] */}
 
                 </section>
 
-                <section className='frequently-questions-section mb-[50px]'>
-                    <div className='min-h-[100vh] p-3 m-auto' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
-                        <div className='flex justify-center flex-col  m-auto mb-4'>
+                <section className='frequently-questions-section mb-[50px] w-[100%] '>
+                    <div className='frequently-content min-h-[100vh] p-3  w-[100%] ' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                        <div className='flex justify-center items-center flex-col m-auto mb-4'>
                             <h1 className='text-center mb-[50px] text-4xl z-[1]'>Frequently asked questions</h1>
                             <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
                         </div>
-                        <div className='flex  justify-center gap-3'>
-                            <div className='flex flex-col gap-2'>
-                                <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] max-w-[500px]">
+                        <div className='frequently-content-card flex  justify-center gap-3 w-[100%]'>
+                            <div className='flex flex-col items-center gap-2 w-[100%]'>
+                                <div className="card-question collapse collapse-arrow bg-white text-black border rounded-[0px] w-[70%]">
                                     <input type="checkbox" />
                                     <div className="collapse-title text-[17px] font-medium">
                                         Click me to show/hide content
@@ -529,7 +531,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                     </div>
                                 </div>
 
-                                <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] max-w-[500px]">
+                                <div className=" card-question collapse collapse-arrow bg-white text-black border rounded-[0px] w-[70%]">
                                     <input type="checkbox" />
                                     <div className="collapse-title text-[17px] font-medium">
                                         Click me to show/hide content
@@ -538,7 +540,16 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos excepturi itaque quidem nesciunt! Aliquid expedita id, quam eum sapiente commodi non quos deleniti repudiandae aperiam rem reprehenderit officiis at eveniet.</p>
                                     </div>
                                 </div>
-                                <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] max-w-[500px]">
+                                <div className=" card-question collapse collapse-arrow bg-white text-black border rounded-[0px] w-[70%]">
+                                    <input type="checkbox" />
+                                    <div className="collapse-title text-[17px] font-medium">
+                                        Click me to show/hide content
+                                    </div>
+                                    <div className="collapse-content">
+                                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. In obcaecati omnis dolore ipsum. Exercitationem sint a illo, praesentium consectetur autem, quam qui dolorem iure nihil alias modi non blanditiis ullam!</p>
+                                    </div>
+                                </div>
+                                <div className=" card-question collapse collapse-arrow bg-white text-black border rounded-[0px] w-[70%]">
                                     <input type="checkbox" />
                                     <div className="collapse-title text-[17px] font-medium">
                                         Click me to show/hide content
@@ -549,8 +560,8 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                 </div>
                             </div>
 
-                            <div className='flex flex-col gap-2'>
-                                <div className="collapse collapse-arrow bg-white text-black border rounded-[0px] w-[500px] ">
+                            {/* <div className='frequently-content-card2 flex flex-col gap-2'>
+                                <div className=" collapse collapse-arrow bg-white text-black border rounded-[0px] w-[500px] ">
                                     <input type="checkbox" />
                                     <div className="collapse-title text-[17px] font-medium">
                                         Click me to show/hide content
@@ -568,7 +579,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                         <p>hello</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </section>

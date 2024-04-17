@@ -1,7 +1,9 @@
 import React from 'react';
 import { GoogleLogin } from 'react-google-login';
+import { useNavigate } from 'react-router-dom';
 
 const GoogleLoginButton2 = () => {
+  const navigate = useNavigate();
     const responseGooglesu = async (response) => {
         console.log(response);
         try {
@@ -21,6 +23,7 @@ const GoogleLoginButton2 = () => {
             const data = await res.json();
             if (res.ok) {
               console.log(data.message);
+              window.location.href="/home"
             } else {
               console.error(data.error);
             }

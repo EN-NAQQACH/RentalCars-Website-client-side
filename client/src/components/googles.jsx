@@ -1,7 +1,9 @@
 import React from 'react';
 import { GoogleLogin } from 'react-google-login';
+import { useNavigate } from 'react-router-dom';
 
 const GoogleLoginButton = () => {
+    const navigate = useNavigate();
     const responseGooglesu = async (response) => {
         console.log(response.googleId);
 
@@ -22,17 +24,14 @@ const GoogleLoginButton = () => {
             const data = await res.json();
             if (res.ok) {
               console.log(data.message);
+              window.location.href="/home"
             } else {
               console.error(data.error);
             }
           } catch (error) {
             console.error('Error occurred while submitting the form:', error);
           }
-        if (response.tokenId) {
-            localStorage.setItem('token', response.tokenId);
-            localStorage.setItem('image', response.profileObj.imageUrl);
-        }
-    }
+}
 
     const responsegooglefai = (error) => {
         console.log(error);

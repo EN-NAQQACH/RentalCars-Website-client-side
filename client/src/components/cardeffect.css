@@ -53,3 +53,145 @@
  .socialmedia a:hover{
     transform: translateY(-2px)
  }
+
+
+ /************** car list media query *****************/
+ @media only screen and (max-width: 740px) {
+
+    .find-your-car-section .location-section .location-content-section{
+        display: flex;
+        flex-direction: column;  
+        justify-content: space-between;
+        gap: 12px;
+        width: 500px;
+    }
+    .find-your-car-section .location-section .location-content-section div{
+        border: none;
+        display: flex;
+        width: 500px;
+        padding: 3px 20px;
+    }
+    .find-your-car-section{
+        margin-bottom:400px;
+    }
+    .find-your-car-section .divider-find{
+        width:55%;
+    }
+    .cars-slider .car-slider-content .divider-slider{
+        width:60%;
+    }
+    .cars-slider .car-slider-content .divider-slider {
+        margin-bottom: 50px;
+    }
+    .blogs div:first-child p {
+        max-width: 450px;
+    }
+    .cars-list {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin:0px 25px 0 25px;
+    }
+    .cars-list .cars-list-contents{
+        max-width: 500px;
+    }
+    .cars-list .cars-list-contents .place-of-cars{
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two columns with equal width */
+        gap: 10px;
+        grid-auto-flow: row;
+    }
+    .car-card .card-content-list{
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two columns with equal width */
+        gap: 0px;
+        grid-auto-flow: row;
+    }
+  }
+  
+  @media only screen and (max-width: 570px) {
+    .cars-list .cars-list-contents{
+        width: 450px;
+    }
+    .car-card .card-content-list{
+        display: grid;
+        grid-template-columns: 1fr; /* Two columns with equal width */
+        gap: 0px;
+        grid-auto-flow: row;
+    }
+    .cars-list .cars-list-contents .place-of-cars{
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two columns with equal width */
+        gap: 10px;
+        grid-auto-flow: row;
+    }
+  }
+
+  @media only screen and (max-width: 465px) {
+    .cars-list .cars-list-contents{
+        width: fit-content;
+    }
+    .car-card .card-content-list{
+        display: grid;
+        grid-template-columns: 1fr; /* Two columns with equal width */
+        gap: 0px;
+        grid-auto-flow: row;
+    }
+    .cars-list .cars-list-contents .place-of-cars{
+        display: grid;
+        grid-template-columns: 1fr ; /* Two columns with equal width */
+        gap: 10px;
+        grid-auto-flow: row;
+    }
+    .frequently-questions-section{
+        display: flex;
+        flex-direction: column;
+    }
+    .frequently-questions-section .frequently-content{
+        display: flex;
+        flex-direction: column;
+        margin: 0 25px 0 25px;
+    }
+    .frequently-questions-section .frequently-content .frequently-content-card{
+        display: flex;
+        flex-direction: column;
+    }
+  }
+  @media only screen and (min-width: 740px) {
+    .car-card .card-content-list{
+            display: flex;
+            flex-wrap: wrap;
+    }
+  }
+
+  @media only screen and (max-width: 1148px) {
+    #footer1{
+        padding: 20px;
+        margin: 0;
+    }
+    footer .footer{
+        grid-column-gap: 80px;
+    }
+  }
+  @media only screen and (max-width: 514px) {
+
+    .frequently-questions-section .frequently-content{
+        margin: 0;
+    }
+  .frequently-content-card .card-question{
+    width: 100%;
+  }
+}
+  @media only screen and (max-width: 455px) {
+
+    .frequently-questions-section .frequently-content{
+        margin: 0;
+    }
+    .frequently-content-card .card-question{
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
