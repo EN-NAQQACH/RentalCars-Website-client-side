@@ -2,10 +2,11 @@ import { Route, Routes } from 'react-router-dom'
 import { useEffect } from 'react'
 import './App.css'
 import { gapi } from "gapi-script";
-import Home from './components/home'
+import Profile from './components/User/Profile';
 import Rentalcar from './components/Rentalcar'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import Account from './components/User/Account';
 
 
 function App() {
@@ -23,7 +24,8 @@ function App() {
     <Navbar />
       <Routes>
         <Route path='/' element={<Rentalcar />} />
-        <Route path='/home' element={<Home />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/Account' element={<Account />} />
       </Routes>
       <Footer />
     </>

@@ -23,7 +23,6 @@ export default function Dialog() {
     React.useEffect(() => {
         const timer = setTimeout(() => {
             setOpen(false);
-            console.log('hello world');
             window.location.href = '/home';
         }, 2000);
 

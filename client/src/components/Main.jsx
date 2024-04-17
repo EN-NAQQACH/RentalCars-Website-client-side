@@ -238,159 +238,159 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                         <div className='car-card flex gap-8 justify-center'>
                             {selectedDestination === '' && (
                                 <>
-                                <div className='card-content-list car-card flex gap-8 justify-center'>
-                                <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
-                                        <div className='car-img  h-[180px] w-full bg-white'>
-                                            <img src="./src/assets/carmain9.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
-                                        </div>
-                                        <div className='car-contents mt-3 flex flex-col pl-2'>
-                                            <div>
-                                                <div>
-                                                    <h1 className='text-black'>Bmw SUV</h1>
-                                                    <p>car bmwx360 all</p>
-                                                </div>
+                                    <div className='card-content-list car-card flex gap-8 justify-center'>
+                                        <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
+                                            <div className='car-img  h-[180px] w-full bg-white'>
+                                                <img src="./src/assets/carmain9.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
                                             </div>
-                                            <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <GiCarSeat />
-                                                    <p className='font-bold'>5</p>
-                                                </div>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <BsFuelPumpFill />
-                                                    <p className='font-bold'>Diesel</p>
-                                                </div>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <PiSteeringWheelFill />
-                                                    <p className='font-bold'>Automatic</p>
-                                                </div>
-                                            </div>
-                                            <div className='flex justify-between items-center'>
+                                            <div className='car-contents mt-3 flex flex-col pl-2'>
                                                 <div>
-                                                    <div className='price font-bold mt-2'>
-                                                        <p>50$ /Day</p>
-                                                    </div>
-                                                    <div className='font-bold text-gray-400'>
-                                                        <p>Agadir</p>
+                                                    <div>
+                                                        <h1 className='text-black'>Bmw SUV</h1>
+                                                        <p>car bmwx360 all</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
-                                        <div className='car-img  h-[180px] w-full bg-white'>
-                                            <img src="./src/assets/carmain10.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
-                                        </div>
-                                        <div className='car-contents mt-3 flex flex-col pl-2'>
-                                            <div>
-                                                <div>
-                                                    <h1 className='text-black'>Bmw SUV</h1>
-                                                    <p>car bmwx360 all</p>
-                                                </div>
-                                            </div>
-                                            <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <GiCarSeat />
-                                                    <p className='font-bold'>5</p>
-                                                </div>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <BsFuelPumpFill />
-                                                    <p className='font-bold'>Diesel</p>
-                                                </div>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <PiSteeringWheelFill />
-                                                    <p className='font-bold'>Automatic</p>
-                                                </div>
-                                            </div>
-                                            <div className='flex justify-between items-center'>
-                                                <div>
-                                                    <div className='price font-bold mt-2'>
-                                                        <p>50$ /Day</p>
+                                                <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <GiCarSeat />
+                                                        <p className='font-bold'>5</p>
                                                     </div>
-                                                    <div className='font-bold text-gray-400'>
-                                                        <p>Agadir</p>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <BsFuelPumpFill />
+                                                        <p className='font-bold'>Diesel</p>
+                                                    </div>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <PiSteeringWheelFill />
+                                                        <p className='font-bold'>Automatic</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
-                                        <div className='car-img  h-[180px] w-full bg-white'>
-                                            <img src="./src/assets/carmain14.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
-                                        </div>
-                                        <div className='car-contents mt-3 flex flex-col pl-2'>
-                                            <div>
-                                                <div>
-                                                    <h1 className='text-black'>Bmw SUV</h1>
-                                                    <p>car bmwx360 all</p>
-                                                </div>
-                                            </div>
-                                            <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <GiCarSeat />
-                                                    <p className='font-bold'>5</p>
-                                                </div>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <BsFuelPumpFill />
-                                                    <p className='font-bold'>Diesel</p>
-                                                </div>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <PiSteeringWheelFill />
-                                                    <p className='font-bold'>Automatic</p>
-                                                </div>
-                                            </div>
-                                            <div className='flex justify-between items-center'>
-                                                <div>
-                                                    <div className='price font-bold mt-2'>
-                                                        <p>50$ /Day</p>
+                                                <div className='flex justify-between items-center'>
+                                                    <div>
+                                                        <div className='price font-bold mt-2'>
+                                                            <p>50$ /Day</p>
+                                                        </div>
+                                                        <div className='font-bold text-gray-400'>
+                                                            <p>Agadir</p>
+                                                        </div>
                                                     </div>
-                                                    <div className='font-bold text-gray-400'>
-                                                        <p>Agadir</p>
+                                                    <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
+                                            <div className='car-img  h-[180px] w-full bg-white'>
+                                                <img src="./src/assets/carmain10.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
+                                            </div>
+                                            <div className='car-contents mt-3 flex flex-col pl-2'>
+                                                <div>
+                                                    <div>
+                                                        <h1 className='text-black'>Bmw SUV</h1>
+                                                        <p>car bmwx360 all</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
-                                        <div className='car-img  h-[180px] w-full bg-white'>
-                                            <img src="./src/assets/carblog2.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
-                                        </div>
-                                        <div className='car-contents mt-3 flex flex-col pl-2'>
-                                            <div>
-                                                <div>
-                                                    <h1 className='text-black'>Bmw SUV</h1>
-                                                    <p>car bmwx360 all</p>
-                                                </div>
-                                            </div>
-                                            <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <GiCarSeat />
-                                                    <p className='font-bold'>5</p>
-                                                </div>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <BsFuelPumpFill />
-                                                    <p className='font-bold'>Diesel</p>
-                                                </div>
-                                                <div className='icon flex gap-3 items-center'>
-                                                    <PiSteeringWheelFill />
-                                                    <p className='font-bold'>Automatic</p>
-                                                </div>
-                                            </div>
-                                            <div className='flex justify-between items-center'>
-                                                <div>
-                                                    <div className='price font-bold mt-2'>
-                                                        <p>50$ /Day</p>
+                                                <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <GiCarSeat />
+                                                        <p className='font-bold'>5</p>
                                                     </div>
-                                                    <div className='font-bold text-gray-400'>
-                                                        <p>Agadir</p>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <BsFuelPumpFill />
+                                                        <p className='font-bold'>Diesel</p>
+                                                    </div>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <PiSteeringWheelFill />
+                                                        <p className='font-bold'>Automatic</p>
                                                     </div>
                                                 </div>
-                                                <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
+                                                <div className='flex justify-between items-center'>
+                                                    <div>
+                                                        <div className='price font-bold mt-2'>
+                                                            <p>50$ /Day</p>
+                                                        </div>
+                                                        <div className='font-bold text-gray-400'>
+                                                            <p>Agadir</p>
+                                                        </div>
+                                                    </div>
+                                                    <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
+                                            <div className='car-img  h-[180px] w-full bg-white'>
+                                                <img src="./src/assets/carmain14.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
+                                            </div>
+                                            <div className='car-contents mt-3 flex flex-col pl-2'>
+                                                <div>
+                                                    <div>
+                                                        <h1 className='text-black'>Bmw SUV</h1>
+                                                        <p>car bmwx360 all</p>
+                                                    </div>
+                                                </div>
+                                                <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <GiCarSeat />
+                                                        <p className='font-bold'>5</p>
+                                                    </div>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <BsFuelPumpFill />
+                                                        <p className='font-bold'>Diesel</p>
+                                                    </div>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <PiSteeringWheelFill />
+                                                        <p className='font-bold'>Automatic</p>
+                                                    </div>
+                                                </div>
+                                                <div className='flex justify-between items-center'>
+                                                    <div>
+                                                        <div className='price font-bold mt-2'>
+                                                            <p>50$ /Day</p>
+                                                        </div>
+                                                        <div className='font-bold text-gray-400'>
+                                                            <p>Agadir</p>
+                                                        </div>
+                                                    </div>
+                                                    <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
+                                            <div className='car-img  h-[180px] w-full bg-white'>
+                                                <img src="./src/assets/carblog2.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
+                                            </div>
+                                            <div className='car-contents mt-3 flex flex-col pl-2'>
+                                                <div>
+                                                    <div>
+                                                        <h1 className='text-black'>Bmw SUV</h1>
+                                                        <p>car bmwx360 all</p>
+                                                    </div>
+                                                </div>
+                                                <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <GiCarSeat />
+                                                        <p className='font-bold'>5</p>
+                                                    </div>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <BsFuelPumpFill />
+                                                        <p className='font-bold'>Diesel</p>
+                                                    </div>
+                                                    <div className='icon flex gap-3 items-center'>
+                                                        <PiSteeringWheelFill />
+                                                        <p className='font-bold'>Automatic</p>
+                                                    </div>
+                                                </div>
+                                                <div className='flex justify-between items-center'>
+                                                    <div>
+                                                        <div className='price font-bold mt-2'>
+                                                            <p>50$ /Day</p>
+                                                        </div>
+                                                        <div className='font-bold text-gray-400'>
+                                                            <p>Agadir</p>
+                                                        </div>
+                                                    </div>
+                                                    <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </>
                             )}
