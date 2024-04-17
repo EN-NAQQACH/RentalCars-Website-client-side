@@ -23,7 +23,7 @@ export default function Dialog() {
     React.useEffect(() => {
         const timer = setTimeout(() => {
             setOpen(false);
-            window.location.href = '/home';
+            window.location.href = '/profile';
         }, 2000);
 
         // Clear the timer when the component unmounts or the modal is closed
