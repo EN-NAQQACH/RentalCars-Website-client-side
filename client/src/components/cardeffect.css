@@ -1,6 +1,7 @@
 *{
     font-family: "Space Grotesk", sans-serif;
 }
+
 .overlay button{
     opacity: 0;
     transition: 0.3s;
@@ -195,3 +196,49 @@
     }
   }
 
+#nextbtn{
+    box-shadow: none;
+    background-color: black;
+}
+#nextbtn:hover{
+    background-color: black;
+}
+.ant-steps .ant-steps-item-process .ant-steps-item-icon{
+    background-color: black;
+    border: none;
+}
+.ant-steps .ant-steps-item-finish .ant-steps-item-icon{
+    background-color: rgb(233, 233, 233);
+    border: none;
+}
+.ant-steps .ant-steps-item-finish .ant-steps-item-icon svg{
+    color: black;
+}
+#prevbtn:hover{
+    color: black;
+    border-color: black;
+}
+/* header your car car avalibility*/
+.ant-steps{
+    display: inline-block;
+}
+.ant-steps .ant-steps-item-title{
+    position: static;
+}
+ /** form your car*/
+.ant-form-inline {
+    display: flex;
+    flex-direction: column;
+}
+/* next btn*/
+#btnnext-form:hover{
+    background-color: rgb(32, 32, 32);
+    transform:translateX(2%);
+    color: white;
+}
+/** radio */
+.ant-radio-wrapper .ant-radio-checked .ant-radio-inner{
+    border-color: black;
+    background-color: black;
+}
+/** radio */

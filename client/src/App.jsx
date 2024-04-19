@@ -7,6 +7,8 @@ import Rentalcar from './components/Rentalcar'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Account from './components/User/Account';
+import Listyourcar from './components/Car/Listyourcar';
+import List from './components/Car/List';
 
 
 function App() {
@@ -21,11 +23,15 @@ function App() {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       <Routes>
         <Route path='/' element={<Rentalcar />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/Account' element={<Account />} />
+        <Route path='/become_a_host' >
+        <Route path='list-your-car' element={<Listyourcar />} />
+        <Route path='list-your-car/list' element={<List />} />
+        </Route>
       </Routes>
       <Footer />
     </>

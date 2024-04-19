@@ -18,6 +18,7 @@ import CarRentalOutlinedIcon from '@mui/icons-material/CarRentalOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import LoginIcon from '@mui/icons-material/Login';
 import Dialog from '../utils/Loader';
+import AllInboxIcon from '@mui/icons-material/AllInbox';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -337,7 +338,7 @@ function Navbar() {
 
       {isuserauth ? (
 
-        <div className="navbar bg-base-100 sticky z-20" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
+        <div className="navbar bg-base-100 sticky z-20 border-b-[1px]" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
           <div className="navbar-start">
             <a className="btn btn-ghost text-xl">daisyUI</a>
           </div>
@@ -356,11 +357,11 @@ function Navbar() {
               </div>
               <ul tabIndex={0} className="dropdown-content z-[1] menu p-2  bg-white rounded-box min-w-80 mt-[10px] shadow-md">
                 <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px] ' > <Link to=""> <FavoriteBorderOutlinedIcon /> Favorites</Link></li>
-                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to="">Trip</Link></li>
+                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to=""><AllInboxIcon />Inbox</Link></li>
                 <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
-                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to=""> <CarRentalOutlinedIcon /> Become a host</Link></li>
-                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to=""> <AccountCircleOutlinedIcon /> Account</Link></li>
-                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to=""> <PersonOutlineOutlinedIcon /> Profile</Link></li>
+                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to="/become_a_host/list-your-car"> <CarRentalOutlinedIcon /> Become a host</Link></li>
+                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to="/Account"> <AccountCircleOutlinedIcon /> Account</Link></li>
+                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to="/Profile"> <PersonOutlineOutlinedIcon /> Profile</Link></li>
                 <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
                 <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><PolicyIcon />Policies</a></li>
                 <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><EmailIcon />Contact</a></li>
@@ -375,7 +376,7 @@ function Navbar() {
       ) : (
 
 
-        <div className="navbar bg-base-100 z-20" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
+        <div className="navbar bg-base-100 relative z-20" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
           <div className="navbar-start">
             <a className="btn btn-ghost text-xl">daisyUI</a>
           </div>
