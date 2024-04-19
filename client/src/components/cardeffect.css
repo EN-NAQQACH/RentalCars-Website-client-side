@@ -197,14 +197,20 @@
   }
 
 #nextbtn{
-    box-shadow: none;
     background-color: black;
+    color: white;
+    padding: 2px 20px 2px 20px;
+    border-radius: 3px;
+    border: 1px solid;
+    transition: all 0.4s;
 }
 #nextbtn:hover{
-    background-color: black;
+    background-color: rgb(61, 61, 61);
+    border: black;
+    border: 1px solid;
 }
 .ant-steps .ant-steps-item-process .ant-steps-item-icon{
-    background-color: black;
+    background-color: #000000;
     border: none;
 }
 .ant-steps .ant-steps-item-finish .ant-steps-item-icon{
@@ -214,8 +220,17 @@
 .ant-steps .ant-steps-item-finish .ant-steps-item-icon svg{
     color: black;
 }
+#prevbtn{
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    padding: 0px 10px 0px 10px;
+    border-radius: 3px;
+    border: 1px solid;
+    border-color: rgb(212, 212, 212);
+    transition: all 0.4s;
+    margin-right: 5px;
+}
 #prevbtn:hover{
-    color: black;
     border-color: black;
 }
 /* header your car car avalibility*/
@@ -241,4 +256,12 @@
     border-color: black;
     background-color: black;
 }
-/** radio */
+.ant-btn.css-dev-only-do-not-override-1qfezbu.ant-btn-primary , .ant-btn.css-dev-only-do-not-override-1qfezbu.ant-btn-default{
+
+}
+:where(.css-dev-only-do-not-override-1qfezbu).ant-checkbox .ant-checkbox-inner {
+    border-color: #000000;
+}
+.car-photo svg{
+    font-size: 30px;
+}
