@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useContext } from 'react'
 import SearchIcon from '@mui/icons-material/Search';
-import StyleContext from '../Stylecontext'
+import { StyleContext } from '../Stylecontext'; // Import StyleContext as a named export
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import "swiper/css";
 import 'swiper/css/navigation';
@@ -79,7 +79,7 @@ function Main() {
                         </div>
                         <div className=' relative h-[520px] w-[full] mt-[50px]  m-auto mr-[60px] ml-[60px]  '>
                             <img src="./src/assets/carmain50.jpg" alt="Description" className=" object-cover w-full h-full rounded-[10px] " />
-                            <button className='border border-[2px] rounded-[50px] p-3 absolute bottom-[50px] left-[50px] pl-8 pr-8 bg-transparent transition duration-500 hover:bg-transparent text-white'>
+                            <button className=' border-[2px]  p-2 absolute bottom-[50px] left-[50px] pl-8 pr-8 bg-transparent transition duration-500 hover:bg-transparent text-white'>
                                 <a href="">Explore our Cars</a>
                             </button>
                         </div>

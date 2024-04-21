@@ -23,7 +23,7 @@ const GoogleLoginButton2 = () => {
             const data = await res.json();
             if (res.ok) {
               console.log(data.message);
-              localStorage.setItem('token', response.tokenId);
+              localStorage.setItem('token', data.token);
               localStorage.setItem('image', response.profileObj.imageUrl);
               window.location.href="/home"
             } else {

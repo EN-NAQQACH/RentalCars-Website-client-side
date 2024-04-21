@@ -1,6 +1,7 @@
 import React, { useEffect,useState } from 'react'
 import { useContext } from 'react';
-import StyleContext from '../Stylecontext'
+import { StyleContext } from '../Stylecontext'; // Import StyleContext as a named export
+
 import './cardeffect.css';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import XIcon from '@mui/icons-material/X';

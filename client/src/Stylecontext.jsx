@@ -1,10 +1,20 @@
-import React, { createContext } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
-
-const StyleContext = createContext({
+export const StyleContext = createContext({
   fontFamily: '"Space Grotesk", sans-serif',
   fontWeight: '500',
-  LetterSpacing: '1px',
+  letterSpacing: '1px',
 });
 
-export default StyleContext;
+export const StyleContextProvider = ({ children }) => {
+
+  return (
+    <StyleContext.Provider value={{
+      fontFamily: '"Space Grotesk", sans-serif',
+      fontWeight: '500',
+      letterSpacing: '1px',
+    }}>
+      {children}
+    </StyleContext.Provider>
+  );
+};

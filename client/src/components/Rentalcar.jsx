@@ -2,17 +2,21 @@ import React from 'react'
 import Navbar from './Navbar'
 import Hero from './Hero'
 import Main from './Main'
-import StyleContext from '../Stylecontext'
+import Profile from './User/Profile'
+import Account from './User/Account'
+import  {StyleContextProvider}  from '../Stylecontext' // Import StyleContextProvider instead of StyleContext
 import Footer from './Footer'
 
 function Rentalcar() {
     return (
-        <>
-            <StyleContext.Provider value={{ fontFamily: '"Josefin Slab", serif', fontWeight: '700', LetterSpacing: '1px' }}>
+        <StyleContextProvider>
+            <>
                 <Hero />
                 <Main />
-            </StyleContext.Provider>
-        </>
+                <Profile />
+                <Account />
+            </>
+        </StyleContextProvider>
     )
 }
 

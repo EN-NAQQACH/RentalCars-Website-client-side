@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import './App.css'
 import { gapi } from "gapi-script";
 import Profile from './components/User/Profile';
-import Rentalcar from './components/Rentalcar'
+import Rentalcar from './components/Rentalcar'; 
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Account from './components/User/Account';

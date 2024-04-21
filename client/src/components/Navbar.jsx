@@ -6,7 +6,7 @@ import PolicyIcon from '@mui/icons-material/Policy';
 import EmailIcon from '@mui/icons-material/Email';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import StyleContext from '../Stylecontext';
+import { StyleContext } from '../Stylecontext'; // Import StyleContext as a named export
 import { GoogleLogin } from 'react-google-login';
 import GoogleLoginButton from './googles';
 import GoogleLoginButton2 from './googlel';
@@ -19,17 +19,16 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import LoginIcon from '@mui/icons-material/Login';
 import Dialog from '../utils/Loader';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
+import CryptoJS from 'crypto-js';
 
 function Navbar() {
   const navigate = useNavigate();
   const [isuserauth, setUserauth] = useState(false)
-  const [token, setToken] = useState((localStorage.getItem('token')))
-  const [imageUrl, setimage] = useState(localStorage.getItem('image'));
+  const [token, setToken] = useState((localStorage.getItem('T_ID_Auth')))
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [issignup, setsignup] = useState(false);
   const [error, seterror] = useState('');
   const [iserror, setiserror] = useState(false);
-
   const [firstName, setFirstname] = useState('');
   const [lastName, setLastname] = useState('');
   const [email, setEmail] = useState('');
@@ -66,7 +65,7 @@ function Navbar() {
   const handeLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5600/api/account/login', {
+      const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/account/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -78,10 +77,7 @@ function Navbar() {
       });
       const data = await response.json();
       if (response.ok) {
-        setToken(data.token);
-        localStorage.setItem('token', data.token);
-        console.log(data.message);
-        console.log(data.token);
+        localStorage.setItem('T_ID_Auth',data.token);
         setIsLoggedIn(true);
       } else {
         console.error(data.error);
@@ -141,11 +137,7 @@ function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('email', response.profileObj.email);
-    localStorage.removeItem('firstname', response.profileObj.givenName);
-    localStorage.removeItem('lastname', response.profileObj.familyName);
-    localStorage.removeItem('googleid', response.profileObj.googleId);
-    localStorage.removeItem('image', response.profileObj.imageUrl);
+    localStorage.removeItem('image');    
     setUserauth(false);
     navigate('/');
   };
@@ -334,8 +326,6 @@ function Navbar() {
         </dialog>
   )}
 
-
-
       {isuserauth ? (
 
         <div className="navbar bg-base-100 sticky z-20 border-b-[1px]" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
@@ -374,8 +364,6 @@ function Navbar() {
         </div>
 
       ) : (
-
-
         <div className="navbar bg-base-100 relative z-20" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
           <div className="navbar-start">
             <a className="btn btn-ghost text-xl">daisyUI</a>
@@ -389,7 +377,7 @@ function Navbar() {
           </div>
           <div className="navbar-end ">
             <div className="dropdown dropdown-hover dropdown-end ">
-              <div tabIndex={0} role="button" className="= border rounded-[5px] m-1 p-2  bg-gray-900 text-white transition duration-500 hover:text-black hover:bg-white hover:border border-black shadow-md">
+              <div tabIndex={0} role="button" className="= border  m-1 p-1  bg-gray-900 text-white transition duration-500 hover:text-black hover:bg-white hover:border border-black shadow-md">
                 <MenuIcon />
                 <AccountCircleIcon />
               </div>

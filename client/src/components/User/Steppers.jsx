@@ -21,6 +21,8 @@ import "swiper/css";
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import distancee from '../../data/distance.json'
+import CryptoJS from 'crypto-js';
 
 const steps = [
   {
@@ -44,11 +46,19 @@ const steps = [
     content: 'Last-content',
   },
 ];
+
+const { Option } = Select;
 const Steppers = () => {
+  const [location ,setLocation]=useState('');
+  const [year,setYear]=useState('');
+  const [make,setMake]= useState('');
+  const [model,setModel]=useState('');
+  const [transmission,setTransmission]=useState('');
+  const [fuel,setFuel]=useState('');
+  const [distance, setDistance]=useState('');
   const { token } = theme.useToken();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [current, setCurrent] = useState(() => {
-    // Initialize current step from localStorage, default to 0 if not found
     const storedStep = localStorage.getItem('currentStep');
     return storedStep ? parseInt(storedStep) : 0;
   });
@@ -56,12 +66,38 @@ const Steppers = () => {
     form
       .validateFields()
       .then(() => {
+        storeDataLocalStorage();
         setCurrent((prevCurrent) => prevCurrent + 1);
       })
       .catch((errorInfo) => {
         console.log('Validation failed:', errorInfo);
       });
   };
+  const storeDataLocalStorage= ()=>{
+    const YourCar = {
+      location: location,
+      year: year,
+      make: make,
+      model: model,
+      transmission:transmission,
+      distance: distance,
+    };
+    localStorage.setItem('@D_C0', CryptoJS.AES.encrypt(JSON.stringify(YourCar), "mohssine_ennaqqach").toString());
+  }
+  // useEffect(() => {
+  //   const storedLocation = localStorage.getItem('location');
+  //   const storedYear = localStorage.getItem('year');
+  //   const storedMake = localStorage.getItem('make');
+  //   const storedModel = localStorage.getItem('model');
+  //   const storedTransmission = localStorage.getItem('transmission');
+  //   const storedDistance = localStorage.getItem('distance');
+  //   if (storedLocation) setLocation(storedLocation);
+  //   if (storedYear) setYear(storedYear);
+  //   if (storedMake) setMake(storedMake);
+  //   if (storedModel) setModel(storedModel);
+  //   if (storedTransmission) setTransmission(storedTransmission);
+  //   if (storedDistance) setDistance(storedDistance);
+  // }, []);
   useEffect(() => {
     // Store current step to localStorage
     localStorage.setItem('currentStep', current.toString());
@@ -116,7 +152,7 @@ const Steppers = () => {
                       },
                     ]}
                   >
-                    <Input placeholder="Your car location" className='rounded-[0px] ' />
+                  <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px] ' value={location} onChange={(e)=>setLocation(e.target.value)} />
                   </Form.Item>
                 </div>
                 <div className='year-model-make grid grid-cols-3'>
@@ -131,9 +167,9 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="select year">
-                        {caryear.map((year, index) => (
-                          <Option key={index} required>{year}</Option>
+                      <Select placeholder="select year" value={year}  onChange={(value) => setYear(value)}>
+                        {caryear.map((r, index) => (
+                          <Option key={index} required value={r}>{r}</Option>
                         ))}
                       </Select>
                     </Form.Item>
@@ -149,9 +185,9 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="Make">
-                        {caryear.map((year, index) => (
-                          <Option key={index} required>{year}</Option>
+                      <Select placeholder="Make" value={make}  onChange={(value) => setMake(value)}>
+                        {caryear.map((r, index) => (
+                          <Option key={index} required value={r}>{r}</Option>
                         ))}
                       </Select>
                     </Form.Item>
@@ -167,9 +203,9 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="Model">
-                        {caryear.map((year, index) => (
-                          <Option key={index} required>{year}</Option>
+                      <Select placeholder="Model" value={model}  onChange={(value) => setModel(value)}>
+                        {caryear.map((r, index) => (
+                          <Option key={index} required value={r}>{r}</Option>
                         ))}
                       </Select>
                     </Form.Item>
@@ -187,9 +223,9 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="Model" className='mb-4'>
-                        {caryear.map((year, index) => (
-                          <Option key={index} required>{year}</Option>
+                      <Select placeholder="Model" className='mb-4' value={distance} onChange={(value)=>setDistance(value)}>
+                        {distancee.map((distance, index) => (
+                          <Option key={index} required value={distance}>{distance}</Option>
                         ))}
                       </Select>
                     </Form.Item>
@@ -205,16 +241,17 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Radio.Group >
-                        <Radio value={1} >Manual</Radio>
-                        <Radio value={2} >Automatic</Radio>
+                      <Radio.Group  value={transmission} onChange={(e)=>setTransmission(e.target.value)}>
+                        <Radio value="Manual">Manual</Radio>
+                        <Radio value="Automatic" >Automatic</Radio>
                       </Radio.Group>
                     </Form.Item>
                   </div>
                 </div>
               </div>
             </div>
-          </div>)
+          </div>
+          )
           ||
           (current === 1 &&
             <div style={contentStyle} className='flex flex-col justify-center w-[95%]'>
@@ -524,12 +561,12 @@ const Steppers = () => {
 
         <div style={{ marginTop: 24 }}>
           {current > 0 && (
-            <Button id="prevbtn" onClick={prev}>
+            <Button id="prevbtn" onClick={prev} className='hidden'>
               Previous
             </Button>
           )}
           {current < steps.length - 1 && (
-            <Button id="nextbtn" onClick={() => next()} className='bg-black'>
+            <Button id="nextbtn" onClick={() => next()} className='bg-black' >
               Next
             </Button>
           )}
