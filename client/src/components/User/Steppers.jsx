@@ -23,6 +23,7 @@ import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import distancee from '../../data/distance.json'
 import CryptoJS from 'crypto-js';
+import VerifyListing from '../ListYourCar/VerifyListing.jsx';
 
 const steps = [
   {
@@ -557,7 +558,7 @@ const Steppers = () => {
               </div>
             </div>)
           ||
-          (current === 4 && <div style={contentStyle}>Hello 5</div>)}
+          (current === 4 && <VerifyListing />)}
 
         <div style={{ marginTop: 24 }}>
           {current > 0 && (
