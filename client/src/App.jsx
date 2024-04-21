@@ -9,7 +9,7 @@ import Footer from './components/Footer'
 import Account from './components/User/Account';
 import Listyourcar from './components/Car/Listyourcar';
 import List from './components/Car/List';
-
+import CarPage from './components/Car/CarPage';
 
 function App() {
   useEffect(() => {
@@ -32,6 +32,7 @@ function App() {
         <Route path='list-your-car' element={<Listyourcar />} />
         <Route path='list-your-car/list' element={<List />} />
         </Route>
+        <Route path='/carpage' element={<CarPage />}/>
       </Routes>
       <Footer />
     </>
