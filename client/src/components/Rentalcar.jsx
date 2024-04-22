@@ -13,8 +13,6 @@ function Rentalcar() {
             <>
                 <Hero />
                 <Main />
-                <Profile />
-                <Account />
             </>
         </StyleContextProvider>
     )
