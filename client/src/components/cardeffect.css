@@ -322,11 +322,16 @@
     margin: auto;
     display: flex;
     gap: 20px;
-    justify-content: end;
+    justify-content: space-between;
     align-items: center;
 }
-.save-morephotos div:first-child{
+.save-morephotos div:nth-child(2){
     display: flex;
+    gap: 15px;
+}
+.save-morephotos div:nth-child(2) div{
+    display: flex;
+    align-items: center;
     gap: 5px;
 }
 .seo-carinfo .seo-carinfo-content{
@@ -345,4 +350,32 @@
 /** progress bar reviews**/
 :where(.css-dev-only-do-not-override-1qfezbu).ant-progress .ant-progress-bg{
     background-color: #5c3cfc;
+}
+
+.seo-aside-right .datecontent button{
+    box-shadow:0 4px 6px -1px rgb(92,60,252);
+}
+.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-i4bv87-MuiSvgIcon-root{
+    font-size: 18px;
+}
+.carhome-section{
+    display: grid;
+    grid-template-columns: 300px 290px calc(100% - 590px) ;
+}
+.carhome-section .aside{
+    grid-column: 1 / 2;
+}
+.carhome-section .main-section{
+    grid-column: 2 / 4;
+}
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+    padding: 5px !important;
+}
+.css-188mx6n-MuiSlider-root{
+    color: black!important;
+    height: 1px !important;
+}
+.css-1as9v07-MuiSlider-thumb{
+        width: 12px !important;
+        height: 12px !important;
 }
