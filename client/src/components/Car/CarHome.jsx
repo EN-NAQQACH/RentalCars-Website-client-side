@@ -9,10 +9,72 @@ import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatRecline
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import HelpIcon from '@mui/icons-material/Help';
 import SearchIcon from '@mui/icons-material/Search';
+import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Carcomponents from './Carcomponents';
+import { DatePicker, Space } from 'antd';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { SiMercedes } from "react-icons/si";
+import { SiBmw } from "react-icons/si";
+import { SiAudi } from "react-icons/si";
+dayjs.extend(customParseFormat);
+
+
+
+
+const { RangePicker } = DatePicker;
+const disabledDate = (current) => {
+    return current && current < dayjs().endOf('day');
+};
 
 const { Option } = Select;
+function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 function CarHome() {
+    const [valuee, setValuee] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValuee(newValue);
+    }
+    const dateFormat = 'YYYY/MM/DD';
+    const formatDate = date => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}/${month}/${day}`;
+    };
     const [value, setValue] = useState(1);
     const [rat, setRate] = useState('');
     const [price, setPrice] = useState([20, 75]);
@@ -30,10 +92,6 @@ function CarHome() {
         setValue2(value);
         console.log(value2);
     };
-    const handlechnagemax = (e) => {
-    }
-    const handlechnagemin = (e) => {
-    }
     const handleshowmore = () => {
         const features = document.getElementById('features');
         features.style.height = 'fit-content';
@@ -50,42 +108,41 @@ function CarHome() {
         const hidebtn = document.getElementById('lessbtn');
         hidebtn.style.display = 'none';
     }
-
+    const onchange = (date, dateString) => {
+        console.log(dateString[0], dateString[1]);
+    }
     return (
         <div className=''>
-            <div className='location-section  flex justify-center w-fit m-auto mb-7'>
-                <div className='location-content-section flex items-center justify-center border rounded-3xl p-1 pl-4 pr-4  z-[10] bg-white shadow-sm '>
-                    <div className='flex flex-col w-[250px] border-gray-200 border-r-[1px] mr-[15px] '>
-                        <label htmlFor="">where</label>
-                        <input type="text" placeholder='agadir,marakkech' className='mr-5  text-gray-400' />
+            <div className='location-section w-[100%]  mb-7 ml-2'>
+                <div className='location-content-section-carhome gap-2 rounded-[30px]  border-gray-100 border-[0.2px] shadow-sm w-fit p-3'>
+                    <div className='border-r-[1px]'>
+                        <label htmlFor="" className='pl-2 text-[13px] font-bold text-gray-500'>Location</label>
+                        <input type="text" className='border-none w-[100%] h-[20px] rounded-[7px] pl-2 text-[13px]' placeholder='Enter Location' />
                     </div>
-                    <div className='flex flex-col w-fit mr-[15px] border-gray-200 border-r-[1px]'>
-                        <label htmlFor="">from</label>
-                        <input type="date" className='mr-5 text-gray-400' />
+                    <div className='flex flex-col justify-center border-r-[1px]'>
+                        <label htmlFor="" className='text-[13px] font-bold text-gray-500'>Check in-out</label>
+                        <div className='flex items-center w-[100%]'>
+                            <Space direction="vertical" size={12}>
+                                <RangePicker disabledDate={disabledDate} onChange={onchange} format={dateFormat} />
+                            </Space>
+                        </div>
                     </div>
-                    <div className='flex flex-col w-fit'>
-                        <label htmlFor="">untill</label>
-                        <input type="date" className='mr-5  text-gray-400' />
-                    </div>
-                    <div className='flex flex-col w-fit'>
-                        <button className='bg-black rounded-full pl-3 pr-3 pt-2 pb-2 text-white text-center flex justify-center'>
-                        <SearchIcon className='m-auto' />
-                        </button>
+                    <div className='flex items-center justify-center  rounded-[50%] h-[40px] w-[40px]  transition-all duration-75 cursor-pointer bg-[#7357ff] hover:bg-[#5c3cfc] m-auto'>
+                        <SearchIcon className='text-white' />
                     </div>
                 </div>
             </div>
             <div className='carhome-section bg-white h-fit m-[80px] mt-0'>
-
-                <div className='aside border rounded-[15px]'>
+                <div className='aside border-[0.5px] border-gray-100  rounded-[15px]'>
                     <div className='filter-components'>
                         <div className='filter-content  pb-[30px]'>
                             <div className='flex justify-between mb-4 items-center border-b-[1px] p-3 rounded-tr-[15px] rounded-tl-[15px] bg-[#fbfaff]'>
-                                <p className='text-[14px]'>Filter</p>
+                                <p className='text-[14px] font-bold'>Filter</p>
                                 <button className='text-[12px] text-[#5c3cfc] hover:bg-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-md'>Clear All Filters</button>
                             </div>
-                            <div className="p-3">
+                            <div className="p-5">
                                 <div className='filter-price mb-3'>
-                                    <p className='text-[13px] font-semibold'>Price</p>
+                                    <p className='text-[13px] font-bold text-gray-400'>Price</p>
                                     <Slider valueLabelDisplay="auto" value={price} onChange={handlechange} />
                                     <div className='flex gap-3 mt-2'>
                                         <div>
@@ -117,7 +174,7 @@ function CarHome() {
                                 </div>
                                 <div className='filter-transmission mb-3'>
                                     <div>
-                                        <p className='text-[13px] font-semibold mb-2'>Transmission</p>
+                                        <p className='text-[13px]  mb-2 font-bold text-gray-400'>Transmission</p>
                                         <Radio.Group onChange={onChange} className='flex flex-col'>
                                             <Radio value={"mohssine"} className='text-[13px]'>Manule</Radio>
                                             <Radio value={"Automatic"} className='text-[13px]'>Automatic</Radio>
@@ -125,21 +182,21 @@ function CarHome() {
                                     </div>
                                 </div>
                                 <div className='filter-make mb-2' >
-                                    <p className='text-[13px] font-semibold mb-1'>Make</p>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Make</p>
                                     <Select onChange={onChangee} className='w-[100%]'>
                                         <Option value={"mohssine"}>mohssine</Option>
                                         <Option value={"yassine"}>mohssine</Option>
                                     </Select>
                                 </div>
                                 <div className='filter-model mb-3'>
-                                    <p className='text-[13px] font-semibold mb-1'>model</p>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>model</p>
                                     <Select onChange={onChangee} className='w-[100%]'>
                                         <Option value={"mohssine"}>mohssine</Option>
                                         <Option value={"yassine"}>mohssine</Option>
                                     </Select>
                                 </div>
                                 <div className='filter-features mb-3'>
-                                    <p className='text-[13px] font-semibold mb-2'>Features</p>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-2'>Features</p>
                                     <div className='flex flex-col h-[160px] overflow-hidden p-2 mb-1' id='features'>
                                         <Checkbox>Cruise Control</Checkbox>
                                         <Checkbox>Airbags</Checkbox>
@@ -163,7 +220,7 @@ function CarHome() {
                                     <a className='text-[13px] text-[#5c3cfc] font-semibold cursor-pointer hover:underline hidden' onClick={handleshowless} id='lessbtn'>Show less</a>
                                 </div>
                                 <div className='filter-capacity mb-2'>
-                                    <p className='text-[13px] font-semibold mb-1'>Capacity</p>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Capacity</p>
                                     <Select className='w-[100%]'>
                                         <Option>2</Option>
                                         <Option>4</Option>
@@ -172,7 +229,7 @@ function CarHome() {
                                     </Select>
                                 </div>
                                 <div className='filter-fuel mb-3'>
-                                    <p className='text-[13px] font-semibold mb-1'>Fuel Type</p>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Fuel Type</p>
                                     <Select className='w-[100%]'>
                                         <Option>Petrol</Option>
                                         <Option>Diesel</Option>
@@ -181,7 +238,7 @@ function CarHome() {
                                     </Select>
                                 </div>
                                 <div className='filter-Vehicletype mb-3'>
-                                    <p className='text-[13px] font-semibold mb-1'>Vehicle type</p>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Vehicle type</p>
                                     <div>
                                         <Checkbox>Cars</Checkbox>
                                         <Checkbox>SUV</Checkbox>
@@ -190,7 +247,7 @@ function CarHome() {
                                     </div>
                                 </div>
                                 <div className='filter-reviews'>
-                                    <p className='text-[13px] font-semibold mb-1'>Reviews</p>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Reviews</p>
                                     <Flex gap="middle" vertical>
                                         <Rate tooltips={desc} onChange={setRate} value={rat} />
                                     </Flex>
@@ -199,9 +256,9 @@ function CarHome() {
                         </div>
                     </div>
                 </div>
-                <div className='main-section ml-3'>
+                <div className='main-section ml-3 '>
                     <div className='main-content p-3'>
-                        <div className='flex justify-between items-center gap-3 mb-3'>
+                        <div className='flex justify-between items-center gap-3 mb-5'>
                             <div className='sort-component  w-[220px]'>
                                 <Select className='w-[100%]' placeholder="Sort by">
                                     <Option>Newest</Option>
@@ -211,113 +268,44 @@ function CarHome() {
                                 </Select>
                             </div>
                             <div className='flex items-center gap-2'>
-                                <button className='pt-1 pb-1 pl-3 pr-3 bg-black text-white text-[13px] rounded-[20px]'>Map View</button>
-                                <button className='pt-1 pb-1 pl-3 pr-3 bg-black  text-[13px] text-white rounded-[20px]'>Card View</button>
+                                <button className='pt-1 pb-1 pl-3 pr-3 border hover:bg-[#7357ff] text-[#7357ff] hover:text-white font-bold text-[13px] rounded-[20px]'> <MapOutlinedIcon className='mr-1' />Map View</button>
+                                <button className='pt-1 pb-1 pl-3 pr-3  border hover:bg-[#7357ff] text-[13px] font-bold text-[#7357ff] hover:text-white rounded-[20px]'><DashboardOutlinedIcon className='mr-1' />Card View</button>
                             </div>
                         </div>
-                        <div className='header border-b-[1px]'>
-                            <div>
-                                <a href="">Cars</a>
-                            </div>
+                        <div className='header '>
+                            <Box sx={{ width: '100%' }}>
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                    <Tabs value={valuee} onChange={handleChange} aria-label="basic tabs example"
+                                        variant="scrollable"
+                                        scrollButtons="auto"
+                                    >
+                                        <Tab icon={<SiMercedes className='text-[15px]'/>} iconPosition="start" label="Bmw" />
+                                    
+                                        <Tab icon={<SiBmw className='text-[15px]'/>} iconPosition="start" label="Mercedes" />
+                                        <Tab icon={<SiAudi className='text-[26px]'/>} iconPosition="start" label="Audi" />
+                                        <Tab label="Audi" />
+                                        <Tab label="Audi" />
+                                    </Tabs>
+                                </Box>
+                                <CustomTabPanel value={valuee} index={0}>
+                                    <div className='cars-components mt-5 max-w-[100%]'>
+                                        <Carcomponents />
+                                    </div>
+                                </CustomTabPanel>
+                                <CustomTabPanel value={valuee} index={1}>
+                                    <div className='cars-components mt-5 max-w-[100%]'>
+
+                                    </div>
+                                </CustomTabPanel>
+                                <CustomTabPanel value={valuee} index={2}>
+                                    <div className='cars-components mt-5 max-w-[100%]'>
+                                        <Carcomponents />
+                                    </div>
+                                </CustomTabPanel>
+                                
+                            </Box>
                         </div>
-                        <div className='cars-components mt-5 flex gap-[12px] flex-wrap'>
-                            <div className='car-card w-[419.5px] h-[384.41px]'>
-                                <div className="car-card-components  h-fit border rounded-lg shadow-sm">
-                                    <img src="../../src/assets/carmain12.jpg" alt="" className='h-full w-full rounded-tr-lg rounded-tl-lg object-cover' />
-                                    <div className='mt-2 p-2'>
-                                        <div className='flex justify-between'>
-                                            <div >
-                                                <p className='text-[12px] mb-1'>Cars</p>
-                                                <p className='text-[15px] font-semibold'>Bmw cs model 2019</p>
-                                            </div>
-                                            <div>
-                                                <p><span className='font-bold'>$100 </span>/ Day</p>
-                                            </div>
-                                        </div>
-                                        <div className='flex gap-3 mt-2  '>
-                                            <p className='flex gap-3 items-center'>
-                                                <AirlineSeatReclineNormalIcon /><span className='text-[13px]'>5 seats
-                                                </span></p>
-                                            <p className='flex gap-3 items-center'>
-                                                <LocalGasStationIcon /><span className='text-[13px]'>Automatic
-                                                </span></p>
-                                            <div className='flex gap-3 items-center'>
-                                                <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
-                                                <p className='text-[13px]'>disel</p>
-                                            </div>
-                                        </div>
-                                        <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon /></p>
-                                        <div>
-                                        </div>
-                                        <div className='mt-1 text-[12px] text-gray-400 border-t-[1px] pt-1'><p><LocationOnIcon /> Agadir, Morocco</p></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='car-card w-[419.5px] h-[384.41px]'>
-                                <div className="car-card-components  h-fit border rounded-lg shadow-sm">
-                                    <img src="../../src/assets/carmain9.jpg" alt="" className='h-full w-full rounded-tr-lg rounded-tl-lg object-cover' />
-                                    <div className='mt-2 p-2'>
-                                        <div className='flex justify-between'>
-                                            <div >
-                                                <p className='text-[12px] mb-1'>Cars</p>
-                                                <p className='text-[15px] font-semibold'>Bmw cs model 2019</p>
-                                            </div>
-                                            <div>
-                                                <p><span className='font-bold'>$100 </span>/ Day</p>
-                                            </div>
-                                        </div>
-                                        <div className='flex gap-3 mt-2  '>
-                                            <p className='flex gap-3 items-center'>
-                                                <AirlineSeatReclineNormalIcon /><span className='text-[13px]'>5 seats
-                                                </span></p>
-                                            <p className='flex gap-3 items-center'>
-                                                <LocalGasStationIcon /><span className='text-[13px]'>Automatic
-                                                </span></p>
-                                            <div className='flex gap-3 items-center'>
-                                                <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
-                                                <p className='text-[13px]'>disel</p>
-                                            </div>
-                                        </div>
-                                        <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon /></p>
-                                        <div>
-                                        </div>
-                                        <div className='mt-1 text-[12px] text-gray-400 border-t-[1px] pt-1'><p><LocationOnIcon /> Agadir, Morocco</p></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='car-card w-[419.5px] h-[384.41px]'>
-                                <div className="car-card-components  h-fit border rounded-lg shadow-sm">
-                                    <img src="../../src/assets/carmain10.jpg" alt="" className='h-full w-full rounded-tr-lg rounded-tl-lg object-cover' />
-                                    <div className='mt-2 p-2'>
-                                        <div className='flex justify-between'>
-                                            <div >
-                                                <p className='text-[12px] mb-1'>Cars</p>
-                                                <p className='text-[15px] font-semibold'>Bmw cs model 2019</p>
-                                            </div>
-                                            <div>
-                                                <p><span className='font-bold'>$100 </span>/ Day</p>
-                                            </div>
-                                        </div>
-                                        <div className='flex gap-3 mt-2  '>
-                                            <p className='flex gap-3 items-center'>
-                                                <AirlineSeatReclineNormalIcon /><span className='text-[13px]'>5 seats
-                                                </span></p>
-                                            <p className='flex gap-3 items-center'>
-                                                <LocalGasStationIcon /><span className='text-[13px]'>Automatic
-                                                </span></p>
-                                            <div className='flex gap-3 items-center'>
-                                                <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
-                                                <p className='text-[13px]'>disel</p>
-                                            </div>
-                                        </div>
-                                        <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon /></p>
-                                        <div>
-                                        </div>
-                                        <div className='mt-1 text-[12px] text-gray-400 border-t-[1px] pt-1'><p><LocationOnIcon /> Agadir, Morocco</p></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
