@@ -334,7 +334,7 @@ function Navbar() {
           </div>
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1">
-              <li><a href='/home'>Our Cars</a></li>
+              <li><a href='/carhome'>Our Cars</a></li>
               <li><a>Our Locations</a></li>
               <li><a>Contact us</a></li>
             </ul>
@@ -366,12 +366,12 @@ function Navbar() {
       ) : (
         <div className="navbar bg-base-100 relative z-20" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
           <div className="navbar-start">
-            <a className="btn btn-ghost text-xl">daisyUI</a>
+            <a className="btn btn-ghost text-xl" href='/'>daisyUI</a>
           </div>
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1">
-              <li><a>Our Cars</a></li>
-              <li><a>Our Locations</a></li>
+              <li><a href='/carhome'>Our Cars</a></li>
+              <li><a>Our Blogs</a></li>
               <li><a>Contact us</a></li>
             </ul>
           </div>
@@ -382,8 +382,8 @@ function Navbar() {
                 <AccountCircleIcon />
               </div>
               <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box min-w-80 mt-1">
-                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px] ' > <Link to="" onClick={() => document.getElementById('my_modal_3').showModal()} >Log in</Link></li>
-                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to="" onClick={() => document.getElementById('my_modal_4').showModal()} >Sign up</Link></li>
+                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px] ' > <button onClick={() => document.getElementById('my_modal_3').showModal()} >Log in</button></li>
+                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><button onClick={() => document.getElementById('my_modal_4').showModal()} >Sign up</button></li>
                 <div className="divider p-0 m-0 mr-1 ml-1"></div>
                 <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><PolicyIcon />Policies</a></li>
                 <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><EmailIcon />Contact</a></li>
