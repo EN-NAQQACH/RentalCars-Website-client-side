@@ -463,9 +463,10 @@
 }
 .cars-componentss{
     display: grid;
-    grid-template-columns:auto auto auto ;
+    grid-template-columns: repeat(3, minmax(300px, 1fr)); 
     gap: 10px;
 }
+
 .car-cards{
     transition: all 0.5s;
 }
@@ -474,7 +475,6 @@
     transition: all 0.5s;
 }
 .car-cards:hover .contentdiv{
-    
     transition: all 0.5s;
     opacity: 1;
 }
@@ -503,3 +503,53 @@
     font-weight: 500;
     font-size: 13px;
 }
+.favorites-componentss {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(300px, 1fr)); 
+    gap: 10px;
+}
+
+#btnsave2{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 5px;
+    padding: 5px;
+    color: #5c3cfc;
+    border: 1px solid transparent;
+    transition: all 0.5s;
+}
+#btnsave2 svg{
+    font-size: 25px;
+    font-weight: bold;
+   color: #9684ee;
+   border: 1px solid transparent;
+   padding: 2px;
+   border-radius: 5px;
+   background-color: white;
+}
+/* #btnsave:hover{
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background-color: #5e5e5e70;
+    color: #3c16fd;
+}
+#btnsave svg{
+    display: none;
+    font-size: 30px;
+    font-weight: bold;
+   color: #5c3cfc;
+}
+
+#btnsave{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+    padding: 5px;
+    color: #5c3cfc;
+    border: 1px solid transparent;
+    transition: all 0.5s;
+}
+*/
+

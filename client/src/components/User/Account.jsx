@@ -17,6 +17,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import '../cardeffect.css'
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 
 const { Option } = Select;
 
@@ -138,6 +140,10 @@ function Account() {
     savebtn.style.display = 'flex'
 
   }
+  const [togglestate, settogglestate] = useState("");
+  const toggle = (index) => {
+      settogglestate(index);
+  }
 
   return (
     <>
@@ -160,21 +166,20 @@ function Account() {
                     <button className='border pl-2 pr-2 rounded-lg text-[12px]'>Host</button>
                     <p className='font-semibold text-[17px] text-gray-800'>Mohssine En-naqqach</p>
                   </div>
-                  <div className='flex flex-col gap-3 '>
-                    <p className='text-[white] font-bold text-[14px] border p-2 rounded-lg bg-[#9e8df1]'>Personal Details</p>
-                    <p className='text-gray-500 font-semibold text-[14px]'>Account (Listing)</p>
-                    <p className='text-gray-500 font-semibold text-[14px]'>Reviews</p>
-                    <p className='text-gray-500 font-semibold text-[14px]'>Favorite</p>
-                    <p className='text-gray-500 font-semibold text-[14px]'>Notifications</p>
-                    <p className='text-gray-500 font-semibold text-[14px]'>My cars</p>
-                    <p className='text-gray-500 font-semibold text-[14px]'>My booking</p>
+                  <div className='flex flex-col gap-2 '>
+                    <button className={togglestate === "Personal Details" || togglestate === "" ? 'text-[white] text-left font-bold text-[14px] border p-2 rounded-md bg-[#9e8df1]' : 'text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'} onClick={() => toggle("Personal Details")}>Personal Details</button>
+                    <button className={togglestate === "Reviews" ? 'text-[white] text-left font-bold text-[14px] border p-2 rounded-md bg-[#9e8df1]' : 'text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'} onClick={() => toggle("Reviews")}>Reviews</button>
+                    <button className={togglestate === "Favorite" ? 'text-[white] text-left font-bold text-[14px] border p-2 rounded-md bg-[#9e8df1]' : 'text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'} onClick={() => toggle("Favorite")}>Favorite</button>
+                    <button className={togglestate === "Notifications" ? 'text-[white] text-left font-bold text-[14px] border p-2 rounded-md bg-[#9e8df1]' : 'text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'} onClick={() => toggle("Notifications")}>Notifications</button>
+                    <button className={togglestate === "My cars" ? 'text-[white] text-left font-bold text-[14px] border p-2 rounded-md bg-[#9e8df1]' : 'text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'} onClick={() => toggle("My cars")}>My cars</button>
+                    <button className={togglestate === "My booking" ? 'text-[white] text-left font-bold text-[14px] border p-2 rounded-md bg-[#9e8df1]' : 'text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'} onClick={() => toggle("My booking")}>My booking</button>
                   </div>
                 </div>
               </div>
             </div>
             <div className="main h-[100%] ">
               <div className='main-content h-[100%]' id>
-                {/* <div className='myprofileinfo border rounded-xl p-3 h-[100%]'>
+              { togglestate === "Personal Details" && (<div className='myprofileinfo border rounded-xl p-3 h-[100%]'>
                   <div className='flex justify-between items-center mb-3'>
                     <p className='text-[18px] font-semibold text-gray-700'>My Profile</p>
                     <button className='border pl-3 pr-3 pt-1 pb-1 flex items-center gap-2 rounded-2xl font-semibold text-[#9682ff] hover:text-[#5c3cfc]' onClick={handeleeditbtn} id='editbtn'> <BorderColorIcon />Edit</button>
@@ -214,8 +219,49 @@ function Account() {
                       <textarea type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-400 min-h-[100px]' disabled id='aboutme'/>
                     </div>
                   </div>
-                </div> */}
-                {/* <div className='mylistinginfo border rounded-xl p-3 h-[100%]'>
+                </div>)}
+                { togglestate === "" && (<div className='myprofileinfo border rounded-xl p-3 h-[100%]'>
+                  <div className='flex justify-between items-center mb-3'>
+                    <p className='text-[18px] font-semibold text-gray-700'>My Profile</p>
+                    <button className='border pl-3 pr-3 pt-1 pb-1 flex items-center gap-2 rounded-2xl font-semibold text-[#9682ff] hover:text-[#5c3cfc]' onClick={handeleeditbtn} id='editbtn'> <BorderColorIcon />Edit</button>
+                    <button className='border pl-3 pr-3 pt-1 pb-1  items-center gap-2 rounded-2xl font-semibold text-[#9682ff] hover:text-[#5c3cfc] hidden' onClick={handeleeditbtn} id='updatebtn'> <BorderColorIcon />Update</button>
+                  </div>
+                  <div id='Myprofile'>
+                    <div className='flex flex-col'>
+                      <label htmlFor="" className='text-[13px] font-semibold mb-2 text-gray-400'> First Name</label>
+                      <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={"Mohssine"} id='Firstname' />
+                    </div>
+                    <div className='flex flex-col'>
+                      <label htmlFor="" className='text-[13px] font-semibold mb-2 text-gray-400' >Last Name</label>
+                      <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={"Mohssine"} id='Lastname'/>
+                    </div>
+                    <div className='flex flex-col'>
+                      <label htmlFor="" className='text-[13px] font-semibold mb-2 text-gray-400'>Last Name</label>
+                      <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={"En-naqqach"} />
+                    </div>
+                    <div className='flex flex-col'>
+                      <label htmlFor="" className='text-[13px] font-semibold mb-2 text-gray-400'>Phone Number</label>
+                      <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={"0645039244"} id='number'/>
+                    </div>
+                    <div className='flex flex-col'>
+                      <label htmlFor="" className='text-[13px] font-semibold mb-2 text-gray-400'>Email</label>
+                      <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={"Mohssine@gmail.com"} id='emaill'/>
+                    </div>
+                  </div>
+                  <div className='mt-7'>
+                    <div className=''>
+                      <p className='text-[18px] flex items-center gap-3 font-semibold text-gray-700 mb-3'>About Me <div>
+                        <Tooltip title={longText}>
+                          <HelpIcon className='cursor-pointer text-[#cac0ff]' />
+                        </Tooltip>
+                      </div></p>
+                    </div>
+                    <div className='flex flex-col'>
+                      <textarea type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-400 min-h-[100px]' disabled id='aboutme'/>
+                    </div>
+                  </div>
+                </div>)}
+                { togglestate === "My cars" && (<div className='mylistinginfo border rounded-xl p-3 h-[100%]'>
                   <div className='flex justify-between items-center mb-3'>
                     <p className='text-[18px] font-semibold text-gray-700'>My Cars</p>
                     <div className='sort-component  w-[220px]'>
@@ -340,17 +386,96 @@ function Account() {
                       </div>
                     </div>
                   </div>
-                </div> */}
-                <div className='myReviewsinfo border rounded-xl p-3 h-[100%]'>
-                  <div>
-                    
+                </div>)}
+                { togglestate === "Favorite" && (
+                <div className='myfavoritiesinfo border rounded-xl p-3 h-[100%]'>
+                  <div className='flex justify-between items-center mb-3'>
+                    <p className='text-[18px] font-semibold text-gray-700'>Mohssine’s favorites</p>
                   </div>
-                </div>
+                  <div className='favorites-componentss mt-5 max-w-[100%] felx items-center '>
+                    <div className='favorites-cards relative '>
+                      <div className="favorites-card-componentss h-fit border rounded-lg shadow-sm">
+                        <img src="../../src/assets/carmain9.jpg" alt="" className='h-full w-full rounded-tr-lg rounded-tl-lg object-cover' />
+                        <div className='mt-2 p-2'>
+                          <div className='flex justify-between'>
+                            <div>
+                              <p className='text-[13px] tracking-[0.6px] font-bold text-gray-400 mb-1'>Cars</p>
+                              <p className='text-[14px] font-bold text-gray-500'>Bmw cs model 2019</p>
+                            </div>
+                            <div>
+                              <p className='text-gray-400 text-[12px] font-bold'><span className='font-bold text-[#937eff] text-[15px]'>$100 </span>/ Day</p>
+                            </div>
+                          </div>
+                          <div className='flex gap-3 mt-2  '>
+                            <p className='flex gap-3 items-center'>
+                              <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold'>5 seats
+                              </span></p>
+                            <p className='flex gap-3 items-center'>
+                              <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold'>Automatic
+                              </span></p>
+                            <div className='flex gap-3 items-center'>
+                              <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
+                              <p className='text-[12px] text-gray-600 font-bold'>disel</p>
+                            </div>
+                          </div>
+                          <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon className="text-green-500" /></p>
+                          <div>
+                          </div>
+                          <div className='mt-1 text-[12px] text-[#937eff] border-t-[1px] pt-1 font-semibold'><p><LocationOnIcon /> Agadir, Morocco</p></div>
+                        </div>
+                      </div>
+                      <div>
+                        <button id='btnsave2'>
+                          <FavoriteOutlinedIcon />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className='favorites-cards relative '>
+                      <div className="car-card-componentss   h-fit border rounded-lg shadow-sm">
+                        <img src="../../src/assets/carmain9.jpg" alt="" className='h-full w-full rounded-tr-lg rounded-tl-lg object-cover' />
+                        <div className='mt-2 p-2'>
+                          <div className='flex justify-between'>
+                            <div>
+                              <p className='text-[13px] tracking-[0.6px] font-bold text-gray-400 mb-1'>Cars</p>
+                              <p className='text-[14px] font-bold text-gray-500'>Bmw cs model 2019</p>
+                            </div>
+                            <div>
+                              <p className='text-gray-400 text-[12px] font-bold'><span className='font-bold text-[#937eff] text-[15px]'>$100 </span>/ Day</p>
+                            </div>
+                          </div>
+                          <div className='flex gap-3 mt-2  '>
+                            <p className='flex gap-3 items-center'>
+                              <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold'>5 seats
+                              </span></p>
+                            <p className='flex gap-3 items-center'>
+                              <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold'>Automatic
+                              </span></p>
+                            <div className='flex gap-3 items-center'>
+                              <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
+                              <p className='text-[12px] text-gray-600 font-bold'>disel</p>
+                            </div>
+                          </div>
+                          <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon className="text-green-500" /></p>
+                          <div>
+                          </div>
+                          <div className='mt-1 text-[12px] text-[#937eff] border-t-[1px] pt-1 font-semibold'><p><LocationOnIcon /> Agadir, Morocco</p></div>
+                        </div>
+                      </div>
+                      <div>
+                        <button id='btnsave2'>
+                          <FavoriteOutlinedIcon />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>)}
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </div >
+      )
+      }
 
     </>
   )
