@@ -105,7 +105,7 @@ function Carcomponents() {
             </div>
             <div className='car-card  '>
                 <div className="car-card-components  h-fit border rounded-lg shadow-sm">
-                    <img src="../../src/assets/carmain9.jpg" alt="" className='h-full w-full rounded-tr-lg rounded-tl-lg object-cover' />
+                    <img src="../../src/assets/carmain11.jpg" alt="" className='h-full w-full rounded-tr-lg rounded-tl-lg object-cover' />
                     <div className='mt-2 p-2'>
                         <div className='flex justify-between'>
                             <div >
@@ -137,7 +137,7 @@ function Carcomponents() {
             </div>
             <div className='car-card  '>
                 <div className="car-card-components  h-fit border rounded-lg shadow-sm">
-                    <img src="../../src/assets/carmain9.jpg" alt="" className='h-full w-full rounded-tr-lg rounded-tl-lg object-cover' />
+                    <img src="../../src/assets/carmain14.jpg" alt="" className='h-full w-full rounded-tr-lg rounded-tl-lg object-cover' />
                     <div className='mt-2 p-2'>
                         <div className='flex justify-between'>
                             <div >
