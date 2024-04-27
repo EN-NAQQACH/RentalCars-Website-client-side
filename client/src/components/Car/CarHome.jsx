@@ -23,6 +23,8 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { SiMercedes } from "react-icons/si";
 import { SiBmw } from "react-icons/si";
 import { SiAudi } from "react-icons/si";
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 dayjs.extend(customParseFormat);
 
 
@@ -64,7 +66,6 @@ CustomTabPanel.propTypes = {
 const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 function CarHome() {
     const [valuee, setValuee] = React.useState(0);
-
     const handleChange = (event, newValue) => {
         setValuee(newValue);
     }
@@ -111,6 +112,18 @@ function CarHome() {
     const onchange = (date, dateString) => {
         console.log(dateString[0], dateString[1]);
     }
+    const sliderLeft = () => {
+        const slider = document.getElementById('scrollbareffect');
+        slider.scrollLeft -= 100;
+    }
+    const sliderRight = () => {
+        const slider = document.getElementById('scrollbareffect');
+        slider.scrollLeft += 100;
+    }
+    const [togglestate, settogglestate] = useState("");
+    const toggle = (index) => {
+        settogglestate(index);
+    }
     return (
         <div className=''>
             <div className='location-section w-[100%]  mb-7 ml-2'>
@@ -136,9 +149,9 @@ function CarHome() {
                 <div className='aside border-[0.5px] border-gray-100  rounded-[15px]'>
                     <div className='filter-components'>
                         <div className='filter-content  pb-[30px]'>
-                            <div className='flex justify-between mb-4 items-center border-b-[1px] p-3 rounded-tr-[15px] rounded-tl-[15px] bg-[#fbfaff]'>
+                            <div className='flex justify-between mb-4 items-center border-b-[1px] p-3 rounded-tr-[15px] rounded-tl-[15px] bg-[#f4f4fc]'>
                                 <p className='text-[14px] font-bold'>Filter</p>
-                                <button className='text-[12px] text-[#5c3cfc] hover:bg-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-md'>Clear All Filters</button>
+                                <button className='text-[12px] text-[#5c3cfc] border border-transparent hover:bg-gray-200 hover:border pl-2 font-semibold pr-2 pt-1 pb-1 rounded-md'>Clear All Filters</button>
                             </div>
                             <div className="p-5">
                                 <div className='filter-price mb-3'>
@@ -273,7 +286,7 @@ function CarHome() {
                             </div>
                         </div>
                         <div className='header '>
-                            <Box sx={{ width: '100%' }}>
+                            {/* <Box sx={{ width: '100%' }}>
                                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                     <Tabs value={valuee} onChange={handleChange} aria-label="basic tabs example"
                                         variant="scrollable"
@@ -303,7 +316,39 @@ function CarHome() {
                                     </div>
                                 </CustomTabPanel>
                                 
-                            </Box>
+                            </Box> */}
+                            <div className='scrollbar-content flex items-center relative max-w-[80%]'>
+                                <div className='h-[24px] w-[50px]'  >
+                                    <KeyboardDoubleArrowLeftIcon className='absolute  top-[4px] felx items-center cursor-pointer text-[#7357ff]' onClick={sliderLeft} id='leftbtnslider' />
+                                </div>
+                                <div className='flex gap-4 w-[100%] items-center overflow-x-scroll scroll-smooth' id='scrollbareffect'>
+                                    <button href="" className={togglestate === "Bmw" ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Bmw")}>cbuttonrs</button>
+                                    <button href="" className={togglestate === "Mercedes" ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Mercedes")}>cbuttonrs</button>
+                                    <button href="" className={togglestate === "Audi" ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Audi")}>cbuttonrs</button>
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                    {/* <button href="" className={togglestate === 5 ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ffa4] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg' } onClick={() =>toggle(5)}>cbuttonrs</button>
+                                    <button href="" className={togglestate === 6 ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ffa4] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg' } onClick={() =>toggle(6)}>cbuttonrs</button> */}
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                </div>
+                                <div className='h-[24px] w-[50px]' id='rightbtnslider'>
+                                    <KeyboardDoubleArrowRightIcon className='absolute  top-[4px] text-[#7357ff] cursor-pointer right-[0px] felx items-center' onClick={sliderRight} />
+                                </div>
+                            </div>
+                            <div className='cars-components mt-5 max-w-[100%] felx items-center'>
+                                <Carcomponents/>
+                                
+                                    {/* {togglestate && <Carcomponents type={togglestate} />} */}
+                                
+                            </div>
                         </div>
 
                     </div>
