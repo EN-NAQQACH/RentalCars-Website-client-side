@@ -346,7 +346,7 @@ function Navbar() {
                 <img src={localStorage.getItem('image')} alt="" className='w-[30px] h-[30px] rounded-[50%]' />
               </div>
               <ul tabIndex={0} className="dropdown-content z-[1] menu p-2  bg-white rounded-box min-w-80 mt-[10px] shadow-md">
-                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px] ' > <Link to=""> <FavoriteBorderOutlinedIcon /> Favorites</Link></li>
+                <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px] ' > <Link to="account/my-Favorities"> <FavoriteBorderOutlinedIcon /> Favorites</Link></li>
                 <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to=""><AllInboxIcon />Inbox</Link></li>
                 <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
                 <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to="/become_a_host/list-your-car"> <CarRentalOutlinedIcon /> Become a host</Link></li>
