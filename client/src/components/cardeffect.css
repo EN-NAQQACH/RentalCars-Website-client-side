@@ -553,3 +553,19 @@
 }
 */
 
+.carlistingtouser{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(300px, 1fr)); 
+    gap: 10px;
+    transition: all 0.5s;
+}
+.carlistingtouser-card-content{
+    transition: all 0.5s;
+}
+.carlistingtouser-card:hover .carlistingtouser-card-content{
+    scale:0.99;
+    transition: all 0.5s;
+}
+#page404{
+    height: 90vh;
+}
