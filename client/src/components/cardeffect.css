@@ -508,6 +508,12 @@
     grid-template-columns: repeat(3, minmax(300px, 1fr)); 
     gap: 10px;
 }
+.Booking-componentss{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(200px,1fr)); 
+    gap: 10px;
+    flex-wrap: wrap;
+}
 
 #btnsave2{
     position: absolute;

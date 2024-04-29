@@ -145,7 +145,7 @@ function CarHome() {
                     </div>
                 </div>
             </div>
-            <div className='carhome-section bg-white h-fit m-[80px] mt-0'>
+            <div className='carhome-section  bg-white h-fit m-[80px] mt-0'>
                 <div className='aside border-[0.5px] border-gray-100  rounded-[15px]'>
                     <div className='filter-components'>
                         <div className='filter-content  pb-[30px]'>
@@ -269,7 +269,7 @@ function CarHome() {
                         </div>
                     </div>
                 </div>
-                <div className='main-section ml-3 '>
+                <div className='main-section ml-3 border'>
                     <div className='main-content p-3'>
                         <div className='flex justify-between items-center gap-3 mb-5'>
                             <div className='sort-component  w-[220px]'>

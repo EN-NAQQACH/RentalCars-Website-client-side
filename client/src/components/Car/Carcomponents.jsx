@@ -7,7 +7,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 function Carcomponents() {
     return (
         <>
-            <div className='car-card  '>
+            <div className='car-card '>
                 <div className="car-card-components  h-fit border rounded-lg shadow-sm">
                     <img src="../../src/assets/carmain12.jpg" alt="" className='h-full w-full rounded-tr-lg rounded-tl-lg object-cover' />
                     <div className='mt-2 p-2'>
@@ -21,15 +21,15 @@ function Carcomponents() {
                             </div>
                         </div>
                         <div className='flex gap-3 mt-2  '>
-                            <p className='flex gap-3 items-center'>
-                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold'>5 seats
+                            <p className='flex gap-2 items-center'>
+                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>5 seats
                                 </span></p>
-                            <p className='flex gap-3 items-center'>
-                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold'>Automatic
+                            <p className='flex gap-2 items-center'>
+                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>Automatic
                                 </span></p>
-                            <div className='flex gap-3 items-center'>
+                            <div className='flex gap-2 items-center'>
                                 <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
-                                <p className='text-[12px] text-gray-600 font-bold'>disel</p>
+                                <p className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>disel</p>
                             </div>
                         </div>
                         <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon className="text-green-500" /></p>
@@ -53,15 +53,15 @@ function Carcomponents() {
                             </div>
                         </div>
                         <div className='flex gap-3 mt-2  '>
-                            <p className='flex gap-3 items-center'>
-                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold'>5 seats
+                            <p className='flex gap-2 items-center'>
+                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>5 seats
                                 </span></p>
-                            <p className='flex gap-3 items-center'>
-                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold'>Automatic
+                            <p className='flex gap-2 items-center'>
+                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>Automatic
                                 </span></p>
-                            <div className='flex gap-3 items-center'>
+                            <div className='flex gap-2 items-center'>
                                 <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
-                                <p className='text-[12px] text-gray-600 font-bold'>disel</p>
+                                <p className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>disel</p>
                             </div>
                         </div>
                         <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon className="text-green-500" /></p>
@@ -85,15 +85,15 @@ function Carcomponents() {
                             </div>
                         </div>
                         <div className='flex gap-3 mt-2  '>
-                            <p className='flex gap-3 items-center'>
-                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold'>5 seats
+                            <p className='flex gap-2 items-center'>
+                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>5 seats
                                 </span></p>
-                            <p className='flex gap-3 items-center'>
-                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold'>Automatic
+                            <p className='flex gap-2 items-center'>
+                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>Automatic
                                 </span></p>
-                            <div className='flex gap-3 items-center'>
+                            <div className='flex gap-2 items-center'>
                                 <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
-                                <p className='text-[12px] text-gray-600 font-bold'>disel</p>
+                                <p className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>disel</p>
                             </div>
                         </div>
                         <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon className="text-green-500" /></p>
@@ -117,15 +117,15 @@ function Carcomponents() {
                             </div>
                         </div>
                         <div className='flex gap-3 mt-2  '>
-                            <p className='flex gap-3 items-center'>
-                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold'>5 seats
+                            <p className='flex gap-2 items-center'>
+                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>5 seats
                                 </span></p>
-                            <p className='flex gap-3 items-center'>
-                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold'>Automatic
+                            <p className='flex gap-2 items-center'>
+                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>Automatic
                                 </span></p>
-                            <div className='flex gap-3 items-center'>
+                            <div className='flex gap-2 items-center'>
                                 <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
-                                <p className='text-[12px] text-gray-600 font-bold'>disel</p>
+                                <p className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>disel</p>
                             </div>
                         </div>
                         <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon className="text-green-500" /></p>
@@ -149,15 +149,15 @@ function Carcomponents() {
                             </div>
                         </div>
                         <div className='flex gap-3 mt-2  '>
-                            <p className='flex gap-3 items-center'>
-                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold'>5 seats
+                            <p className='flex gap-2 items-center'>
+                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>5 seats
                                 </span></p>
-                            <p className='flex gap-3 items-center'>
-                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold'>Automatic
+                            <p className='flex gap-2 items-center'>
+                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>Automatic
                                 </span></p>
-                            <div className='flex gap-3 items-center'>
+                            <div className='flex gap-2 items-center'>
                                 <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
-                                <p className='text-[12px] text-gray-600 font-bold'>disel</p>
+                                <p className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>disel</p>
                             </div>
                         </div>
                         <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon className="text-green-500" /></p>
@@ -181,15 +181,15 @@ function Carcomponents() {
                             </div>
                         </div>
                         <div className='flex gap-3 mt-2  '>
-                            <p className='flex gap-3 items-center'>
-                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold'>5 seats
+                            <p className='flex gap-2 items-center'>
+                                <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>5 seats
                                 </span></p>
-                            <p className='flex gap-3 items-center'>
-                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold'>Automatic
+                            <p className='flex gap-2 items-center'>
+                                <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>Automatic
                                 </span></p>
-                            <div className='flex gap-3 items-center'>
+                            <div className='flex gap-2 items-center'>
                                 <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
-                                <p className='text-[12px] text-gray-600 font-bold'>disel</p>
+                                <p className='text-[12px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>disel</p>
                             </div>
                         </div>
                         <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon className="text-green-500" /></p>
@@ -199,6 +199,7 @@ function Carcomponents() {
                     </div>
                 </div>
             </div>
+            
         </>
     )
 }
