@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useRef } from 'react'
 import { Checkbox } from 'antd';
 import { Radio, Select, Rate, Flex } from 'antd';
 import Slider from '@mui/material/Slider';
@@ -124,6 +124,8 @@ function CarHome() {
     const toggle = (index) => {
         settogglestate(index);
     }
+
+
     return (
         <div className=''>
             <div className='location-section w-[100%]  mb-7 ml-2'>
@@ -321,7 +323,9 @@ function CarHome() {
                                 <div className='h-[24px] w-[50px]'  >
                                     <KeyboardDoubleArrowLeftIcon className='absolute  top-[4px] felx items-center cursor-pointer text-[#7357ff]' onClick={sliderLeft} id='leftbtnslider' />
                                 </div>
-                                <div className='flex gap-4 w-[100%] items-center overflow-x-scroll scroll-smooth' id='scrollbareffect'>
+                                <div className='flex gap-4 w-[100%] items-center overflow-x-scroll scroll-smooth ' id='scrollbareffect'
+                                
+                                >
                                     <button href="" className={togglestate === "Bmw" ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Bmw")}>cbuttonrs</button>
                                     <button href="" className={togglestate === "Mercedes" ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Mercedes")}>cbuttonrs</button>
                                     <button href="" className={togglestate === "Audi" ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Audi")}>cbuttonrs</button>

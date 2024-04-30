@@ -45,8 +45,20 @@ function Navbar() {
         console.log('Validation failed:', errorInfo);
       });
   };
+  const nexttt = () => {
+    form3
+      .validateFields()
+      .then(() => {
+        resetPassword();
+      })
+      .catch((errorInfo) => {
+        console.log('Validation failed:', errorInfo);
+      });
+  };
   const [form] = Form.useForm();
   const [form2] = Form.useForm();
+  const [form3]= Form.useForm();
+  const [form4] = Form.useForm();
   const navigate = useNavigate();
   const [isuserauth, setUserauth] = useState(false)
   const [token, setToken] = useState((localStorage.getItem('T_ID_Auth')))
@@ -61,6 +73,7 @@ function Navbar() {
 
   const [emaillogin, setEmaillogin] = useState('');
   const [passwordlogin, setpasswordlogin] = useState('');
+  const [emailreset , setemailreset] = useState('')
 
   const [picture, setpicture] = useState('');
 
@@ -85,7 +98,6 @@ function Navbar() {
       console.error('Error occurred while submitting the form:', error);
     }
   }
-
   const handeLogin = async () => {
     try {
       const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/account/login', {
@@ -111,6 +123,29 @@ function Navbar() {
       console.error('Error occurred while submitting the form:', error);
     }
   }
+  const resetPassword = async () => {
+    try {
+      const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/users/resetpassword', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: emailreset
+        })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data.message);
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error('Error occurred while submitting the form:', error);
+    }
+  }
+
+
   useEffect(() => {
     if (token) {
       setUserauth(true)
@@ -242,7 +277,7 @@ function Navbar() {
                   </div>
                   <div className="flex flex-col">
                     <div className="flex items-center justify-end ">
-                      <Link to={""} className="text-sm text-blue-500 hover:underline" onClick={handleforgetClick}>Forgot password?</Link>
+                      <Link to={""} className="text-sm text-blue-500 hover:underline" onClick={handleforgetClick}>Rest password?</Link>
                     </div>
                     {iserror && (
                       <div className="flex flex-col">
@@ -308,7 +343,7 @@ function Navbar() {
       <dialog id="my_modal_5" className="modal ">
         <div className="modal-box bg-white">
           <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => form3.resetFields()}>✕</button>
           </form>
           <div className="container mx-auto h-50 flex items-center justify-center">
             <div className="w-full max-w-md p-4 bg-white rounded-lg ">
@@ -317,16 +352,90 @@ function Navbar() {
               </div>
               <form className="space-y-4">
                 <div className="flex flex-col">
-                  <label htmlFor="email" className="text-sm font-medium mb-2">Email address</label>
-                  <input type="email" name="email" id="email" className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-blue-500 focus:ring-1" required />
+                <Form form={form3} name="basic">
+                      <label htmlFor="" className="block mb-1 text-[14px] font-semibold">Email</label>
+                      <Form.Item
+                        className=''
+                        name="emailrestpassword"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'you forgot your email',
+                            pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+
+                          },
+                        ]}
+                      >
+                        <Input type='email' placeholder="Email" className='rounded-[5px] p-2' value={emailreset} onChange={(e) => setemailreset(e.target.value)} />
+                      </Form.Item>
+                      <Button id="signupbtn" onClick={() => nexttt()}  >
+                        Continue
+                      </Button>
+                  </Form>
+                </div>              </form>
+              <div className="text-center mt-6">
+                <a href="#" className="text-sm text-gray-400 hover:underline">We'll send the password to your email .</a>
+              </div>
+              <div className="flex items-center justify-center mt-4">
+                <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close() ; form3.resetFields() }}>Back</a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </dialog>
+
+      {/* password reseted */}
+
+      <dialog id="my_modal_5" className="modal ">
+        <div className="modal-box bg-white">
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => form4.resetFields()}>✕</button>
+          </form>
+          <div className="container mx-auto h-50 flex items-center justify-center">
+            <div className="w-full max-w-md p-4 bg-white rounded-lg ">
+              <div className="text-center text-2xl font-bold mb-6">
+                Welcome to CarEntal
+              </div>
+              <form className="space-y-4">
+                <div className="flex flex-col">
+                <Form form={form4} name="basic">
+                      <label htmlFor="" className="block mb-1 text-[14px] font-semibold">Email</label>
+                      <Form.Item
+                        className=''
+                        name="newpassword"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'you forgot your email',
+
+                          },
+                        ]}
+                      >
+                        <Input.Password type='text' placeholder="password" className='rounded-[5px] p-2' value={emaillogin} onChange={(e) => setEmaillogin(e.target.value)} />
+                      </Form.Item>
+                      <Form.Item
+                        className=''
+                        name="confirmpassword"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'you forgot your password',
+
+                          },
+                        ]}
+                      >
+                        <Input.Password type='text' placeholder="password" className='rounded-[5px] p-2' value={passwordlogin} onChange={(e) => setpasswordlogin(e.target.value)} />
+                      </Form.Item>
+                  </Form>
                 </div>
                 <button type="submit" className="block w-full px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700">Continue</button>
               </form>
               <div className="text-center mt-6">
-                <a href="#" className="text-sm text-gray-400 hover:underline">We'll email you a code to confirm your email.</a>
+                <a href="#" className="text-sm text-gray-400 hover:underline">We'll send the password to your email .</a>
               </div>
               <div className="flex items-center justify-center mt-4">
-                <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close() }}>Back</a>
+                <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close() ; form3.resetFields() }}>Back</a>
               </div>
 
             </div>
