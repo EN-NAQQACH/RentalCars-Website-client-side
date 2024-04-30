@@ -16,7 +16,8 @@ import MyListing from './components/User/MyListing';
 import Myfavorite from './components/User/Myfavorite';
 import AccounttoUser from './components/User/AccounttoUser';
 import EditYourCar from './components/Car/EditYourCar';
-import Page404 from '../public/Page404';
+import Page404 from '../public/Page';
+import MyBooking from './components/User/MyBooking';
 
 function App() {
   useEffect(() => {
@@ -40,6 +41,7 @@ function App() {
           <Route path='my-listing' element={<MyListing />} />
           <Route path='my-Favorities' element={<Myfavorite />} />
           <Route path='my-listing/edit-your-car' element={<EditYourCar />} />
+          <Route path='my-booking' element={<MyBooking />} />
         </Route>
         <Route path='/accounttoUser' element={<AccounttoUser />} />
         <Route path='/my_listing' element={<MyListing />} />
@@ -49,7 +51,7 @@ function App() {
         </Route>
         <Route path='/carpage' element={<CarPage />} />
         <Route path='/carhome' element={<CarHome />} />
-        <Route path='*' element={<Page404/>} />
+        <Route path='*' element={<Page404 />} />
       </Routes>
       <Footer />
     </>

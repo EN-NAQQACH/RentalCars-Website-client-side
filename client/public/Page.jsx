@@ -3,7 +3,7 @@ import Lottie from "lottie-react";
 import animationData from "./404.json";
 import { Link } from 'react-router-dom';
 
-export default function Page404() {
+export default function Page() {
     return (
         <>
             <div className=' flex justify-center m-auto flex-col' id='page404'>

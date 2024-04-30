@@ -2,7 +2,7 @@ import React from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
 
-const GoogleLoginButton2 = () => {
+const GoogleLoginButton2 = (props) => {
   const navigate = useNavigate();
     const responseGooglesu = async (response) => {
         console.log(response);
@@ -23,9 +23,10 @@ const GoogleLoginButton2 = () => {
             const data = await res.json();
             if (res.ok) {
               console.log(data.message);
-              localStorage.setItem('token', data.token);
+              localStorage.setItem('T_ID_Auth', data.token);
               localStorage.setItem('image', response.profileObj.imageUrl);
-              window.location.href="/home"
+              props.userauth(true)
+              window.location.pathname = '/home';
             } else {
               console.error(data.error);
             }
