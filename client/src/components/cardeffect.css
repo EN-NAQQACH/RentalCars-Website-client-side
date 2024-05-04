@@ -590,3 +590,8 @@
 #signupbtn:hover{
     border-color: #3c84f4;    
 }
+#photos-container{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+}

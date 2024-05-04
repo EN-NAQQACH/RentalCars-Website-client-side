@@ -24,6 +24,10 @@ import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import distancee from '../../data/distance.json'
 import CryptoJS from 'crypto-js';
 import VerifyListing from '../ListYourCar/VerifyListing.jsx';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+
 
 const steps = [
   {
@@ -50,19 +54,53 @@ const steps = [
 
 const { Option } = Select;
 const Steppers = () => {
-  const [location ,setLocation]=useState('');
-  const [year,setYear]=useState('');
-  const [make,setMake]= useState('');
-  const [model,setModel]=useState('');
-  const [transmission,setTransmission]=useState('');
-  const [fuel,setFuel]=useState('');
-  const [distance, setDistance]=useState('');
+  const [location, setLocation] = useState('');
+  const [year, setYear] = useState('');
+  const [make, setMake] = useState('');
+  const [model, setModel] = useState('');
+  const [transmission, setTransmission] = useState('');
+  const [fuel, setFuel] = useState('');
+  const [distance, setDistance] = useState('');
+  const [mintrip, setmintrip] = useState();
+  const [maxtrip, setmaxtrip] = useState();
+  const [carseat, setcarseat] = useState('');
+  const [description, setdescription] = useState('');
+  const [features, setfeatures] = useState([]);
+  const [photos, setphotos] = useState([]);
   const { token } = theme.useToken();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [current, setCurrent] = useState(() => {
     const storedStep = localStorage.getItem('currentStep');
     return storedStep ? parseInt(storedStep) : 0;
   });
+  const handleuplaodphotos = (e) => {
+    const newPhotos = e.target.files;
+    setphotos(prevphotos => [...prevphotos, ...newPhotos])
+  }
+  console.log(photos)
+  const handleDragPhoto = (result) => {
+    if (!result.destination) return;
+    const items = Array.from(photos);
+    const [reorderedPhoto] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedPhoto);
+    setphotos(items);
+  };
+
+  const handledeletephoto = (index) => {
+    setphotos((prevphotos) => prevphotos.filter((_, i) => i !== index))
+  };
+
+  const handlechangecheckbox = (e) => {
+    if (e.target.checked) {
+      setfeatures(prev => [...prev, e.target.value]);
+    } else {
+      setfeatures(prev => {
+        return [...prev.filter(item => item !== e.target.value)];
+      });
+    }
+  }
+  console.log(features);
   const next = () => {
     form
       .validateFields()
@@ -74,16 +112,19 @@ const Steppers = () => {
         console.log('Validation failed:', errorInfo);
       });
   };
-  const storeDataLocalStorage= ()=>{
+  const storeDataLocalStorage = () => {
     const YourCar = {
       location: location,
       year: year,
       make: make,
       model: model,
-      transmission:transmission,
       distance: distance,
+      transmission: transmission,
+      fuel: fuel,
+      mintrip: mintrip,
+      maxtrip: maxtrip,
     };
-    localStorage.setItem('@D_C0', CryptoJS.AES.encrypt(JSON.stringify(YourCar), "mohssine_ennaqqach").toString());
+    localStorage.setItem('@D_C0', JSON.stringify(YourCar));
   }
   // useEffect(() => {
   //   const storedLocation = localStorage.getItem('location');
@@ -153,7 +194,7 @@ const Steppers = () => {
                       },
                     ]}
                   >
-                  <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px] ' value={location} onChange={(e)=>setLocation(e.target.value)} />
+                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px] ' value={location} onChange={(e) => setLocation(e.target.value)} />
                   </Form.Item>
                 </div>
                 <div className='year-model-make grid grid-cols-3'>
@@ -168,7 +209,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="select year" value={year}  onChange={(value) => setYear(value)}>
+                      <Select placeholder="select year" value={year} onChange={(value) => setYear(value)}>
                         {caryear.map((r, index) => (
                           <Option key={index} required value={r}>{r}</Option>
                         ))}
@@ -186,7 +227,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="Make" value={make}  onChange={(value) => setMake(value)}>
+                      <Select placeholder="Make" value={make} onChange={(value) => setMake(value)}>
                         {caryear.map((r, index) => (
                           <Option key={index} required value={r}>{r}</Option>
                         ))}
@@ -204,7 +245,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="Model" value={model}  onChange={(value) => setModel(value)}>
+                      <Select placeholder="Model" value={model} onChange={(value) => setModel(value)}>
                         {caryear.map((r, index) => (
                           <Option key={index} required value={r}>{r}</Option>
                         ))}
@@ -212,24 +253,45 @@ const Steppers = () => {
                     </Form.Item>
                   </div>
                 </div>
-                <div className='w-[260px]'>
-                  <div>
-                    <label htmlFor="distance">Distance</label>
-                    <Form.Item
-                      name="distance"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'car distance!',
-                        },
-                      ]}
-                    >
-                      <Select placeholder="Model" className='mb-4' value={distance} onChange={(value)=>setDistance(value)}>
-                        {distancee.map((distance, index) => (
-                          <Option key={index} required value={distance}>{distance}</Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
+                <div className='w-[500px]'>
+                  <div className='flex'>
+                    <div className='w-[100%]'>
+                      <label htmlFor="distance">Distance</label>
+                      <Form.Item
+                        name="distance"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'car distance!',
+                          },
+                        ]}
+                      >
+                        <Select placeholder="Model" className='mb-4' value={distance} onChange={(value) => setDistance(value)}>
+                          {distancee.map((distance, index) => (
+                            <Option key={index} required value={distance}>{distance}</Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </div>
+                    <div className='w-[100%]'>
+                      <label htmlFor="fuel">Distance</label>
+                      <Form.Item
+                        name="fuel"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'car fuel!',
+                          },
+                        ]}
+                      >
+                        <Select placeholder="fuel" className='mb-4' value={fuel} onChange={(value) => setFuel(value)}>
+                          <Option key="2" required value="Gasoline">Gasoline</Option>
+                          <Option key="3" required value="Diesel">Diesel</Option>
+                          <Option key="4" required value="Electric">Electric</Option>
+                          <Option key="5" required value="Hybrid">Hybrid</Option>
+                        </Select>
+                      </Form.Item>
+                    </div>
                   </div>
                   <div>
                     <label htmlFor="Transition">Transition</label>
@@ -242,7 +304,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Radio.Group  value={transmission} onChange={(e)=>setTransmission(e.target.value)}>
+                      <Radio.Group value={transmission} onChange={(e) => setTransmission(e.target.value)}>
                         <Radio value="Manual">Manual</Radio>
                         <Radio value="Automatic" >Automatic</Radio>
                       </Radio.Group>
@@ -252,7 +314,7 @@ const Steppers = () => {
               </div>
             </div>
           </div>
-          )
+        )
           ||
           (current === 1 &&
             <div style={contentStyle} className='flex flex-col justify-center w-[95%]'>
@@ -261,7 +323,7 @@ const Steppers = () => {
                 <div className='flex flex-col gap-3' >
                   <p>What’s the shortest and longest possible trip you’ll accept?</p>
                   <div>
-                    <label htmlFor=""> Minimum trip duration</label>
+                    <label htmlFor=""> Minimum trip duration (days)</label>
                     <Form.Item
                       className='w-[400px]'
                       name="min"
@@ -272,15 +334,15 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="select number of days">
-                        <Option value={1} key={1} >1</Option>
-                        <Option value={2} key={2} >2</Option>
-                        <Option value={3} key={3} >3</Option>
+                      <Select placeholder="recommanded 1 day" value={mintrip} onChange={(value) => setmintrip(value)}>
+                        <Option value="1" key={1} >1</Option>
+                        <Option value="2" key={2} >2</Option>
+                        <Option value="3" key={3} >3</Option>
                       </Select>
                     </Form.Item>
                   </div>
                   <div>
-                    <label htmlFor=""> Maximum trip duration</label>
+                    <label htmlFor=""> Maximum trip duration (days)</label>
                     <Form.Item
                       className='w-[400px]'
                       name="max"
@@ -291,11 +353,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="select number of days">
-                        <Option value={1} key={1} >1</Option>
-                        <Option value={2} key={2} >2</Option>
-                        <Option value={3} key={3} >3</Option>
-                      </Select>
+                      <Input min={4} name='max' type='number' placeholder="enter Maximum trip duration" className='rounded-[0px] ' value={maxtrip} onChange={(e) => setmaxtrip(e.target.value)} />
                     </Form.Item>
                   </div>
                 </div>
@@ -310,27 +368,27 @@ const Steppers = () => {
                   <p>Car features</p>
                   <div className='grid grid-cols-3'>
                     <div className='flex flex-col gap-1'>
-                      <Checkbox>Cruise Control</Checkbox>
-                      <Checkbox>Airbags</Checkbox>
-                      <Checkbox>Leather Seats</Checkbox>
-                      <Checkbox>Navigation/GPS System</Checkbox>
-                      <Checkbox>Air Conditioning</Checkbox>
-                      <Checkbox>Sunroof</Checkbox>
+                      <Checkbox value={"Cruise Control"} onChange={(e) => handlechangecheckbox(e)}>Cruise Control</Checkbox>
+                      <Checkbox value={"Airbags"} onChange={(e) => handlechangecheckbox(e)}>Airbags</Checkbox>
+                      <Checkbox value={"Leather Seats"} onChange={(e) => handlechangecheckbox(e)}>Leather Seats</Checkbox>
+                      <Checkbox value={"Navigation/GPS System"} onChange={(e) => handlechangecheckbox(e)}>Navigation/GPS System</Checkbox>
+                      <Checkbox value={"Air Conditioning"} onChange={(e) => handlechangecheckbox(e)}>Air Conditioning</Checkbox>
+                      <Checkbox value={"Sunroof"} onChange={(e) => handlechangecheckbox(e)}>Sunroof</Checkbox>
                     </div>
                     <div className='flex flex-col gap-1'>
-                      <Checkbox>Remote Central Locking</Checkbox>
-                      <Checkbox>Alloy Wheels</Checkbox>
-                      <Checkbox>(ESP)</Checkbox>
-                      <Checkbox>Rear Parking Radar</Checkbox>
-                      <Checkbox>Onboard Computer</Checkbox>
-                      <Checkbox>Child seat</Checkbox>
+                      <Checkbox value={"Remote Central Locking"} onChange={(e) => handlechangecheckbox(e)}>Remote Central Locking</Checkbox>
+                      <Checkbox value={"Alloy Wheels"} onChange={(e) => handlechangecheckbox(e)}>Alloy Wheels</Checkbox>
+                      <Checkbox value={"ESP"} onChange={(e) => handlechangecheckbox(e)}>(ESP)</Checkbox>
+                      <Checkbox value={"Rear Parking Radar"} onChange={(e) => handlechangecheckbox(e)}>Rear Parking Radar</Checkbox>
+                      <Checkbox value={"Onboard Computer"} onChange={(e) => handlechangecheckbox(e)}>Onboard Computer</Checkbox>
+                      <Checkbox value={"Child seat"} onChange={(e) => handlechangecheckbox(e)}>Child seat</Checkbox>
                     </div>
                     <div className='flex flex-col gap-1'>
-                      <Checkbox>Rear View Camera</Checkbox>
-                      <Checkbox>Anti-lock Braking System (ABS)</Checkbox>
-                      <Checkbox>Speed Limiter</Checkbox>
-                      <Checkbox>Electric Windows</Checkbox>
-                      <Checkbox>CD/MP3/Bluetooth</Checkbox>
+                      <Checkbox value={"Rear View Camera"} onChange={(e) => handlechangecheckbox(e)}>Rear View Camera</Checkbox>
+                      <Checkbox value={"ABS"} onChange={(e) => handlechangecheckbox(e)}>Anti-lock Braking System (ABS)</Checkbox>
+                      <Checkbox value={"Speed Limiter"} onChange={(e) => handlechangecheckbox(e)}>Speed Limiter</Checkbox>
+                      <Checkbox value={"Electric Windows"} onChange={(e) => handlechangecheckbox(e)}>Electric Windows</Checkbox>
+                      <Checkbox value={"CD/MP3/Bluetooth"} onChange={(e) => handlechangecheckbox(e)}>CD/MP3/Bluetooth</Checkbox>
                     </div>
                   </div>
                   <div className='mb-2'>
@@ -345,7 +403,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Input placeholder="car seats" className='rounded-[0px] ' />
+                      <Input placeholder="car seats" className='rounded-[0px]' value={carseat} onChange={(e) => setcarseat(e.target.value)} />
                     </Form.Item>
                   </div>
                   <div>
@@ -420,15 +478,15 @@ const Steppers = () => {
                     </div>
                     <div className='mt-2'>
                       <Form.Item
-                        name="intro"
+                        name="description"
                         rules={[
                           {
                             required: true,
-                            message: 'Please input Intro',
+                            message: 'Please input description',
                           },
                         ]}
                       >
-                        <Input.TextArea showCount maxLength={500} className='h-24' />
+                        <Input.TextArea showCount maxLength={500} className='h-24' value={description} onChange={(e) => setdescription(e.target.value)} />
                       </Form.Item>
                     </div>
                   </div>
@@ -468,7 +526,7 @@ const Steppers = () => {
                   </div>
                   <div>
                     <p>Example :</p>
-                    </div>
+                  </div>
                   <div className='w-[650px] flex m-auto items-center mt-5'>
                     <div>
                       <button className='review-swiper-button-prev'><ChevronLeftIcon /></button>
@@ -552,7 +610,60 @@ const Steppers = () => {
                     </div>
                   </div>
                   <div className='mt-5'>
-                    <button className='p-2 border bg-[#583cfa] text-white rounded-[5px]'>Add photos</button>
+                    <p className='flex justify-center text-[18px] font-semibold mb-5'>Your Car photos</p>
+                    <DragDropContext onDragEnd={handleDragPhoto}>
+                      <Droppable droppableId="photos" direction="horizontal">
+                        {(provided) => (
+                          <div
+                            className="photos"
+                            id='photos-container'
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                          >
+                            {photos.length < 1 && (
+                              <>
+                                <input type="file" id='image' style={{ display: "none" }} accept='image/*' onChange={handleuplaodphotos} multiple />
+                                <label htmlFor="image" className='alone'>
+                                  <div className='flex flex-col justify-center items-center h-[200px] text-gray-400 border-dotted border-2 border-gray-300 rounded-md '>
+                                    <div className='icon k'><CollectionsOutlinedIcon /></div>
+                                    <p>Upload photos</p>
+                                  </div>
+
+                                </label>
+
+                              </>
+
+
+                            )}
+                            {photos.length >= 1 && (
+                              <>
+                                {photos.map((photo, index) => {
+                                  return (
+                                    <Draggable key={index} draggableId={index.toString()} index={index}>
+                                      {(provided) => (
+                                        <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
+                                          <img src={URL.createObjectURL(photo)} alt="car photo" className='h-full w-full object-cover shadow-md rounded-md'/>
+                                          <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handledeletephoto(index)}><CloseOutlinedIcon /></button>
+                                        </div>
+                                      )}
+                                    </Draggable>
+                                  )
+                                })}
+                                <input type="file" id='image' style={{ display: "none" }} accept='image/*' onChange={handleuplaodphotos} multiple />
+                                <label htmlFor="image" className='together'>
+                                  <div className='flex flex-col justify-center items-center h-[200px] text-gray-400 border-dotted border-2 border-gray-300 rounded-md '>
+                                    <div className='icon k'><CollectionsOutlinedIcon /></div>
+                                    <p>Upload photos</p>
+                                  </div>
+
+                                </label>
+
+                              </>
+                            )}
+                          </div>
+                        )}
+                      </Droppable>
+                    </DragDropContext>
                   </div>
                 </div>
               </div>
