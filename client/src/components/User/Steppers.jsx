@@ -55,18 +55,19 @@ const steps = [
 const { Option } = Select;
 const Steppers = () => {
   const [location, setLocation] = useState('');
-  const [year, setYear] = useState('');
-  const [make, setMake] = useState('');
-  const [model, setModel] = useState('');
+  const [year, setYear] = useState();
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
   const [transmission, setTransmission] = useState('');
   const [fuel, setFuel] = useState('');
   const [distance, setDistance] = useState('');
   const [mintrip, setmintrip] = useState();
   const [maxtrip, setmaxtrip] = useState();
-  const [carseat, setcarseat] = useState('');
+  const [carseat, setcarseat] = useState();
   const [description, setdescription] = useState('');
   const [features, setfeatures] = useState([]);
   const [photos, setphotos] = useState([]);
+  const [price, setprice] = useState('');
   const { token } = theme.useToken();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -86,7 +87,6 @@ const Steppers = () => {
     items.splice(result.destination.index, 0, reorderedPhoto);
     setphotos(items);
   };
-
   const handledeletephoto = (index) => {
     setphotos((prevphotos) => prevphotos.filter((_, i) => i !== index))
   };
@@ -117,6 +117,7 @@ const Steppers = () => {
       location: location,
       year: year,
       make: make,
+      price: price,
       model: model,
       distance: distance,
       transmission: transmission,
@@ -173,6 +174,44 @@ const Steppers = () => {
     setIsModalOpen(false);
   };
   const caryear = generateYears()
+
+  const handlesubmitlisting = async (e) => {
+    e.preventDefault();
+    const featuresArray = Array.isArray(features) ? features : [features];
+    const formData = new FormData();
+    formData.append('location', location);
+    formData.append('year', parseInt(year));
+    formData.append('price', price);
+    formData.append('make', make);
+    formData.append('model', model);
+    formData.append('transmission', transmission);
+    formData.append('fuel', fuel);
+    formData.append('distance', distance);
+    formData.append('mintrip', mintrip);
+    formData.append('maxtrip', maxtrip);
+    formData.append('carseat', carseat);
+    formData.append('description', description);
+    featuresArray.forEach((feature, index) => {
+      formData.append(`features[${index}]`, feature);
+    });
+    try {
+      const response = await fetch('http://localhost:5600/api/addcar', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+        },
+        body: formData,
+      });
+      const result = await response.json();
+      if(result){
+        message.success(result.message);
+      }else{
+        message.error(result.error);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  }
   return (
     <>
       <Steps current={current} items={items} />
@@ -227,7 +266,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="Make" value={make} onChange={(value) => setMake(value)}>
+                      <Select placeholder="Make" value={make} onChange={(value) => setMake(String(value))}>
                         {caryear.map((r, index) => (
                           <Option key={index} required value={r}>{r}</Option>
                         ))}
@@ -245,7 +284,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="Model" value={model} onChange={(value) => setModel(value)}>
+                      <Select placeholder="Model" value={model} onChange={(value) => setModel(String(value))}>
                         {caryear.map((r, index) => (
                           <Option key={index} required value={r}>{r}</Option>
                         ))}
@@ -321,6 +360,21 @@ const Steppers = () => {
               <div className='content-your-car '>
                 <p className='font-bold text-black mb-3'>Car availibility</p>
                 <div className='flex flex-col gap-3' >
+                  <div>
+                    <label htmlFor=""> price of your car (DH)</label>
+                    <Form.Item
+                      className='w-[400px]'
+                      name="price"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'price of your car',
+                        },
+                      ]}
+                    >
+                      <Input name='price' value={price} onChange={(e) => setprice(parseFloat(e.target.value))} />
+                    </Form.Item>
+                  </div>
                   <p>What’s the shortest and longest possible trip you’ll accept?</p>
                   <div>
                     <label htmlFor=""> Minimum trip duration (days)</label>
@@ -334,7 +388,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="recommanded 1 day" value={mintrip} onChange={(value) => setmintrip(value)}>
+                      <Select placeholder="recommanded 1 day" value={mintrip} onChange={(value) => setmintrip(parseInt(value))}>
                         <Option value="1" key={1} >1</Option>
                         <Option value="2" key={2} >2</Option>
                         <Option value="3" key={3} >3</Option>
@@ -353,7 +407,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Input min={4} name='max' type='number' placeholder="enter Maximum trip duration" className='rounded-[0px] ' value={maxtrip} onChange={(e) => setmaxtrip(e.target.value)} />
+                      <Input min={4} name='max' type='number' placeholder="enter Maximum trip duration" className='rounded-[0px] ' value={maxtrip} onChange={(e) => setmaxtrip(parseInt(e.target.value))} />
                     </Form.Item>
                   </div>
                 </div>
@@ -403,7 +457,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Input placeholder="car seats" className='rounded-[0px]' value={carseat} onChange={(e) => setcarseat(e.target.value)} />
+                      <Input placeholder="car seats" className='rounded-[0px]' value={carseat} onChange={(e) => setcarseat(parseInt(e.target.value))} />
                     </Form.Item>
                   </div>
                   <div>
@@ -609,10 +663,10 @@ const Steppers = () => {
                       <button className='review-swiper-button-next'><ChevronRightIcon /></button>
                     </div>
                   </div>
-                  <div className='mt-5'>
+                  <div className='mt-5 overflow-hidden'>
                     <p className='flex justify-center text-[18px] font-semibold mb-5'>Your Car photos</p>
                     <DragDropContext onDragEnd={handleDragPhoto}>
-                      <Droppable droppableId="photos" direction="horizontal">
+                      <Droppable droppableId={photos} direction="horizontal">
                         {(provided) => (
                           <div
                             className="photos"
@@ -642,7 +696,7 @@ const Steppers = () => {
                                     <Draggable key={index} draggableId={index.toString()} index={index}>
                                       {(provided) => (
                                         <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
-                                          <img src={URL.createObjectURL(photo)} alt="car photo" className='h-full w-full object-cover shadow-md rounded-md'/>
+                                          <img src={URL.createObjectURL(photo)} alt="car photo" className='h-full w-full object-cover shadow-md rounded-md' />
                                           <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handledeletephoto(index)}><CloseOutlinedIcon /></button>
                                         </div>
                                       )}
@@ -665,6 +719,7 @@ const Steppers = () => {
                       </Droppable>
                     </DragDropContext>
                   </div>
+                  <button onClick={handlesubmitlisting}>submit listing</button>
                 </div>
               </div>
             </div>)
