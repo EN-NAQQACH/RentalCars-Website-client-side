@@ -67,6 +67,7 @@ const Steppers = () => {
   const [description, setdescription] = useState('');
   const [features, setfeatures] = useState([]);
   const [photos, setphotos] = useState([]);
+  const [photourl,setphotourl] = useState([])
   const [price, setprice] = useState('');
   const { token } = theme.useToken();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,10 +77,10 @@ const Steppers = () => {
     return storedStep ? parseInt(storedStep) : 0;
   });
   const handleuplaodphotos = (e) => {
-    const newPhotos = e.target.files;
-    setphotos(prevphotos => [...prevphotos, ...newPhotos])
+    const files = e.target.files;
+    const newPhotos = Array.from(files);
+    setphotos([...photos, ...newPhotos]);
   }
-  console.log(photos)
   const handleDragPhoto = (result) => {
     if (!result.destination) return;
     const items = Array.from(photos);
@@ -113,6 +114,7 @@ const Steppers = () => {
       });
   };
   const storeDataLocalStorage = () => {
+    const photoUrls = photos.map(photo => URL.createObjectURL(photo));
     const YourCar = {
       location: location,
       year: year,
@@ -124,23 +126,41 @@ const Steppers = () => {
       fuel: fuel,
       mintrip: mintrip,
       maxtrip: maxtrip,
+      photos: photoUrls,
+      carseat: carseat,
+      description: description,
+      features: features,
     };
+    // // localStorage.setItem('@D_C0', JSON.stringify(YourCar));
+    // const jsonString = JSON.stringify(YourCar);
+
+    // // Encrypt the JSON string using a secret key
+    // const secretKey = 'MOHSSINE'; // Change this to your secret key
+    // const encryptedString = CryptoJS.AES.encrypt(jsonString, secretKey).toString();
+
+    // // Store the encrypted string in localStorage
     localStorage.setItem('@D_C0', JSON.stringify(YourCar));
   }
-  // useEffect(() => {
-  //   const storedLocation = localStorage.getItem('location');
-  //   const storedYear = localStorage.getItem('year');
-  //   const storedMake = localStorage.getItem('make');
-  //   const storedModel = localStorage.getItem('model');
-  //   const storedTransmission = localStorage.getItem('transmission');
-  //   const storedDistance = localStorage.getItem('distance');
-  //   if (storedLocation) setLocation(storedLocation);
-  //   if (storedYear) setYear(storedYear);
-  //   if (storedMake) setMake(storedMake);
-  //   if (storedModel) setModel(storedModel);
-  //   if (storedTransmission) setTransmission(storedTransmission);
-  //   if (storedDistance) setDistance(storedDistance);
-  // }, []);
+  // const getDecryptedDataFromLocalStorage = () => {
+  //   const encryptedString = localStorage.getItem('@D_C0');
+  //   if (encryptedString) {
+  //     // Decrypt the encrypted string using the secret key
+  //     const secretKey = 'MOHSSINE'; // Same secret key used for encryption
+  //     const decryptedBytes = CryptoJS.AES.decrypt(encryptedString, secretKey);
+  //     const decryptedString = decryptedBytes.toString(CryptoJS.enc.Utf8);
+
+  //     // Parse the decrypted JSON string
+  //     const YourCar = JSON.parse(decryptedString);
+  //     return YourCar;
+  //   }
+  //   return null;
+  // };
+  // const decryptedData = getDecryptedDataFromLocalStorage();
+  // if (decryptedData) {
+  //   console.log(decryptedData);
+  // } else {
+  //   console.log('No data found in localStorage');
+  // }
   useEffect(() => {
     // Store current step to localStorage
     localStorage.setItem('currentStep', current.toString());
@@ -178,6 +198,11 @@ const Steppers = () => {
   const handlesubmitlisting = async (e) => {
     e.preventDefault();
     const featuresArray = Array.isArray(features) ? features : [features];
+    // const photoUrls = photos.map(photo => URL.createObjectURL(photo));
+    // const photoss = {
+    // photos: photoUrls,
+    // };
+    // console.log(photoss.photos);
     const formData = new FormData();
     formData.append('location', location);
     formData.append('year', parseInt(year));
@@ -194,6 +219,9 @@ const Steppers = () => {
     featuresArray.forEach((feature, index) => {
       formData.append(`features[${index}]`, feature);
     });
+    photos.forEach((photo, index) => {
+      formData.append(`photos`, photo);
+    });
     try {
       const response = await fetch('http://localhost:5600/api/addcar', {
         method: 'POST',
@@ -203,9 +231,9 @@ const Steppers = () => {
         body: formData,
       });
       const result = await response.json();
-      if(result){
+      if (result) {
         message.success(result.message);
-      }else{
+      } else {
         message.error(result.error);
       }
     } catch (error) {
@@ -667,54 +695,44 @@ const Steppers = () => {
                     <p className='flex justify-center text-[18px] font-semibold mb-5'>Your Car photos</p>
                     <DragDropContext onDragEnd={handleDragPhoto}>
                       <Droppable droppableId={photos} direction="horizontal">
+
                         {(provided) => (
-                          <div
-                            className="photos"
-                            id='photos-container'
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                          >
-                            {photos.length < 1 && (
-                              <>
-                                <input type="file" id='image' style={{ display: "none" }} accept='image/*' onChange={handleuplaodphotos} multiple />
-                                <label htmlFor="image" className='alone'>
-                                  <div className='flex flex-col justify-center items-center h-[200px] text-gray-400 border-dotted border-2 border-gray-300 rounded-md '>
-                                    <div className='icon k'><CollectionsOutlinedIcon /></div>
-                                    <p>Upload photos</p>
-                                  </div>
-
-                                </label>
-
-                              </>
-
-
-                            )}
-                            {photos.length >= 1 && (
-                              <>
-                                {photos.map((photo, index) => {
-                                  return (
-                                    <Draggable key={index} draggableId={index.toString()} index={index}>
-                                      {(provided) => (
-                                        <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
-                                          <img src={URL.createObjectURL(photo)} alt="car photo" className='h-full w-full object-cover shadow-md rounded-md' />
-                                          <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handledeletephoto(index)}><CloseOutlinedIcon /></button>
-                                        </div>
-                                      )}
-                                    </Draggable>
-                                  )
-                                })}
-                                <input type="file" id='image' style={{ display: "none" }} accept='image/*' onChange={handleuplaodphotos} multiple />
-                                <label htmlFor="image" className='together'>
-                                  <div className='flex flex-col justify-center items-center h-[200px] text-gray-400 border-dotted border-2 border-gray-300 rounded-md '>
-                                    <div className='icon k'><CollectionsOutlinedIcon /></div>
-                                    <p>Upload photos</p>
-                                  </div>
-
-                                </label>
-
-                              </>
-                            )}
+                          <>
+                          
+                          <div className='mb-5'>
+                          <input type="file" id='image' name='photos' style={{ display: "none" }} accept='image/*' onChange={handleuplaodphotos} multiple />
+                            <label htmlFor="image" className='alone text-[#5c3cfc] w-[100%] '>
+                              <div className='flex flex-col justify-center items-center h-[200px]  border-dotted border-2 border-[#a694ffb7] rounded-md '>
+                                <div className='icon k'><CollectionsOutlinedIcon /></div>
+                                <p>Upload photos</p>
+                              </div>
+                            </label>
                           </div>
+
+                            <div
+                              className="photos"
+                              id='photos-container'
+                              {...provided.droppableProps}
+                              ref={provided.innerRef}
+                            >
+                              {photos.length >= 1 && (
+                                <>
+                                  {photos.map((photo, index) => {
+                                    return (
+                                      <Draggable key={index} draggableId={index.toString()} index={index} id="">
+                                        {(provided) => (
+                                          <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
+                                            <img src={URL.createObjectURL(photo)} alt="car photo" className='h-full w-full object-cover shadow-md rounded-md' />
+                                            <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handledeletephoto(index)}><CloseOutlinedIcon /></button>
+                                          </div>
+                                        )}
+                                      </Draggable>
+                                    )
+                                  })}
+                                </>
+                              )}
+                            </div>
+                          </>
                         )}
                       </Droppable>
                     </DragDropContext>

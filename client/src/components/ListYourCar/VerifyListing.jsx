@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, message, Steps, theme, Radio, Input, Select, Checkbox, Modal } from 'antd';
 import distancee from '../../data/distance.json'
 import generateYears from '../../data/caryear.js'
+import CryptoJS from 'crypto-js';
 const { Option } = Select;
 function VerifyListing() {
     const { token } = theme.useToken();
@@ -13,6 +14,25 @@ function VerifyListing() {
         padding: 20,
     };
     const caryear = generateYears()
+    // const getDecryptedDataFromLocalStorage = () => {
+    //     const encryptedString = localStorage.getItem('@D_C0');
+    //     if (encryptedString) {
+    //       // Decrypt the encrypted string using the secret key
+    //       const secretKey = 'MOHSSINE'; // Same secret key used for encryption
+    //       const decryptedBytes = CryptoJS.AES.decrypt(encryptedString, secretKey);
+    //       const decryptedString = decryptedBytes.toString(CryptoJS.enc.Utf8);
+    
+    //       // Parse the decrypted JSON string
+    //       const YourCar = JSON.parse(decryptedString);
+    //       return YourCar;
+    //     }
+    //     return null;
+    //   };
+    //   const decryptedData = getDecryptedDataFromLocalStorage();
+    //   console.log(decryptedData);
+    const data = localStorage.getItem("@D_C0")
+    const dataform = JSON.parse(data)
+
     return (
         <div>
             <div style={contentStyle} className='flex flex-col justify-center w-[95%]'>
@@ -22,49 +42,59 @@ function VerifyListing() {
                         <div className='flex flex-col gap-3' >
                             <div>
                                 <label htmlFor=""> location</label>
-                                <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px] ' />
+                                <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={dataform.location} />
                             </div>
                             <div className='year-model-make grid grid-cols-3 gap-3'>
                                 <div className='flex flex-col'>
                                     <label htmlFor="caryear">Year</label>
-                                    <Select placeholder="select year">
+                                    {/* <Select placeholder="select year">
                                         {caryear.map((r, index) => (
                                             <Option key={index} required value={r}>{r}</Option>
                                         ))}
-                                    </Select>
+                                    </Select> */}
+                                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={dataform.year} />
+
                                 </div>
                                 <div className='flex flex-col'>
                                     <label htmlFor="carmake"> Make</label>
-                                    <Select placeholder="Make">
+                                    {/* <Select placeholder="Make">
                                         {caryear.map((r, index) => (
                                             <Option key={index} required value={r}>{r}</Option>
                                         ))}
-                                    </Select>
+                                    </Select> */}
+                                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+
                                 </div>
                                 <div className='flex flex-col'>
                                     <label htmlFor="carmodel">Model</label>
-                                    <Select placeholder="Model">
+                                    {/* <Select placeholder="Model">
                                         {caryear.map((r, index) => (
                                             <Option key={index} required value={r}>{r}</Option>
                                         ))}
-                                    </Select>
+                                    </Select> */}
+                                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+
                                 </div>
                             </div>
-                            <div className='w-[260px]'>
+                            <div className='w-[100%] flex gap-4'>
                                 <div className='flex flex-col'>
                                     <label htmlFor="distance">Distance</label>
-                                    <Select placeholder="Model" className='mb-4'>
+                                    {/* <Select placeholder="Model" className='mb-4'>
                                         {distancee.map((distance, index) => (
                                             <Option key={index} required value={distance}>{distance}</Option>
                                         ))}
-                                    </Select>
+                                    </Select> */}
+                                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+
                                 </div>
                                 <div>
                                     <label htmlFor="Transition">Transition</label>
-                                    <Radio.Group >
+                                    {/* <Radio.Group >
                                         <Radio value="Manual">Manual</Radio>
                                         <Radio value="Automatic" >Automatic</Radio>
-                                    </Radio.Group>
+                                    </Radio.Group> */}
+                                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+
                                 </div>
                             </div>
                         </div>
@@ -75,19 +105,23 @@ function VerifyListing() {
                         <div className='flex gap-3' >
                             <div className='flex items-center gap-2'>
                                 <label htmlFor=""> Minimum trip duration</label>
-                                <Select placeholder="select number of days">
+                                {/* <Select placeholder="select number of days">
                                     <Option value={1} key={1} >1</Option>
                                     <Option value={2} key={2} >2</Option>
                                     <Option value={3} key={3} >3</Option>
-                                </Select>
+                                </Select> */}
+                                <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+
                             </div>
                             <div className='flex items-center gap-2'>
                                 <label htmlFor=""> Maximum trip duration</label>
-                                <Select placeholder="select number of days">
+                                {/* <Select placeholder="select number of days">
                                     <Option value={1} key={1} >1</Option>
                                     <Option value={2} key={2} >2</Option>
                                     <Option value={3} key={3} >3</Option>
-                                </Select>
+                                </Select> */}
+                                <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+
                             </div>
                         </div>
                     </div>
@@ -96,8 +130,8 @@ function VerifyListing() {
                         <p className='font-bold text-black mb-1'>Car Details</p>
                         <div className='flex flex-col gap-2' >
                             <p>Car features</p>
-                            <div className='grid grid-cols-3'>
-                                <div className='flex flex-col gap-1'>
+                            <div className='flex gap-3 flex-wrap w-[300px]'>
+                                {/* <div className='flex flex-col gap-1'>
                                     <Checkbox>Cruise Control</Checkbox>
                                     <Checkbox>Airbags</Checkbox>
                                     <Checkbox>Leather Seats</Checkbox>
@@ -119,15 +153,22 @@ function VerifyListing() {
                                     <Checkbox>Speed Limiter</Checkbox>
                                     <Checkbox>Electric Windows</Checkbox>
                                     <Checkbox>CD/MP3/Bluetooth</Checkbox>
-                                </div>
+                                </div> */}
+                                <p>mohssine</p>
+                                <p>mohssine</p>
+                                <p>mohssine</p>
+                                <p>mohssine</p>
+                                <p>mohssine</p>
+                                <p>mohssine</p>
+                                <p>mohssine</p>
                             </div>
                             <div className='mb-2'>
                                 <label htmlFor="" className='text-[14px]'> car seats</label>
-                                    <Input placeholder="car seats" className='rounded-[0px] ' />
+                                <Input placeholder="car seats" className='rounded-[0px] ' />
                             </div>
                             <div>
                                 <div className='mt-2'>
-                                        <Input.TextArea showCount maxLength={500} className='h-24' />
+                                    <Input.TextArea showCount maxLength={500} className='h-24' />
                                 </div>
                             </div>
                         </div>
