@@ -25,6 +25,7 @@ const { Option } = Select;
 function MyListing() {
     const [Mycars, setMyCars] = useState([]);
     const Mycarslisting = async () => {
+        try{
         const reponse = await fetch('http://localhost:5600/api/getcar', {
             method: 'GET',
             headers: {
@@ -35,6 +36,9 @@ function MyListing() {
         const result = await reponse.json();
         setMyCars(result);
         console.log(Mycars);
+    }catch(e){
+        console.log(e);
+    }
     }
 
     useEffect(() => {
