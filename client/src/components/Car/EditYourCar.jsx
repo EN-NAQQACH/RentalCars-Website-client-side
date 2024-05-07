@@ -1,12 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { Radio, Input, Checkbox, } from 'antd';
 import { Link, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../cardeffect.css'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import distancee from '../../data/distance.json'
+import carmake from '../../data/carmake.js'; import generateYears from '../../data/caryear.js';
+import { Button, message, Steps, theme, Radio, Input, Select, Checkbox, Modal } from 'antd';
 const featuresList = [
     "Cruise Control",
     "Airbags",
@@ -40,15 +42,19 @@ function EditYourCar() {
     const [maxtrip, setmaxtrip] = useState();
     const [mintrip, setmintrip] = useState();
     const [seats, setSeats] = useState();
+    const [type, setType] = useState('');
     const [image, setImage] = useState([]);
     const [features, setfeatures] = useState([]);
     const [selectedFeatures, setSelectedFeatures] = useState([]);
     const { carId } = useParams();
     const [photos, setphotos] = useState([]);
     const [value, setValue] = useState(1);
+    const [newPhotos, setNewPhotos] = useState([]);
+    const [deletedPhotos, setDeletedPhotos] = useState([]);
     const onChange = (e) => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
+        setTransmission(e.target.value)
     };
     useEffect(() => {
         const getCar = async () => {
@@ -76,6 +82,7 @@ function EditYourCar() {
                 setSeats(result.carSeats);
                 setImage(result.imageUrls);
                 setSelectedFeatures(result.features);
+                setType(result.Type)
             } catch (e) {
                 console.log(e);
             }
@@ -95,7 +102,7 @@ function EditYourCar() {
         setImage(items);
     };
     const handledeletephoto = (index) => {
-        setImage((prevphotos) => prevphotos.filter((_, i) => i !== index))
+        setNewPhotos((prevphotos) => prevphotos.filter((_, i) => i !== index))
     };
     const handleCheckboxChange = (feature) => {
         if (selectedFeatures.includes(feature)) {
@@ -104,6 +111,69 @@ function EditYourCar() {
             setSelectedFeatures([...selectedFeatures, feature]);
         }
     };
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        setNewPhotos([...newPhotos, ...files]);
+    };
+    const handleDeletePhoto = (index) => {
+        const deletedPhotoUrl = car.imageUrls[index];
+        setDeletedPhotos([...deletedPhotos, deletedPhotoUrl]);
+        const updatedPhotos = car.imageUrls.filter((_, i) => i !== index);
+        setCar({ ...car, imageUrls: updatedPhotos });
+    };
+    // console.log(car);
+    // console.log(newPhotos);
+    // console.log(deletedPhotos)
+    // console.log(selectedFeatures)
+    const handleUpdateCar = async () => {
+        const formData = new FormData();
+            const featuresArray = Array.isArray(selectedFeatures) ? selectedFeatures : [selectedFeatures];
+            const deletedimagesArray = Array.isArray(deletedPhotos) ? deletedPhotos : [deletedPhotos];
+            formData.append('location', location);
+            formData.append('year', parseInt(year));
+            formData.append('price', price);
+            formData.append('make', make);
+            formData.append('model', model);
+            formData.append('transmission', transmission);
+            formData.append('fuel', fuel);
+            formData.append('distance', distance);
+            formData.append('mintrip', mintrip);
+            formData.append('maxtrip', maxtrip);
+            formData.append('carseat', seats);
+            formData.append('type', type);
+            formData.append('description', description);
+            featuresArray.forEach((feature, index) => {
+                formData.append(`features[${index}]`, feature);
+            });
+            deletedimagesArray.forEach((image, index) => {
+                formData.append(`deletedImages[${index}]`, image);
+            });
+            newPhotos.forEach((photo, index) => {
+                formData.append(`photos`, photo);
+            });
+            console.log(location);
+            console.log(make);
+            console.log(year)
+        try {
+            const response = await fetch(`http://localhost:5600/api/updatecar/${carId}`, {
+                method: 'put',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+                },
+                body: formData,
+            });
+            const result = await response.json();
+            if (result) {
+                message.success(result.message)
+            } else {
+                message.error(result.error);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+    const caryear = generateYears()
+    console.log(newPhotos)
     return (
         <div className='edityourcar border rounded-xl p-3 h-[100%]'>
             <div className='flex flex-col justify-center'>
@@ -116,67 +186,86 @@ function EditYourCar() {
                         <div className='flex flex-col gap-3' >
                             <div className='flex flex-col'>
                                 <label htmlFor="" className='text-[13px] font-bold mb-2 text-gray-400'> location</label>
-                                <input name='location' type='text' placeholder="Your car location" className=' border p-1 rounded-md' value={location} />
+                                <input name='location' type='text' placeholder="Your car location" className=' border p-1 rounded-md' value={location} onChange={(e) => setlocation(e.target.value)} />
                             </div>
                             <div className='year-model-make grid grid-cols-3 gap-3'>
                                 <div className='flex flex-col'>
                                     <label htmlFor="caryear" className='text-[13px] font-bold mb-2 text-gray-400'>Year</label>
-                                    <select placeholder="select year" className='border p-1 rounded-md'>
-                                        <option value="">{year}</option>
-                                    </select>
+                                    <Select placeholder="select year" value={year} onChange={(value) => setYear(value)}>
+                                        {caryear.map((r, index) => (
+                                            <Option key={index} required value={r}>{r}</Option>
+                                        ))}
+                                    </Select>
                                 </div>
                                 <div className='flex flex-col'>
                                     <label htmlFor="carmake" className='text-[13px] font-bold mb-2 text-gray-400'> Make</label>
-                                    <select placeholder="select year" className='border p-1 rounded-md'>
-                                        <option value="">{make}</option>
-                                    </select>
+                                    <Select placeholder="select year" value={make} onChange={(value) => setMake(value)}>
+                                        {carmake.map((r, index) => (
+                                            <Option key={index} required value={r}>{r}</Option>
+                                        ))}
+                                    </Select>
                                 </div>
                                 <div className='flex flex-col'>
                                     <label htmlFor="carmodel" className='text-[13px] font-bold mb-2 text-gray-400'>Model</label>
-                                    <select placeholder="select year" className='border p-1 rounded-md'>
-                                        <option value="">{model}</option>
-                                    </select>
+                                    <Input value={model} onChange={(e) => setModel(e.target.value)} />
                                 </div>
                             </div>
-                            <div className='w-[260px]'>
-                                <div className='flex flex-col'>
+                            <div className='w-[100%] flex gap-1'>
+                                <div className='flex flex-col w-[100%]'>
                                     <label htmlFor="distance" className='text-[13px] font-bold mb-2 text-gray-400'>Distance</label>
-                                    <select placeholder="select year" className='border p-1 rounded-md'>
-                                        <option value="">{distance}</option>
-                                    </select>
+                                    <Select placeholder="select year" value={distance} onChange={(value) => setdistance(value)}>
+                                        {distancee.map((r, index) => (
+                                            <Option key={index} required value={r}>{r}</Option>
+                                        ))}
+                                    </Select>
                                 </div>
-                                <div className='flex flex-col mt-2'>
-                                    <label htmlFor="Transition" className='text-[13px] font-bold mb-2 text-gray-400'>Transition</label>
-                                    <Radio.Group onChange={onChange} value={value}>
-                                        <Radio value={1} >Manual</Radio>
-                                        <Radio value={2} >Automatic</Radio>
-
-                                    </Radio.Group>
+                                <div className='flex flex-col w-[100%]'>
+                                    <label htmlFor="distance" className='text-[13px] font-bold mb-2 text-gray-400'>Type</label>
+                                    <Select placeholder="select year" value={type} onChange={(value) => setType(value)}>
+                                        <Option key="2" required value="Cars">Cars</Option>
+                                        <Option key="3" required value="Coupe">Coupe</Option>
+                                        <Option key="4" required value="Suv">Suv</Option>
+                                        <Option key="5" required value="Sedan">Sedan</Option>
+                                    </Select>
                                 </div>
+                                <div className='flex flex-col w-[100%]'>
+                                    <label htmlFor="distance" className='text-[13px] font-bold mb-2 text-gray-400'>Fuel</label>
+                                    <Select placeholder="select year" value={fuel} onChange={(value) => setFuel(value)}>
+                                        <Option key="2" required value="Gasoline">Gasoline</Option>
+                                        <Option key="3" required value="Diesel">Diesel</Option>
+                                        <Option key="4" required value="Electric">Electric</Option>
+                                        <Option key="5" required value="Hybrid">Hybrid</Option>
+                                    </Select>
+                                </div>
+                            </div>
+                            <div className='flex flex-col mt-2'>
+                                <label htmlFor="Transition" className='text-[13px] font-bold mb-2 text-gray-400'>Transition</label>
+                                <Radio.Group onChange={onChange} value={transmission}>
+                                    <Radio value="Manual" >Manual</Radio>
+                                    <Radio value="Automatic" >Automatic</Radio>
+                                </Radio.Group>
                             </div>
                         </div>
                     </div>
 
                     <div className='caravailinility mb-4 w-[500px]'>
                         <p className='font-bold text-black '>Car availibility</p>
-                        <div className='flex flex-col gap-3 mt-2' >
-                            <div className='flex flex-col '>
-                                <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Price DH /Day</label>
-                                <input type="text" className='border p-1' value={price} />
-                            </div>
-                            <div className='flex flex-col '>
+                        <div className='flex flex-col mt-2'>
+                            <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Price DH /Day</label>
+                            <input type="text" className='border p-1 rounded-md' value={price} onChange={(e) => setPrice(e.target.value)} />
+                        </div>
+                        <div className='flex items-center gap-3 mt-2 w-[100%]' >
+                            <div className='flex flex-col min-w-[100%]'>
                                 <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Minimum trip duration</label>
-                                <select placeholder="select year" className='p-1 border rounded-md'>
-                                    <option value="" className=''>{mintrip}</option>
-                                    <option value="" className='rounded-none'>1</option>
-                                    <option value="" className='rounded-none'>2</option>
-                                    <option value="" className='rounded-none'>3</option>
-                                </select>
+                                <Select placeholder="select year" value={mintrip} onChange={(value) => setmintrip(value)}>
+                                    <Option key="2" required value={1}>1</Option>
+                                    <Option key="3" required value={2}>2</Option>
+                                    <Option key="4" required value={3}>3</Option>
+                                </Select>
                             </div>
-                            <div className='flex flex-col '>
+                            <div className='flex flex-col w-[100%]'>
                                 <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Maximum trip duration</label>
-
-                                <input type='number' className='border p-1' value={maxtrip} />
+                                <input type='number' className='border rounded-md p-1 ' value={maxtrip} onChange={(e) => setmaxtrip(e.target.value)} />
                             </div>
                         </div>
                     </div>
@@ -229,7 +318,7 @@ function EditYourCar() {
                             <div>
                                 <div className=''>
                                     <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Description</label>
-                                    <Input.TextArea showCount maxLength={500} className='h-24' value={description} />
+                                    <Input.TextArea showCount maxLength={500} className='h-24' value={description} onChange={(e)=>setDescription(e.target.value)}/>
                                 </div>
                             </div>
                         </div>
@@ -237,13 +326,14 @@ function EditYourCar() {
 
                     <div className='carphotos  mb-2'>
                         <p className='font-bold text-black mb-1'>Car photos</p>
+
                         <DragDropContext onDragEnd={handleDragPhoto}>
                             <Droppable droppableId={image} direction="horizontal">
 
                                 {(provided) => (
                                     <>
                                         <div className='mb-5'>
-                                            <input type="file" id='image' name='photos' style={{ display: "none" }} accept='image/*' onChange={handleuplaodphotos} multiple />
+                                            <input type="file" id='image' name='photos' style={{ display: "none" }} accept='image/*' onChange={handleFileChange} multiple />
                                             <label htmlFor="image" className='alone text-[#5c3cfc] w-[100%] '>
                                                 <div className='flex flex-col justify-center items-center h-[200px]  border-dotted border-2 border-[#a694ffb7] rounded-md '>
                                                     <div className='icon k'><CollectionsOutlinedIcon /></div>
@@ -254,35 +344,42 @@ function EditYourCar() {
                                         <div
                                             className="photos"
                                             id='photos-container'
-                                            {...provided.droppableProps}
-                                            ref={provided.innerRef}
                                         >
+                                        </div>
+                                        <div className="photos" id='photos-container' {...provided.droppableProps} ref={provided.innerRef}>
+                                            {newPhotos.map((file, index) => (
+                                                // <div key={`new-${index}`} className="image-wrapper">
+                                                //     <img src={URL.createObjectURL(file)} alt={`New Car ${index}`} className="car-image" />
+                                                // </div>
+                                                <Draggable key={index} draggableId={index.toString()} index={index} id="">
+                                                    {(provided) => (
+                                                        <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
+                                                            <img src={URL.createObjectURL(file)} alt={`Car ${index}`} className='h-full w-full object-cover shadow-md rounded-md' />
+                                                            <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handledeletephoto(index)}><CloseOutlinedIcon /></button>
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            ))}
+                                        </div>
+                                        <div className="photos mt-2" id='photos-container' {...provided.droppableProps} ref={provided.innerRef}>
                                             {image.length >= 1 && (
                                                 <>
-                                                    {photos.map((photo, index) => {
-                                                        return (
-                                                            <Draggable key={index} draggableId={index.toString()} index={index} id="">
-                                                                {(provided) => (
-                                                                    <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
-                                                                        <img src={URL.createObjectURL(photo)} alt="car photo" className='h-full w-full object-cover shadow-md rounded-md' />
-                                                                        <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handledeletephoto(index)}><CloseOutlinedIcon /></button>
-                                                                    </div>
-                                                                )}
-                                                            </Draggable>
-                                                        )
-                                                    })}
-                                                    {image.map((photo, index) => {
-                                                        return (
-                                                            <Draggable key={index} draggableId={index.toString()} index={index} id="">
-                                                                {(provided) => (
-                                                                    <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
-                                                                        <img src={photo} alt="car photo" className='h-full w-full object-cover shadow-md rounded-md' />
-                                                                        <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handledeletephoto(index)}><CloseOutlinedIcon /></button>
-                                                                    </div>
-                                                                )}
-                                                            </Draggable>
-                                                        )
-                                                    })}
+                                                    {car.imageUrls.map((imageUrl, index) => (
+                                                        // <div key={index} className="image-wrapper">
+                                                        //     <img src={imageUrl} alt={`Car ${index}`} className="car-image" />
+                                                        //     <button onClick={() => handleDeletePhoto(index)}>Delete</button>
+                                                        // </div>
+
+                                                        <Draggable key={index} draggableId={index.toString()} index={index} id="">
+                                                            {(provided) => (
+                                                                <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
+                                                                    <img src={imageUrl} alt={`Car ${index}`} className='h-full w-full object-cover shadow-md rounded-md' />
+                                                                    <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handleDeletePhoto(index)}><CloseOutlinedIcon /></button>
+                                                                </div>
+                                                            )}
+                                                        </Draggable>
+
+                                                    ))}
                                                 </>
                                             )}
                                         </div>
@@ -292,7 +389,7 @@ function EditYourCar() {
                         </DragDropContext>
                     </div>
                     <div className='flex justify-end'>
-                        <button className='pl-3 pr-3 pt-2 pb-2 bg-[#8d8df8] transition-all duration-75  hover:bg-[#6565ff] text-[12px] text-white font-semibold rounded-md'>Update Your Car</button>
+                        <button className='pl-3 pr-3 pt-2 pb-2 bg-[#8d8df8] transition-all duration-75  hover:bg-[#6565ff] text-[12px] text-white font-semibold rounded-md' onClick={handleUpdateCar}>Update Your Car</button>
                     </div>
                 </div>
             </div>
