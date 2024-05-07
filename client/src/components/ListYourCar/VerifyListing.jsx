@@ -21,7 +21,7 @@ function VerifyListing() {
     //       const secretKey = 'MOHSSINE'; // Same secret key used for encryption
     //       const decryptedBytes = CryptoJS.AES.decrypt(encryptedString, secretKey);
     //       const decryptedString = decryptedBytes.toString(CryptoJS.enc.Utf8);
-    
+
     //       // Parse the decrypted JSON string
     //       const YourCar = JSON.parse(decryptedString);
     //       return YourCar;
@@ -32,17 +32,19 @@ function VerifyListing() {
     //   console.log(decryptedData);
     const data = localStorage.getItem("@D_C0")
     const dataform = JSON.parse(data)
+    const features = dataform.features;
+    const photos = dataform.photos;
 
     return (
         <div>
             <div style={contentStyle} className='flex flex-col justify-center w-[95%]'>
                 <div className='content-your-car '>
                     <div className='YourCar mb-2'>
-                        <p className='font-bold text-black mb-3'>Your Car</p>
+                        <p className='font-bold text-gray-500 mb-3'>Your Car</p>
                         <div className='flex flex-col gap-3' >
                             <div>
                                 <label htmlFor=""> location</label>
-                                <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={dataform.location} />
+                                <Input name='location' type='text' placeholder="Your car location" className='rounded-[5px] mt-1 font-semibold' value={dataform.location} />
                             </div>
                             <div className='year-model-make grid grid-cols-3 gap-3'>
                                 <div className='flex flex-col'>
@@ -52,7 +54,7 @@ function VerifyListing() {
                                             <Option key={index} required value={r}>{r}</Option>
                                         ))}
                                     </Select> */}
-                                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={dataform.year} />
+                                    <Input name='caryear' type='text' placeholder="Your car location" className='rounded-[5px] mt-1 font-semibold' value={dataform.year} />
 
                                 </div>
                                 <div className='flex flex-col'>
@@ -62,7 +64,7 @@ function VerifyListing() {
                                             <Option key={index} required value={r}>{r}</Option>
                                         ))}
                                     </Select> */}
-                                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+                                    <Input name='carmake' type='text' placeholder="Your car location" className='rounded-[5px] mt-1 font-semibold' value={dataform.make} />
 
                                 </div>
                                 <div className='flex flex-col'>
@@ -72,7 +74,7 @@ function VerifyListing() {
                                             <Option key={index} required value={r}>{r}</Option>
                                         ))}
                                     </Select> */}
-                                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+                                    <Input name='carmodel' type='text' placeholder="Your car location" className='rounded-[5px] mt-1 font-semibold' value={dataform.model} />
 
                                 </div>
                             </div>
@@ -84,8 +86,12 @@ function VerifyListing() {
                                             <Option key={index} required value={distance}>{distance}</Option>
                                         ))}
                                     </Select> */}
-                                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+                                    <Input name='distance' type='text' placeholder="Your car location" className='rounded-[5px] mt-1 font-semibold' value={dataform.distance} />
 
+                                </div>
+                                <div>
+                                    <label htmlFor="">vehicule type</label>
+                                    <Input name='type' type='text' placeholder="Your car type" className='rounded-[5px] mt-1 font-semibold' value={dataform.type}/>
                                 </div>
                                 <div>
                                     <label htmlFor="Transition">Transition</label>
@@ -93,7 +99,7 @@ function VerifyListing() {
                                         <Radio value="Manual">Manual</Radio>
                                         <Radio value="Automatic" >Automatic</Radio>
                                     </Radio.Group> */}
-                                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+                                    <Input name='Transition' type='text' placeholder="Your car location" className='rounded-[5px] mt-1 font-semibold' value={dataform.transmission} />
 
                                 </div>
                             </div>
@@ -101,8 +107,8 @@ function VerifyListing() {
                     </div>
 
                     <div className='caravailinility mb-2'>
-                        <p className='font-bold text-black '>Car availibility</p>
-                        <div className='flex gap-3' >
+                        <p className='font-bold text-gray-500 mt-5'>Car availibility</p>
+                        <div className='flex gap-3 mt-2' >
                             <div className='flex items-center gap-2'>
                                 <label htmlFor=""> Minimum trip duration</label>
                                 {/* <Select placeholder="select number of days">
@@ -110,7 +116,7 @@ function VerifyListing() {
                                     <Option value={2} key={2} >2</Option>
                                     <Option value={3} key={3} >3</Option>
                                 </Select> */}
-                                <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+                                <Input name='location' type='text' placeholder="Your car location" className='rounded-[5px] mt-1 font-semibold' value={dataform.mintrip} />
 
                             </div>
                             <div className='flex items-center gap-2'>
@@ -120,64 +126,49 @@ function VerifyListing() {
                                     <Option value={2} key={2} >2</Option>
                                     <Option value={3} key={3} >3</Option>
                                 </Select> */}
-                                <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px]' value={"mohssine"} />
+                                <Input name='location' type='text' placeholder="Your car location" className='rounded-[5px] mt-1 font-semibold' value={dataform.maxtrip} />
 
                             </div>
                         </div>
                     </div>
 
                     <div className='cardetails'>
-                        <p className='font-bold text-black mb-1'>Car Details</p>
-                        <div className='flex flex-col gap-2' >
-                            <p>Car features</p>
-                            <div className='flex gap-3 flex-wrap w-[300px]'>
-                                {/* <div className='flex flex-col gap-1'>
-                                    <Checkbox>Cruise Control</Checkbox>
-                                    <Checkbox>Airbags</Checkbox>
-                                    <Checkbox>Leather Seats</Checkbox>
-                                    <Checkbox>Navigation/GPS System</Checkbox>
-                                    <Checkbox>Air Conditioning</Checkbox>
-                                    <Checkbox>Sunroof</Checkbox>
-                                </div>
-                                <div className='flex flex-col gap-1'>
-                                    <Checkbox>Remote Central Locking</Checkbox>
-                                    <Checkbox>Alloy Wheels</Checkbox>
-                                    <Checkbox>(ESP)</Checkbox>
-                                    <Checkbox>Rear Parking Radar</Checkbox>
-                                    <Checkbox>Onboard Computer</Checkbox>
-                                    <Checkbox>Child seat</Checkbox>
-                                </div>
-                                <div className='flex flex-col gap-1'>
-                                    <Checkbox>Rear View Camera</Checkbox>
-                                    <Checkbox>Anti-lock Braking System (ABS)</Checkbox>
-                                    <Checkbox>Speed Limiter</Checkbox>
-                                    <Checkbox>Electric Windows</Checkbox>
-                                    <Checkbox>CD/MP3/Bluetooth</Checkbox>
-                                </div> */}
-                                <p>mohssine</p>
-                                <p>mohssine</p>
-                                <p>mohssine</p>
-                                <p>mohssine</p>
-                                <p>mohssine</p>
-                                <p>mohssine</p>
-                                <p>mohssine</p>
+                        <p className='font-bold text-gray-500 mb-1 mt-3'>Car Details</p>
+                        <div className='flex flex-col gap-2 ' >
+                            <p className='text-[13px]'>Car features</p>
+                            <div className='flex gap-3 flex-wrap w-[300px] font-semibold'>
+                                {features.map((feature, index) => (
+                                    <div key={index} className='flex items-center gap-2'>
+                                        <Checkbox value={feature} onChange={(e) => handlechangecheckbox(e)} disabled>{feature}</Checkbox>
+                                    </div>
+                                ))}
                             </div>
                             <div className='mb-2'>
                                 <label htmlFor="" className='text-[14px]'> car seats</label>
-                                <Input placeholder="car seats" className='rounded-[0px] ' />
+                                <Input placeholder="car seats" className='rounded-[5px] font-semibold' value={dataform.carseat}/>
                             </div>
                             <div>
+                                <label htmlFor="" className='text-[13px]'> Description</label>
                                 <div className='mt-2'>
-                                    <Input.TextArea showCount maxLength={500} className='h-24' />
+                                    <Input.TextArea showCount maxLength={500} className='h-24 font-semibold' value={dataform.description}/>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div className='carphotos'>
-                        <p className='font-bold text-black mb-1'>Car photos</p>
+                        <p className='font-bold text-gray-500 mb-1 mt-5'>Car photos</p>
                         <div className='flex flex-col gap-2' >
-                            <p>Upload at least 6 photos, including multiple exterior angles with the whole car in frame, as well as interior shots.</p>
+                            <div
+                                className="photos mt-5"
+                                id='photos-container'
+                            >
+                                {photos.map((photo,index) => (
+                                    <div key={index} className='photo '>
+                                        <img src={photo} alt="car photo" className='h-full w-full object-cover shadow-md rounded-md' />
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
