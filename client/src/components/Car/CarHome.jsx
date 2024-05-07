@@ -203,13 +203,13 @@ function CarHome() {
                                         <Option value={"yassine"}>mohssine</Option>
                                     </Select>
                                 </div>
-                                <div className='filter-model mb-3'>
+                                {/* <div className='filter-model mb-3'>
                                     <p className='text-[13px] font-bold text-gray-400 mb-1'>model</p>
                                     <Select onChange={onChangee} className='w-[100%]'>
                                         <Option value={"mohssine"}>mohssine</Option>
                                         <Option value={"yassine"}>mohssine</Option>
                                     </Select>
-                                </div>
+                                </div> */}
                                 <div className='filter-features mb-3'>
                                     <p className='text-[13px] font-bold text-gray-400 mb-2'>Features</p>
                                     <div className='flex flex-col h-[160px] overflow-hidden p-2 mb-1' id='features'>
@@ -271,7 +271,7 @@ function CarHome() {
                         </div>
                     </div>
                 </div>
-                <div className='main-section ml-3 border'>
+                <div className='main-section ml-3 '>
                     <div className='main-content p-3'>
                         <div className='flex justify-between items-center gap-3 mb-5'>
                             <div className='sort-component  w-[220px]'>
@@ -320,38 +320,26 @@ function CarHome() {
                                 
                             </Box> */}
                             <div className='scrollbar-content flex items-center relative max-w-[80%]'>
-                                <div className='h-[24px] w-[50px]'  >
+                                {/* <div className='h-[24px] w-[50px]'  >
                                     <KeyboardDoubleArrowLeftIcon className='absolute  top-[4px] felx items-center cursor-pointer text-[#7357ff]' onClick={sliderLeft} id='leftbtnslider' />
-                                </div>
+                                </div> */}
                                 <div className='flex gap-4 w-[100%] items-center overflow-x-scroll scroll-smooth ' id='scrollbareffect'
                                 
                                 >
-                                    <button href="" className={togglestate === "Bmw" ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Bmw")}>cbuttonrs</button>
-                                    <button href="" className={togglestate === "Mercedes" ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Mercedes")}>cbuttonrs</button>
-                                    <button href="" className={togglestate === "Audi" ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Audi")}>cbuttonrs</button>
-                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
+                                    <button href="" className={togglestate === "Bmw" ? 'text-[12px] font-semibold border border-gray-100 pl-5 pr-5 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-5 pr-5 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Bmw")}>Suv</button>
+                                    <button href="" className={togglestate === "Mercedes" ? 'text-[12px] font-semibold border border-gray-100 pl-5 pr-5 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-5 pr-5 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Mercedes")}>Cars</button>
+                                    <button href="" className={togglestate === "Audi" ? 'text-[12px] font-semibold border border-gray-100 pl-5 pr-5 pt-1 pb-1 rounded-lg bg-[#7357ff] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-5 pr-5 pt-1 pb-1 rounded-lg'} onClick={() => toggle("Audi")}>Sedan</button>
+                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-5 pr-5 pt-1 pb-1 rounded-lg'>Coupe</button>
                                     {/* <button href="" className={togglestate === 5 ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ffa4] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg' } onClick={() =>toggle(5)}>cbuttonrs</button>
                                     <button href="" className={togglestate === 6 ? 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg bg-[#7357ffa4] text-white' : 'text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg' } onClick={() =>toggle(6)}>cbuttonrs</button> */}
-                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
-                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
-                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
-                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
-                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
-                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
-                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
-                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
-                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
-                                    <button href="" className='text-[12px] font-semibold border border-gray-100 pl-2 pr-2 pt-1 pb-1 rounded-lg'>cbuttonrs</button>
                                 </div>
-                                <div className='h-[24px] w-[50px]' id='rightbtnslider'>
+                                {/* <div className='h-[24px] w-[50px]' id='rightbtnslider'>
                                     <KeyboardDoubleArrowRightIcon className='absolute  top-[4px] text-[#7357ff] cursor-pointer right-[0px] felx items-center' onClick={sliderRight} />
-                                </div>
+                                </div> */}
                             </div>
                             <div className='cars-components mt-5 max-w-[100%] felx items-center'>
                                 <Carcomponents/>
-                                
                                     {/* {togglestate && <Carcomponents type={togglestate} />} */}
-                                
                             </div>
                         </div>
 
