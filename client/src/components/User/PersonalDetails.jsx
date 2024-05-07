@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import HelpIcon from '@mui/icons-material/Help';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
@@ -7,6 +7,27 @@ Tell hosts and guests about yourself and why you’re a responsible, trustworthy
 `;
 
 function PersonalDetails() {
+    const [userData, setUserData] = useState({});
+    const getuserInfo = async () =>{
+        try{
+            const reponse = await fetch('http://localhost:5600/api/users/info',{
+                method:'GET',
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+                }
+            })
+            const data = await reponse.json();
+            setUserData(data);
+            const fullName = {
+                firstName: data.firstName,
+                lastName: data.lastName
+            }
+            localStorage.setItem('fullName',JSON.stringify(fullName))
+        }catch(e){
+            console.log(e)  
+        }
+    }
     const handeleeditbtn = () => {
         const firstname = document.getElementById('Firstname');
         const lastname = document.getElementById('Lastname');
@@ -36,6 +57,9 @@ function PersonalDetails() {
         savebtn.style.display = 'flex'
     
       }
+      useEffect(()=>{
+        getuserInfo();
+      },[])
     
     return (
         <div className='myprofileinfo border rounded-xl p-3 h-[100%]'>
@@ -47,11 +71,11 @@ function PersonalDetails() {
             <div id='Myprofile'>
                 <div className='flex flex-col'>
                     <label htmlFor="" className='text-[13px] font-semibold mb-2 text-gray-400'> First Name</label>
-                    <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={"Mohssine"} id='Firstname' />
+                    <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={userData.firstName} id='Firstname' />
                 </div>
                 <div className='flex flex-col'>
                     <label htmlFor="" className='text-[13px] font-semibold mb-2 text-gray-400' >Last Name</label>
-                    <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={"Mohssine"} id='Lastname' />
+                    <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={userData.lastName} id='Lastname' />
                 </div>
                 <div className='flex flex-col'>
                     <label htmlFor="" className='text-[13px] font-semibold mb-2 text-gray-400'>Last Name</label>
@@ -59,11 +83,11 @@ function PersonalDetails() {
                 </div>
                 <div className='flex flex-col'>
                     <label htmlFor="" className='text-[13px] font-semibold mb-2 text-gray-400'>Phone Number</label>
-                    <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={"0645039244"} id='number' />
+                    <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={userData.number} id='number' />
                 </div>
                 <div className='flex flex-col'>
                     <label htmlFor="" className='text-[13px] font-semibold mb-2 text-gray-400'>Email</label>
-                    <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={"Mohssine@gmail.com"} id='emaill' />
+                    <input type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-800' disabled value={userData.email} id='emaill' />
                 </div>
             </div>
             <div className='mt-7'>
@@ -75,7 +99,7 @@ function PersonalDetails() {
                     </div></p>
                 </div>
                 <div className='flex flex-col'>
-                    <textarea type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-400 min-h-[100px]' disabled id='aboutme' />
+                    <textarea type="text" className='border-none p-2 rounded-lg font-semibold text-[14px] text-gray-400 min-h-[100px]' disabled id='aboutme' value={userData.about}/>
                 </div>
             </div>
         </div>
