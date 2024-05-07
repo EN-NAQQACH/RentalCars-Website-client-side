@@ -22,6 +22,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import distancee from '../../data/distance.json'
+import carmake from '../../data/carmake.js';
 import CryptoJS from 'crypto-js';
 import VerifyListing from '../ListYourCar/VerifyListing.jsx';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -53,6 +54,26 @@ const steps = [
 ];
 
 const { Option } = Select;
+
+const featuresList = [
+  "Cruise Control",
+  "Airbags",
+  "Leather Seats",
+  "Navigation/GPS System",
+  "Air Conditioning",
+  "Sunroof",
+  "Remote Central Locking",
+  "Alloy Wheels",
+  "ESP",
+  "Rear Parking Radar",
+  "Onboard Computer",
+  "Child seat",
+  "Rear View Camera",
+  "ABS",
+  "Speed Limiter",
+  "Electric Windows",
+  "CD/MP3/Bluetooth"
+];
 const Steppers = () => {
   const [location, setLocation] = useState('');
   const [year, setYear] = useState();
@@ -67,10 +88,19 @@ const Steppers = () => {
   const [description, setdescription] = useState('');
   const [features, setfeatures] = useState([]);
   const [photos, setphotos] = useState([]);
-  const [photourl,setphotourl] = useState([])
+  const [photourl, setphotourl] = useState([])
   const [price, setprice] = useState('');
+  const [type, setType] = useState('');
   const { token } = theme.useToken();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
+  const handleCheckboxChange = (feature) => {
+    if (selectedFeatures.includes(feature)) {
+      setSelectedFeatures(selectedFeatures.filter(item => item !== feature));
+    } else {
+      setSelectedFeatures([...selectedFeatures, feature]);
+    }
+  };
 
   const [current, setCurrent] = useState(() => {
     const storedStep = localStorage.getItem('currentStep');
@@ -101,11 +131,11 @@ const Steppers = () => {
       });
     }
   }
-  console.log(features);
   const next = () => {
     form
       .validateFields()
       .then(() => {
+        console.log('Selected Features:', selectedFeatures);
         storeDataLocalStorage();
         setCurrent((prevCurrent) => prevCurrent + 1);
       })
@@ -124,6 +154,7 @@ const Steppers = () => {
       distance: distance,
       transmission: transmission,
       fuel: fuel,
+      type: type,
       mintrip: mintrip,
       maxtrip: maxtrip,
       photos: photoUrls,
@@ -197,12 +228,7 @@ const Steppers = () => {
 
   const handlesubmitlisting = async (e) => {
     e.preventDefault();
-    const featuresArray = Array.isArray(features) ? features : [features];
-    // const photoUrls = photos.map(photo => URL.createObjectURL(photo));
-    // const photoss = {
-    // photos: photoUrls,
-    // };
-    // console.log(photoss.photos);
+    const featuresArray = Array.isArray(selectedFeatures) ? selectedFeatures : [selectedFeatures];
     const formData = new FormData();
     formData.append('location', location);
     formData.append('year', parseInt(year));
@@ -215,6 +241,7 @@ const Steppers = () => {
     formData.append('mintrip', mintrip);
     formData.append('maxtrip', maxtrip);
     formData.append('carseat', carseat);
+    formData.append('type', type);
     formData.append('description', description);
     featuresArray.forEach((feature, index) => {
       formData.append(`features[${index}]`, feature);
@@ -240,6 +267,7 @@ const Steppers = () => {
       console.log('Error:', error);
     }
   }
+console.log(photos)
   return (
     <>
       <Steps current={current} items={items} />
@@ -295,7 +323,7 @@ const Steppers = () => {
                       ]}
                     >
                       <Select placeholder="Make" value={make} onChange={(value) => setMake(String(value))}>
-                        {caryear.map((r, index) => (
+                        {carmake.map((r, index) => (
                           <Option key={index} required value={r}>{r}</Option>
                         ))}
                       </Select>
@@ -312,15 +340,11 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="Model" value={model} onChange={(value) => setModel(String(value))}>
-                        {caryear.map((r, index) => (
-                          <Option key={index} required value={r}>{r}</Option>
-                        ))}
-                      </Select>
+                      <Input name='carmodel' type='text' placeholder="Your car model" className='rounded-[0px] ' value={model} onChange={(e) => setModel(String(e.target.value))} />
                     </Form.Item>
                   </div>
                 </div>
-                <div className='w-[500px]'>
+                <div className='w-[100%]'>
                   <div className='flex'>
                     <div className='w-[100%]'>
                       <label htmlFor="distance">Distance</label>
@@ -333,7 +357,7 @@ const Steppers = () => {
                           },
                         ]}
                       >
-                        <Select placeholder="Model" className='mb-4' value={distance} onChange={(value) => setDistance(value)}>
+                        <Select placeholder="Model" className='mb-1' value={distance} onChange={(value) => setDistance(value)}>
                           {distancee.map((distance, index) => (
                             <Option key={index} required value={distance}>{distance}</Option>
                           ))}
@@ -351,11 +375,30 @@ const Steppers = () => {
                           },
                         ]}
                       >
-                        <Select placeholder="fuel" className='mb-4' value={fuel} onChange={(value) => setFuel(value)}>
+                        <Select placeholder="fuel" className='mb-1' value={fuel} onChange={(value) => setFuel(String(value))}>
                           <Option key="2" required value="Gasoline">Gasoline</Option>
                           <Option key="3" required value="Diesel">Diesel</Option>
                           <Option key="4" required value="Electric">Electric</Option>
                           <Option key="5" required value="Hybrid">Hybrid</Option>
+                        </Select>
+                      </Form.Item>
+                    </div>
+                    <div className='w-[100%]'>
+                      <label htmlFor="fuel">Vehicle type</label>
+                      <Form.Item
+                        name="Vehicle type"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'Vehicle type!',
+                          },
+                        ]}
+                      >
+                        <Select placeholder="type" className='mb-1' value={type} onChange={(value) => setType(String(value))}>
+                          <Option key="2" required value="Cars">Cars</Option>
+                          <Option key="3" required value="Coupe">Coupe</Option>
+                          <Option key="4" required value="Suv">Suv</Option>
+                          <Option key="5" required value="Sedan">Sedan</Option>
                         </Select>
                       </Form.Item>
                     </div>
@@ -389,7 +432,7 @@ const Steppers = () => {
                 <p className='font-bold text-black mb-3'>Car availibility</p>
                 <div className='flex flex-col gap-3' >
                   <div>
-                    <label htmlFor=""> price of your car (DH)</label>
+                    <label htmlFor=""> price of your car (DH) /Day</label>
                     <Form.Item
                       className='w-[400px]'
                       name="price"
@@ -400,7 +443,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Input name='price' value={price} onChange={(e) => setprice(parseFloat(e.target.value))} />
+                      <Input name='price' placeholder='price of your car (DH)' value={price} onChange={(e) => setprice(parseFloat(e.target.value))} />
                     </Form.Item>
                   </div>
                   <p>What’s the shortest and longest possible trip you’ll accept?</p>
@@ -449,7 +492,7 @@ const Steppers = () => {
                 <div className='flex flex-col gap-2' >
                   <p>Car features</p>
                   <div className='grid grid-cols-3'>
-                    <div className='flex flex-col gap-1'>
+                    {/* <div className='flex flex-col gap-1'>
                       <Checkbox value={"Cruise Control"} onChange={(e) => handlechangecheckbox(e)}>Cruise Control</Checkbox>
                       <Checkbox value={"Airbags"} onChange={(e) => handlechangecheckbox(e)}>Airbags</Checkbox>
                       <Checkbox value={"Leather Seats"} onChange={(e) => handlechangecheckbox(e)}>Leather Seats</Checkbox>
@@ -471,7 +514,19 @@ const Steppers = () => {
                       <Checkbox value={"Speed Limiter"} onChange={(e) => handlechangecheckbox(e)}>Speed Limiter</Checkbox>
                       <Checkbox value={"Electric Windows"} onChange={(e) => handlechangecheckbox(e)}>Electric Windows</Checkbox>
                       <Checkbox value={"CD/MP3/Bluetooth"} onChange={(e) => handlechangecheckbox(e)}>CD/MP3/Bluetooth</Checkbox>
-                    </div>
+                    </div> */}
+                    {featuresList.map((feature) => (
+                      <div key={feature}>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={selectedFeatures.includes(feature)}
+                            onChange={() => handleCheckboxChange(feature)}
+                          />
+                          {feature}
+                        </label>
+                      </div>
+                    ))}
                   </div>
                   <div className='mb-2'>
                     <label htmlFor="" className='text-[14px]'> car seats</label>
@@ -698,16 +753,16 @@ const Steppers = () => {
 
                         {(provided) => (
                           <>
-                          
-                          <div className='mb-5'>
-                          <input type="file" id='image' name='photos' style={{ display: "none" }} accept='image/*' onChange={handleuplaodphotos} multiple />
-                            <label htmlFor="image" className='alone text-[#5c3cfc] w-[100%] '>
-                              <div className='flex flex-col justify-center items-center h-[200px]  border-dotted border-2 border-[#a694ffb7] rounded-md '>
-                                <div className='icon k'><CollectionsOutlinedIcon /></div>
-                                <p>Upload photos</p>
-                              </div>
-                            </label>
-                          </div>
+
+                            <div className='mb-5'>
+                              <input type="file" id='image' name='photos' style={{ display: "none" }} accept='image/*' onChange={handleuplaodphotos} multiple />
+                              <label htmlFor="image" className='alone text-[#5c3cfc] w-[100%] '>
+                                <div className='flex flex-col justify-center items-center h-[200px]  border-dotted border-2 border-[#a694ffb7] rounded-md '>
+                                  <div className='icon k'><CollectionsOutlinedIcon /></div>
+                                  <p>Upload photos</p>
+                                </div>
+                              </label>
+                            </div>
 
                             <div
                               className="photos"
@@ -756,9 +811,9 @@ const Steppers = () => {
             </Button>
           )}
           {current === steps.length - 1 && (
-            <button type="primary" htmlType="submit" onClick={() => message.success('Processing complete!')}>
-              Done
-            </button>
+            <Button id="nextbtn" type="primary" htmlType="submit" onClick={handlesubmitlisting}>
+              Submit Your Listing
+            </Button>
           )}
         </div>
       </Form>
