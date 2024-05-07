@@ -166,7 +166,7 @@ function Account() {
                 <div>
                   <div className='flex flex-col gap-2 justify-between items-center mb-4'>
                     <button className='border pl-2 pr-2 rounded-lg text-[12px]'>Host</button>
-                    <p className='font-semibold text-[17px] text-gray-800'>{fullName.firstName + ' ' + fullName.lastName}</p>
+                    <p className='font-semibold text-[17px] text-gray-800'></p>
                   </div>
                   <div className='flex flex-col gap-2 '>
                     <Link to="personal_details" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>Personal Details</Link>

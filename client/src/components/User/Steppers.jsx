@@ -101,7 +101,6 @@ const Steppers = () => {
       setSelectedFeatures([...selectedFeatures, feature]);
     }
   };
-
   const [current, setCurrent] = useState(() => {
     const storedStep = localStorage.getItem('currentStep');
     return storedStep ? parseInt(storedStep) : 0;
@@ -225,7 +224,6 @@ const Steppers = () => {
     setIsModalOpen(false);
   };
   const caryear = generateYears()
-
   const handlesubmitlisting = async (e) => {
     e.preventDefault();
     const featuresArray = Array.isArray(selectedFeatures) ? selectedFeatures : [selectedFeatures];
