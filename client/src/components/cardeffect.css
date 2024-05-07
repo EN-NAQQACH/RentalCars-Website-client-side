@@ -360,7 +360,7 @@
 }
 .carhome-section{
     display: grid;
-    grid-template-columns: 300px 290px calc(100% - 590px) ;
+    grid-template-columns: 270px 290px calc(100% - 560px) ;
 }
 .carhome-section .aside{
     grid-column: 1 / 2;
@@ -595,4 +595,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 10px;
+}
+.btnsave2 #btnsave2 svg{
+    color: rgb(211, 211, 211);
 }

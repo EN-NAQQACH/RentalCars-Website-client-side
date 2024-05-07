@@ -121,10 +121,6 @@ function EditYourCar() {
         const updatedPhotos = car.imageUrls.filter((_, i) => i !== index);
         setCar({ ...car, imageUrls: updatedPhotos });
     };
-    // console.log(car);
-    // console.log(newPhotos);
-    // console.log(deletedPhotos)
-    // console.log(selectedFeatures)
     const handleUpdateCar = async () => {
         const formData = new FormData();
             const featuresArray = Array.isArray(selectedFeatures) ? selectedFeatures : [selectedFeatures];

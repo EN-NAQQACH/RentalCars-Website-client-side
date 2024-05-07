@@ -49,7 +49,7 @@ function App() {
           <Route path='list-your-car' element={<Listyourcar />} />
           <Route path='list-your-car/list' element={<List />} />
         </Route>
-        <Route path='/carpage' element={<CarPage />} />
+        <Route path='/car/car-rental/:make/:model/:year/:carId' element={<CarPage />} />
         <Route path='/carhome' element={<CarHome />} />
         <Route path='*' element={<Page404 />} />
       </Routes>
