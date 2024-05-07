@@ -40,7 +40,7 @@ function App() {
           <Route path='personal_details' element={<PersonalDetails />} />
           <Route path='my-listing' element={<MyListing />} />
           <Route path='my-Favorities' element={<Myfavorite />} />
-          <Route path='my-listing/edit-your-car' element={<EditYourCar />} />
+          <Route path='my-listing/edit-your-car/:carId' element={<EditYourCar />} />
           <Route path='my-booking' element={<MyBooking />} />
         </Route>
         <Route path='/accounttoUser' element={<AccounttoUser />} />

@@ -1,38 +1,59 @@
-import React, { useState } from 'react';
-
+import React, { useState,useEffect } from 'react';
+const featuresList = [
+  "Cruise Control",
+  "Airbags",
+  "Leather Seats",
+  "Navigation/GPS System",
+  "Air Conditioning",
+  "Sunroof",
+  "Remote Central Locking",
+];
 function tabs() {
-  const [activeTab, setActiveTab] = useState('tab1');
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
 
-  const tabs = [
-    { id: 'tab1', label: 'Tab 1', content: 'Content of Tab 1' },
-    { id: 'tab2', label: 'Tab 2', content: 'Content of Tab 2' },
-    { id: 'tab3', label: 'Tab 3', content: 'Content of Tab 3' },
-  ];
+  useEffect(() => {
+    // Simulate fetching data from the backend
+    // Replace this with your actual API call
+    const fetchDataFromBackend = () => {
+      // Assume the data fetched is an array of selected features
+      const dataFromBackend = ["Cruise Control", "Airbags", "Leather Seats"];
+      setSelectedFeatures(dataFromBackend);
+    };
 
-  const handleTabClick = (tabId) => {
-    setActiveTab(tabId);
+    fetchDataFromBackend();
+  }, []);
+
+  const handleCheckboxChange = (feature) => {
+    if (selectedFeatures.includes(feature)) {
+      setSelectedFeatures(selectedFeatures.filter(item => item !== feature));
+    } else {
+      setSelectedFeatures([...selectedFeatures, feature]);
+    }
+  };
+
+  const handleSave = () => {
+    console.log('Selected Features:', selectedFeatures);
+    // Here you can send selectedFeatures to your backend
   };
 
   return (
     <div>
-      <div className="tabs">
-        {tabs.map(tab => (
-          <button
-            key={tab.id}
-            className={activeTab === tab.id ? 'active' : ''}
-            onClick={() => handleTabClick(tab.id)}
-          >
-            {tab.label}
-          </button>
-        ))}
+    <h1>Car Features</h1>
+    {featuresList.map((feature) => (
+      <div key={feature}>
+        <label>
+          <input
+            type="checkbox"
+            checked={selectedFeatures.includes(feature)}
+            onChange={() => handleCheckboxChange(feature)}
+          />
+          {feature}
+        </label>
       </div>
-      <div className="tab-content h-32">
-        {tabs.map(tab => (
-          activeTab === tab.id && <div key={tab.id}>{tab.content}</div>
-        ))}
-      </div>
-    </div>
-  );
+    ))}
+    <button onClick={handleSave}>Save Selected Features</button>
+  </div>
+);
 }
 
 export default tabs;
