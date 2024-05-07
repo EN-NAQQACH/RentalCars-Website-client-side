@@ -463,8 +463,9 @@
 }
 .cars-componentss{
     display: grid;
-    grid-template-columns: repeat(3, minmax(300px, 1fr)); 
-    gap: 10px;
+    grid-template-columns:repeat(3,minmax(auto,1fr)); 
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .car-cards{
