@@ -53,11 +53,11 @@ function MyListing() {
                     </Select>
                 </div>
             </div>
-            <div className='cars-componentss mt-5 max-w-[100%] felx items-center '>
+            <div className='cars-componentss mt-5 max-w-[100%] h-fit felx items-center '>
                 {Mycars.map((car) => (
-                    <div className='car-cards relative ' key={car.id}>
-                        <div className="car-card-componentss   h-[fit] border rounded-lg shadow-sm">
-                            <img src={car.imageUrls[0]} alt="" className='h-[150px] w-full rounded-tr-lg rounded-tl-lg object-cover' />
+                    <div className='car-cards relative w-[100%] h-[47vh] ' key={car.id}>
+                        <div className="car-card-componentss w-[100%]  h-[fit] border rounded-lg shadow-sm">
+                            <img src={car.imageUrls[0]} alt="" className='h-[150px] w-[100%] rounded-tr-lg rounded-tl-lg object-cover' />
                             <div className='mt-2 p-2'>
                                 <div className='flex justify-between'>
                                     <div >
