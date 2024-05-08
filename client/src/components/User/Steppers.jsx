@@ -56,24 +56,24 @@ const steps = [
 const { Option } = Select;
 
 const featuresList = [
-  "Cruise Control",
-  "Airbags",
-  "Leather Seats",
-  "Navigation/GPS System",
-  "Air Conditioning",
-  "Sunroof",
-  "Remote Central Locking",
-  "Alloy Wheels",
-  "ESP",
-  "Rear Parking Radar",
-  "Onboard Computer",
-  "Child seat",
-  "Rear View Camera",
-  "ABS",
-  "Speed Limiter",
-  "Electric Windows",
-  "CD/MP3/Bluetooth"
+  { name: "Cruise Control", icon: "/steering-wheel.png" },
+  { name: "Airbags", icon: "/airbag.png" },
+  { name: "Leather Seats", icon: "/heat.png" },
+  { name: "Navigation/GPS System", icon: "/location.png" },
+  { name: "Air Conditioning", icon: "/car.png" },
+  { name: "Sunroof", icon: "/sun.png" },
+  { name: "Alloy Wheels", icon: "/alloy-wheel.png" },
+  { name: "ESP", icon: "/esp.png" },
+  { name: "Rear Parking Radar", icon: "/parking.png" },
+  { name: "Onboard Computer", icon: "/steering-wheel.png" },
+  { name: "Child seat", icon: "/baby-car-seat.png" },
+  { name: "Rear View Camera", icon: "/360-degree.png" },
+  { name: "ABS", icon: "/abs.png" },
+  { name: "Speed Limiter", icon: "/speedometer.png" },
+  { name: "Electric Windows", icon: "/window.png" },
+  { name: "CD/MP3/Bluetooth", icon: "/bluetooth.png" }
 ];
+
 const Steppers = () => {
   const [location, setLocation] = useState('');
   const [year, setYear] = useState();
@@ -94,9 +94,13 @@ const Steppers = () => {
   const { token } = theme.useToken();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
+  const isSelected = (feature) => {
+    return selectedFeatures.some((selectedFeature) => selectedFeature.name === feature.name);
+  };
+  
   const handleCheckboxChange = (feature) => {
-    if (selectedFeatures.includes(feature)) {
-      setSelectedFeatures(selectedFeatures.filter(item => item !== feature));
+    if (isSelected(feature)) {
+      setSelectedFeatures(selectedFeatures.filter(item => item.name !== feature.name));
     } else {
       setSelectedFeatures([...selectedFeatures, feature]);
     }
@@ -120,7 +124,6 @@ const Steppers = () => {
   const handledeletephoto = (index) => {
     setphotos((prevphotos) => prevphotos.filter((_, i) => i !== index))
   };
-
   const handlechangecheckbox = (e) => {
     if (e.target.checked) {
       setfeatures(prev => [...prev, e.target.value]);
@@ -242,7 +245,10 @@ const Steppers = () => {
     formData.append('type', type);
     formData.append('description', description);
     featuresArray.forEach((feature, index) => {
-      formData.append(`features[${index}]`, feature);
+      // Concatenate the feature name and icon URL into a single string
+      const featureString = `${feature.name}:${feature.icon}`;
+      // Append the concatenated string to the formData
+      formData.append(`features[${index}]`, featureString);
     });
     photos.forEach((photo, index) => {
       formData.append(`photos`, photo);
@@ -265,7 +271,7 @@ const Steppers = () => {
       console.log('Error:', error);
     }
   }
-console.log(photos)
+console.log(selectedFeatures)
   return (
     <>
       <Steps current={current} items={items} />
@@ -513,15 +519,15 @@ console.log(photos)
                       <Checkbox value={"Electric Windows"} onChange={(e) => handlechangecheckbox(e)}>Electric Windows</Checkbox>
                       <Checkbox value={"CD/MP3/Bluetooth"} onChange={(e) => handlechangecheckbox(e)}>CD/MP3/Bluetooth</Checkbox>
                     </div> */}
-                    {featuresList.map((feature) => (
-                      <div key={feature}>
+                    {featuresList.map((feature,index) => (
+                      <div key={index}>
                         <label>
                           <input
                             type="checkbox"
-                            checked={selectedFeatures.includes(feature)}
+                            checked={isSelected(feature)}
                             onChange={() => handleCheckboxChange(feature)}
                           />
-                          {feature}
+                          {feature.name}
                         </label>
                       </div>
                     ))}
@@ -621,7 +627,7 @@ console.log(photos)
                           },
                         ]}
                       >
-                        <Input.TextArea showCount maxLength={500} className='h-24' value={description} onChange={(e) => setdescription(e.target.value)} />
+                        <Input.TextArea showCount maxLength={1000} className='h-24' value={description} onChange={(e) => setdescription(e.target.value)} />
                       </Form.Item>
                     </div>
                   </div>
