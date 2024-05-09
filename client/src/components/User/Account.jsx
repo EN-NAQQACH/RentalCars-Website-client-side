@@ -35,6 +35,7 @@ function Account() {
   const [email, setemail] = useState('');
   const [number, setnumber] = useState('');
   const [about, setabout] = useState('');
+  const [photo, setphoto]= useState('');
   const [googleid, setgoogleid] = useState(false);
 
   const fetchuser = async () => {
@@ -48,12 +49,13 @@ function Account() {
       })
       const data = await res.json()
       if (res.ok) {
-        const { firstName, lastName, about, number, email, googleId } = data;
+        const { firstName, lastName, about, number, email, googleId} = data;
         setfirsname(firstName);
         setlastname(lastName);
         setabout(about);
         setnumber(number);
         setemail(email);
+        setphoto(data.picture)
         if (googleId) {
           setgoogleid(true)
         }
@@ -65,8 +67,6 @@ function Account() {
       console.log(err)
     }
   }
-
-
   const updateuserinfo = async () => {
     try {
       const res = await fetch('http://localhost:5600/api/users/update', {
@@ -155,7 +155,7 @@ function Account() {
             <div className="asideprofile h-[100%] border rounded-xl">
               <div className='aside-content p-4 pt-2'>
                 <div className='image h-[150px] flex justify-center m-auto flex-col items-center '>
-                  <img src='/carmain9.jpg' alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' />
+                  <img src={photo} alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' />
                   <div className='mt-2'>
                     <StarIcon className='text-[#9e8df1]' />
                     <StarIcon className='text-[#9e8df1]' />
@@ -166,7 +166,7 @@ function Account() {
                 <div>
                   <div className='flex flex-col gap-2 justify-between items-center mb-4'>
                     <button className='border pl-2 pr-2 rounded-lg text-[12px]'>Host</button>
-                    <p className='font-semibold text-[17px] text-gray-800'></p>
+                    <p className='font-semibold text-[17px] text-gray-800'>{firstName} {lastName}</p>
                   </div>
                   <div className='flex flex-col gap-2 '>
                     <Link to="personal_details" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>Personal Details</Link>

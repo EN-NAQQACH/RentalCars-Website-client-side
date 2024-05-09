@@ -383,8 +383,9 @@
 
 .main-content .cars-components{
     display: grid;
-    grid-template-columns: repeat(3,auto);
-    gap: 12px;
+    grid-template-columns:repeat(3,minmax(auto,1fr)); 
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .location-content-section-carhome{
@@ -461,12 +462,14 @@
     grid-template-columns: auto auto ;
     gap: 15px;
 }
+
 .cars-componentss{
     display: grid;
     grid-template-columns:repeat(3,minmax(auto,1fr)); 
     flex-wrap: wrap;
     gap: 15px;
 }
+
 
 .car-cards{
     transition: all 0.5s;
@@ -481,12 +484,12 @@
 }
 .car-cards:hover .car-card-componentss{
     scale:0.99;
-    filter: blur(0.9px);
+    filter: blur(0.7px);
     transition: all 0.5s;
 }
 .car-cards:hover .car-card-componentss{
     scale:0.99;
-    filter: blur(0.8px);
+    filter: blur(0.7px);
     transition: all 0.5s;
 }
 .contentdiv{
@@ -597,5 +600,19 @@
     gap: 10px;
 }
 .btnsave2 #btnsave2 svg{
-    color: rgb(211, 211, 211);
+    color: rgb(185, 185, 185);
+}
+.btnsave3 #btnsave2 svg{
+    color: #3c84f4;
+}
+.btnsave  #btnsave2 svg {
+    color: #3c84f4;
+}
+.btnsave3 #btnsave4 svg{
+    color: #3c84f4;
+    font-size: 20px;
+}
+.btnsave2 #btnsave4 svg{
+    color: rgb(190, 190, 190);
+    font-size: 22px;
 }

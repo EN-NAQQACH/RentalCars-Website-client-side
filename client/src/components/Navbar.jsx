@@ -144,8 +144,6 @@ function Navbar() {
       console.error('Error occurred while submitting the form:', error);
     }
   }
-
-
   useEffect(() => {
     if (token) {
       setUserauth(true)
