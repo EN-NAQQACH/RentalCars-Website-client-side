@@ -9,7 +9,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
-import { Select } from 'antd';
+import { Select, message } from 'antd';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import HelpIcon from '@mui/icons-material/Help';
@@ -35,12 +35,30 @@ function MyListing() {
         });
         const result = await reponse.json();
         setMyCars(result);
-        console.log(Mycars);
     }catch(e){
         console.log(e);
     }
     }
-
+    const deleteCar = async (carId) => {
+        try {
+          const token = localStorage.getItem('T_ID_Auth');
+          const response = await fetch(`http://localhost:5600/api/delete/car/${carId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          const result = await response.json();
+          if (result) {
+            message.success(result.message)
+          } else {
+            message.error(result.error);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
     useEffect(() => {
         Mycarslisting();
     }, [])
@@ -60,18 +78,18 @@ function MyListing() {
             <div className='cars-componentss mt-5 max-w-[100%] h-fit felx items-center '>
                 {Mycars.map((car) => (
                     <div className='car-cards relative w-[100%] h-[47vh] ' key={car.id}>
-                        <div className="car-card-componentss w-[100%]  h-[fit] border rounded-lg shadow-sm">
+                        <div className="car-card-componentss w-[100%]  h-[100%] border rounded-lg shadow-sm">
                             <img src={car.imageUrls[0]} alt="" className='h-[150px] w-[100%] rounded-tr-lg rounded-tl-lg object-cover' />
                             <div className='mt-2 p-2'>
                                 <div className='flex justify-between'>
                                     <div >
                                         <p className='text-[13px] tracking-[0.6px] font-bold text-gray-400 mb-1'>{car.Type}</p>
-                                        <p className='text-[14px] font-bold text-gray-500'>{car.make}{' '}{car.model}{' '}{car.year}</p>
                                     </div>
                                     <div>
                                         <p className='text-gray-400 text-[12px] font-bold'><span className='font-bold text-[#937eff] text-[15px]'>{car.price}{' '}DH </span>/ Day</p>
                                     </div>
                                 </div>
+                                <p className='text-[14px] font-bold text-gray-500  '>{car.make}{' '}{car.model}{' '}{car.year}</p>
                                 <div className='flex gap-3 mt-2  '>
                                     <p className='flex gap-3 items-center'>
                                         <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold'>{car.carSeats} seats
@@ -91,8 +109,8 @@ function MyListing() {
                             </div>
                         </div>
                         <div className='contentdiv'>
-                            <button  className='flex items-center gap-1 border rounded-lg pt-1 pb-1 pl-2 pr-2 text-[red]'><HighlightOffIcon /> Delete</button>
-                            <Link to={`view-your-car/${car.id}`} className='flex items-center gap-1 border rounded-lg pt-1 pb-1 pl-2 pr-2 text-[#4c4cc5]'><RemoveRedEyeIcon /> View</Link>
+                            <button  className='flex items-center gap-1 border rounded-lg pt-1 pb-1 pl-2 pr-2 text-[red]' onClick={() => deleteCar(car.id)}><HighlightOffIcon /> Delete</button>
+                            <Link to={`/car/car-rental/${car.make}/${car.model}/${car.year}/${car.id}`} className='flex items-center gap-1 border rounded-lg pt-1 pb-1 pl-2 pr-2 text-[#4c4cc5]'><RemoveRedEyeIcon /> View</Link>
                             <Link to={`edit-your-car/${car.id}`} className='flex items-center gap-1 border rounded-lg pt-1 pb-1 pl-2 pr-2 text-[green]'><BorderColorIcon /> Edit</Link>
                         </div>
                     </div>
