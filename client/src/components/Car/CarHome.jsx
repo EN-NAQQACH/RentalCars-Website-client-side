@@ -148,7 +148,7 @@ function CarHome() {
                 </div>
             </div>
             <div className='carhome-section  bg-white h-fit m-[80px] mt-0'>
-                <div className='aside border-[0.5px] border-gray-100  rounded-[15px]'>
+                <div className='aside border-[0.5px] border-gray-100 h-fit rounded-[15px]'>
                     <div className='filter-components'>
                         <div className='filter-content  pb-[30px]'>
                             <div className='flex justify-between mb-4 items-center border-b-[1px] p-3 rounded-tr-[15px] rounded-tl-[15px] bg-[#f4f4fc]'>
@@ -337,7 +337,7 @@ function CarHome() {
                                     <KeyboardDoubleArrowRightIcon className='absolute  top-[4px] text-[#7357ff] cursor-pointer right-[0px] felx items-center' onClick={sliderRight} />
                                 </div> */}
                             </div>
-                            <div className='cars-components mt-5 max-w-[100%] felx items-center'>
+                            <div className='cars-components mt-5 max-w-[100%] h-fit felx items-center'>
                                 <Carcomponents/>
                                     {/* {togglestate && <Carcomponents type={togglestate} />} */}
                             </div>
