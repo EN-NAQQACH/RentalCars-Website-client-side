@@ -13,10 +13,13 @@ const { RangePicker } = DatePicker;
 import dayjs from 'dayjs';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
+import { message } from 'antd';
 
 const { Option } = Select;
 import '../cardeffect.css'
-import { useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 function CarPage() {
     const [carData, setCarData] = useState(null);
     const { carId } = useParams();
@@ -50,33 +53,113 @@ function CarPage() {
         return `${year}/${month}/${day}`;
     };
 
-    const getcar = async () => {
+    // const getcar = async () => {
+    //     try {
+    //         const reponse = await fetch(`http://localhost:5600/api/getusercar/${carId}`, {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+    //             }
+    //         });
+    //         const result = await reponse.json();
+    //         setlocation(result.location)
+    //         setDescription(result.description)
+    //         setFuel(result.fuel);
+    //         setMake(result.make);
+    //         setModel(result.model);
+    //         setPrice(result.price);
+    //         setYear(result.year)
+    //         setTransmission(result.transmission)
+    //         setSeats(result.carSeats)
+    //         setImage(result.imageUrls);
+    //         setphoto(result.picture);
+    //         const parsedFeatures = result.features.map(feature => {
+    //             const [name, icon] = feature.split(":");
+    //             return { name, icon };
+    //         });
+    //         setfeatures(parsedFeatures);
+    //     } catch (error) {
+    //         console.log(error.message);
+    //     }
+    // }
+    const [cars, setCars] = useState([]);
+    const [firstName,setFirsname] = useState('')
+    const [lastName,setLasname] = useState('');
+    const [userphoto , setuserphoto] = useState(null);
+    const [userid, setuserid] = useState(null)
+    const getCar = async () => {
         try {
-            const reponse = await fetch(`http://localhost:5600/api/getusercar/${carId}`, {
+            const token = localStorage.getItem('T_ID_Auth');
+            const response = await fetch(token ? `http://localhost:5600/api/getusercar/${carId}` : `http://localhost:5600/api/getcarunauth/${carId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+                    'Authorization': 'Bearer ' + token,
                 }
             });
-            const result = await reponse.json();
-            setlocation(result.location)
-            setDescription(result.description)
-            setFuel(result.fuel);
-            setMake(result.make);
-            setModel(result.model);
-            setPrice(result.price);
-            setYear(result.year)
-            setTransmission(result.transmission)
-            setSeats(result.carSeats)
-            setImage(result.imageUrls);
-            setphoto(result.picture)
+            const result = await response.json();
+            setlocation(result.car.location)
+            setDescription(result.car.description)
+            setFuel(result.car.fuel);
+            setMake(result.car.make);
+            setModel(result.car.model);
+            setPrice(result.car.price);
+            setYear(result.car.year)
+            setTransmission(result.car.transmission)
+            setSeats(result.car.carSeats)
+            setImage(result.car.imageUrls);
+            setphoto(result.car.picture);
+            const parsedFeatures = result.car.features.map(feature => {
+                const [name, icon] = feature.split(":");
+                return { name, icon };
+            });
+            setfeatures(parsedFeatures);
+            setCars([result.car]);
+            setFirsname([result.user.firstName])
+            setLasname([result.user.lastName])
+            setuserphoto([result.user.picture])
+            setuserid([result.user.id]);
         } catch (error) {
-            console.log(error.message);
+            console.log(error);
         }
-    }
+    };
+    const favoriteCar = async (id) => {
+        try {
+            const token = localStorage.getItem('T_ID_Auth');
+            const response = await fetch(`http://localhost:5600/api/save/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                }
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                // Update cars state to reflect the saved status
+                const updatedCars = cars.map(car => {
+                    if (car.id === id) {
+                        return {
+                            ...car,
+                            isSaved: !car.isSaved, // Toggle saved status
+                        };
+                    }
+                    return car;
+                });
+                setCars(updatedCars);
+                message.success(result.message);
+            } else {
+                const errorMessage = await response.json();
+                message.error(errorMessage.error);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
-        getcar();
+        getCar();
     }, [carId])
     return (
         <div className='carpage p-0 m-0 ' >
@@ -90,11 +173,15 @@ function CarPage() {
                             <p className='text-[25px] font-bold'>{make} {model} {year}</p>
                         </div>
                         <div>
-                            <div>
-                                <FavoriteBorderIcon className='transition-all duration-100 hover:text-red-600 cursor-pointer' />
-                                <p>Save</p>
-                            </div>
-                            {image.length >3 &&
+                        {cars.map((car) => (
+                                                <div className={car.isSaved ? 'btnsave3' : 'btnsave2'} key={car.id}>
+                                                    <button id="btnsave4" onClick={() => favoriteCar(car.id)} className='text-center  p-2 w-[100%] rounded-lg border-[1px] border-gray-200 text-gray-800 text-[13px]'>
+                                                    {car.isSaved ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
+                                                        
+                                                    </button>
+                                                </div>
+                                            ))}
+                            {image.length > 3 &&
                                 <div>
                                     <button className='border p-1 border-gray-500 rounded-[5px]'><CollectionsOutlinedIcon /> more photos</button>
                                 </div>
@@ -146,15 +233,18 @@ function CarPage() {
                                     <div className='seo-host-content'>
                                         <p className='text-[13px] font-bold uppercase mb-2 mt-2'>Hosted By</p>
                                         <div className='flex items-center gap-[280px] border-[1px] p-2 rounded-lg border-gray-200'>
-                                            <div className='flex items-center gap-3'>
+                                            
+                                                <Link to={`/Account/${firstName} ${lastName}/${userid}`}>
+                                                <div className='flex items-center gap-3'>
                                                 <div className='seo-host-photo w-[60px] h-[60px]'>
-                                                    <img src="../../src/assets/carmain9.jpg" alt="" className='h-full w-full object-cover rounded-[50%]' />
+                                                    <img src={userphoto} alt="" className='h-full w-full object-cover rounded-[50%]' />
                                                 </div>
                                                 <div className=''>
-                                                    <p className='font-bold text-[13px]'>Mohssine E.</p>
+                                                    <p className='font-bold text-[13px]'>{firstName} {lastName}.</p>
                                                     <p className='text-gray-400 text-[11px]'>Joined 2024</p>
                                                 </div>
                                             </div>
+                                            </Link>
                                             <div className='contact-info'>
                                                 <div className='flex items-center gap-3'>
                                                     <BsWhatsapp className='text-[20px] text-green-500 cursor-pointer transition-all duration-200 hover:translate-y-[-2px]' />
@@ -181,70 +271,72 @@ function CarPage() {
                                         <p className='text-[13px] font-bold uppercase mb-5'>Features</p>
                                         <div className='flex flex-wrap gap-5 items-center'>
 
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/steering-wheel.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.5]' id='image112' />
-                                                <p className='text-[13px]'>Cruise Control</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/airbag.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                            {features.map((feature, index) => (
+                                                <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2' key={index}>
+                                                    <img src={feature.icon} alt={feature.name} className='object-cover h-[24px] w-[24px] opacity-[0.5]' id='image112' />
+                                                    <p className='text-[13px]'>{feature.name}</p>
+                                                </div>
+                                            ))}
+                                            {/* <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
+                                                <img src="/airbag.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>Airbags</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/heat.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/heat.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>Leather Seats</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/location.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/location.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>GPS</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/car.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/car.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>Air Conditioning</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/sun.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/sun.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>Sunroof</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/alloy-wheel.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/alloy-wheel.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>Alloy Wheels</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/speedometer.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/speedometer.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>Speed Limiter</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/esp.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6] ' />
+                                                <img src="/esp.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6] ' />
                                                 <p className='text-[13px]'>ESP</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/parking.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/parking.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>Parking Radar</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/steering-wheel.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/steering-wheel.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>Onboard Computer</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/baby-car-seat.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/baby-car-seat.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>Child seat</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/360-degree.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/360-degree.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>Rear View Camera</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/abs.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/abs.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>ABS</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/window.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/window.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>Electric Windows</p>
                                             </div>
                                             <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="../../src/assets/bluetooth.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
+                                                <img src="/bluetooth.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
                                                 <p className='text-[13px]'>CD/MP3/Bluetooth</p>
-                                            </div>
+                                            </div> */}
 
                                         </div>
                                     </div>
@@ -443,10 +535,14 @@ function CarPage() {
                                             </div>
                                         </div>
                                         <div className='mt-7'>
-                                            <button className='text-center  p-2 w-[100%] rounded-lg border-[1px] border-gray-200 text-gray-800 text-[13px]'>
-                                                <FavoriteBorderIcon className='transition-all duration-100 hover:text-red-600 cursor-pointer mr-3 ' />
-                                                Add to favorites
-                                            </button>
+                                            {cars.map((car) => (
+                                                <div className={car.isSaved ? 'btnsave3' : 'btnsave2'} key={car.id}>
+                                                    <button id="btnsave4" onClick={() => favoriteCar(car.id)} className='text-center  p-2 w-[100%] rounded-lg border-[1px] border-gray-200 text-gray-800 text-[13px]'>
+                                                    {car.isSaved ? <FavoriteOutlinedIcon className='mr-3'/> : <FavoriteBorderOutlinedIcon  className='mr-3'/>}
+                                                        Add to favorites
+                                                    </button>
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
