@@ -101,7 +101,6 @@ function PersonalDetails() {
     useEffect(() => {
         getuserInfo();
     }, [])
-    console.log(photo)
     return (
         <div className='myprofileinfo border rounded-xl p-3 h-[100%]'>
             <div className='flex justify-between items-center mb-3'>
