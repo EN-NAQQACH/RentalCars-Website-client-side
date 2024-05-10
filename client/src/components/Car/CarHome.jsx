@@ -127,7 +127,7 @@ function CarHome() {
 
 
     return (
-        <div className=''>
+        <div className='' style={{fontFamily:"Space Grotesk"}}>
             <div className='location-section w-[100%]  mb-7 ml-2'>
                 <div className='location-content-section-carhome gap-2 rounded-[30px]  border-gray-100 border-[0.2px] shadow-sm w-fit p-3'>
                     <div className='border-r-[1px]'>
@@ -337,7 +337,7 @@ function CarHome() {
                                     <KeyboardDoubleArrowRightIcon className='absolute  top-[4px] text-[#7357ff] cursor-pointer right-[0px] felx items-center' onClick={sliderRight} />
                                 </div> */}
                             </div>
-                            <div className='cars-components mt-5 max-w-[100%] h-fit felx items-center'>
+                            <div className='cars-components mt-5 max-w-[100%] h-fit felx items-center '>
                                 <Carcomponents/>
                                     {/* {togglestate && <Carcomponents type={togglestate} />} */}
                             </div>

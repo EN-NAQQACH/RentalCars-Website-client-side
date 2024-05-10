@@ -69,10 +69,10 @@ function Carcomponents() {
     return (
         <>
             {cars.map((car) => (
-                <div className='car-card cursor-pointer relative w-[100%] h-[47vh]' key={car.id}>
+                <div className='car-card cursor-pointer relative w-[100%] h-fit rounded-lg  ' key={car.id}>
                     <Link to={`/car/car-rental/${car.make}/${car.model}/${car.year}/${car.id}`}>
                         <div className="car-card-components w-[100%]  h-[fit] border rounded-lg shadow-sm">
-                            <img src={car.imageUrls[0]} alt="" className='h-[150px] w-[100%] rounded-tr-lg rounded-tl-lg object-cover' />
+                            <img src={car.imageUrls[0]} alt="" className='h-[150px] w-[100%] rounded-tr-lg rounded-tl-lg object-cover transition-all duration-300 hover:transition-all hover:duration-300 hover:brightness-[90%]' />
                             <div className='mt-2 p-2'>
                                 <div className='flex justify-between'>
                                     <div>
@@ -82,10 +82,11 @@ function Carcomponents() {
                                         <p className='text-gray-400 text-[12px] font-bold'><span className='font-bold  text-[15px] text-[#937eff]'>{car.price}{' '}DH  </span>/ Day</p>
                                     </div>
                                 </div>
-                                <p className='text-[14px] font-bold text-gray-500'>{car.make}{' '}{car.model}{' '}{car.year}</p>
-                                <div className='flex gap-3 mt-2  '>
+                                <div className='overflow-hidden max-w-[90%]'>
+                                <p className='text-[14px] font-bold text-gray-500 truncate '>{car.make}{' '}{car.model}{' '}{car.year}</p>
+                                </div>                                <div className='flex gap-3 mt-2  '>
                                     <p className='flex gap-2 items-center'>
-                                        <AirlineSeatReclineNormalIcon /><span className='text-[11px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>{car.carSeats} seats
+                                        <AirlineSeatReclineNormalIcon /><span className='text-[11px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md truncate'>{car.carSeats} seats
                                         </span></p>
                                     <p className='flex gap-2 items-center'>
                                         <LocalGasStationIcon /><span className='text-[11px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>{car.transmission}
@@ -96,7 +97,7 @@ function Carcomponents() {
                                     </div>
                                 </div>
                                 <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon className="text-green-500" /></p>
-                                <div className='mt-1 text-[12px] text-[#937eff] border-t-[1px] pt-1 font-semibold'><p><LocationOnIcon /> {car.location}, Morocco</p></div>
+                                <div className='mt-1 text-[12px] text-[#937eff] border-t-[1px] pt-1 font-semibold truncate'><p><LocationOnIcon /> {car.location}, Morocco</p></div>
                             </div>
                         </div>
                     </Link>

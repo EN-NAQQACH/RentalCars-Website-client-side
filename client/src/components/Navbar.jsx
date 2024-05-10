@@ -100,18 +100,19 @@ function Navbar() {
   }
   const handeLogin = async () => {
     try {
-      const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/account/login', {
+      const response = await fetch('http://localhost:5600/api/account/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           email: emaillogin,
-          password: passwordlogin
+          password: passwordlogin,
         })
       });
       const data = await response.json();
-      if (response.ok) {
+      if (data) {
+        message.success(data.message)
         localStorage.setItem('T_ID_Auth', data.token);
         setIsLoggedIn(true);
       } else {
@@ -549,7 +550,7 @@ function Navbar() {
       {
         isuserauth ? (
 
-          <div className="navbar bg-base-100 sticky z-20 border-b-[1px] mb-5" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
+          <div className="navbar bg-base-100 sticky z-20  " style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
             <div className="navbar-start">
               <a className="btn btn-ghost text-xl" href='/'>daisyUI</a>
             </div>
