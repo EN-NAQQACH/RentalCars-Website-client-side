@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import "swiper/css";
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination, FreeMode, Scrollbar, Mousewheel } from 'swiper/modules';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import './cardeffect.css';
@@ -16,6 +16,11 @@ import { BsFuelPumpFill } from "react-icons/bs";
 import { PiSteeringWheelFill } from "react-icons/pi";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import styled, { keyframes, css } from "styled-components";
+import datacarsslider from '../data/slidercar.json'
+import cities from '../data/cities.json'
+import { Link } from 'react-router-dom';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
 
 function Main() {
@@ -27,7 +32,14 @@ function Main() {
         setSelectedDestination(destination);
         setcity(destination);
     };
-
+    const sliderLeft = () => {
+        const slider = document.getElementById('scrollbareffect');
+        slider.scrollLeft -= 500;
+    }
+    const sliderRight = () => {
+        const slider = document.getElementById('scrollbareffect');
+        slider.scrollLeft += 500;
+    }
     const row1 = [
         "https://i.ibb.co/SRTM1rk/Dacia-logo-2008-640x550-removebg-preview.png",
         "https://i.ibb.co/Byw7HbZ/Land-Rover-logo-2011-640x335-removebg-preview.png",
@@ -50,7 +62,7 @@ function Main() {
 
     return (
         <>
-            <main>
+            <main >
 
                 <section className='find-your-car-section '>
                     <div className='h-lvh mb-[150px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing }}>
@@ -103,16 +115,16 @@ function Main() {
                                     prevEl: ".review-swiper-button-prev",
 
                                 }}
-                                pagination={false}
                                 mousewheel={true}
-
+                                pagination={false}
                                 spaceBetween={15} // Space between slides in pixels
                                 slidesPerView={4} // Number of slides per view (visible slides)
-                                loop={true} // Enable loop mode
-                                autoplay={{ // Autoplay settings
-                                    delay: 4000, // Delay between slides in milliseconds
-                                    disableOnInteraction: false // Disable autoplay when user interacts with swiper
-                                }}
+                                direction={'horizontal'}
+
+
+                                freeMode={true}
+                                scrollbar={true}
+
                                 breakpoints={{ // Breakpoints for responsive design
                                     640: {
                                         slidesPerView: 2,
@@ -151,23 +163,33 @@ function Main() {
                                         spaceBetween: 15
                                     }
                                 }}
-                                modules={[Autoplay, Pagination, Navigation]}
-                                className="mySwiper mt-9"
+                                modules={[Pagination, Navigation, FreeMode, Scrollbar, Mousewheel]}
+                                className="mySwiper mt-9 "
 
                             >
 
                                 {/* <ButtonsSlider /> */}
-                                <SwiperSlide className='card'>
-                                    {/* absolute z-[15] bottom-[100px] left-[36%]
+                                {datacarsslider.map((car, index) => (
+                                    <SwiperSlide className='card w-[250px] h-[200px]' key={index} >
+                                        <img src={car.url} alt="" className='object-cover w-full h-full  rounded-[8px]' />
+                                        <div className='overlay '>
+                                            <Link to={`/car-rental/cars/search/bymake/${car.name}`} className='border-[3px] pr-3 pl-3 pt-1 pb-1 bg-white rounded-[30px]'>
+                                                {car.name}
+                                            </Link>                                        </div>
+                                    </SwiperSlide>
+
+                                ))}
+                                {/* <SwiperSlide className='card'> */}
+                                {/* absolute z-[15] bottom-[100px] left-[36%]
 absolute z-[15] bottom-[100px] left-[36%]
 absolute z-[15] bottom-[100px] left-[36%]
 absolute z-[15] bottom-[100px] left-[36%]
 absolute z-[15] bottom-[100px] left-[36%] */}
-                                    <img src="./src/assets/carmain1.jpg" alt="" className='object-cover w-[350px] h-[250px] rounded-[12px]' />
+                                {/* <img src="/Audi.jpg" alt="" className='object-cover w-[350px] h-[250px] rounded-[12px]' />
                                     <div className='overlay '>
-                                        <button className='border border-[3px] pr-3 pl-3 pt-1 pb-1 bg-white rounded-[30px]'>mercedes</button>
-                                    </div>
-                                </SwiperSlide>
+                                        <button className='border border-[3px] pr-3 pl-3 pt-1 pb-1 bg-white rounded-[30px]'>Bmw</button>
+                                    </div> */}
+                                {/* </SwiperSlide>
                                 <SwiperSlide className='card'>
                                     <img src="./src/assets/carmain2.jpg" alt="" className='object-cover w-[350px] h-[250px] rounded-[12px]' />
                                     <div className='overlay '>
@@ -191,7 +213,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                     <div className='overlay '>
                                         <button className=' border border-[3px] pr-3 pl-3 pt-1 pb-1 bg-white rounded-[30px]'>audi</button>
                                     </div>
-                                </SwiperSlide>
+                                </SwiperSlide> */}
                             </Swiper>
 
                         </div>
@@ -200,10 +222,10 @@ absolute z-[15] bottom-[100px] left-[36%] */}
 
                 <section className='blogs mb-[85px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
                     <div className='flex justify-center flex-col items-center mb-[20px]'>
-                        <h1 className='text-center mb-[50px] text-4xl z-[1]'>Explore the blog</h1>
+                        <h1 className='text-center mb-[50px] text-4xl z-[1]'>Explore cars for any occasion</h1>
                         <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
-                        <p className='text-center w-[600px] mb-[5px]'>Peruse the latest features and photos of the best cars from around the marketplace.</p>
-                        <button className='border border-black pr-3 pl-3 pt-1 pb-1'>Explore the blog</button>
+                        <p className='text-center w-[600px] mb-[5px]'>Our incredible selection of cars makes it easy to find a ride anytime, anywhere.</p>
+
                     </div>
                     <div className='flex justify-center items-center relative'>
                         <div className='bg-gray-50 w-[250px] h-[150px] absolute z-[15] left-[15%] flex  flex-col  rounded-[5px] p-5'>
@@ -228,170 +250,125 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                         <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
                     </div>
                     <div className='cars-list-contents flex flex-col mr-[25px] ml-[25px]'>
-                        <div className='place-of-cars flex gap-[20px] justify-center mt-3'>
+                        {/* <div className='place-of-cars flex gap-[20px] justify-center mt-3'>
                             <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Agadir')}>Agadir</button>
                             <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Marrakech')}>Marrakech</button>
                             <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Essaouira')}>Essaouira</button>
                             <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Casablanca')}>Casablanca</button>
                             <button className='border pl-5 pr-5 pt-1 pb-1 hover:bg-black hover:text-white' onClick={() => handleDestinationClick('Rabat')}>Rabat</button>
-                        </div>
-                        <div className='car-card flex gap-8 justify-center'>
+                        </div> */}
+                        <div className='car-card '>
                             {selectedDestination === '' && (
                                 <>
-                                    <div className='card-content-list car-card flex gap-8 justify-center'>
-                                        <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
-                                            <div className='car-img  h-[180px] w-full bg-white'>
-                                                <img src="./src/assets/carmain9.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
-                                            </div>
-                                            <div className='car-contents mt-3 flex flex-col pl-2'>
-                                                <div>
-                                                    <div>
-                                                        <h1 className='text-black'>Bmw SUV</h1>
-                                                        <p>car bmwx360 all</p>
-                                                    </div>
-                                                </div>
-                                                <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <GiCarSeat />
-                                                        <p className='font-bold'>5</p>
-                                                    </div>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <BsFuelPumpFill />
-                                                        <p className='font-bold'>Diesel</p>
-                                                    </div>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <PiSteeringWheelFill />
-                                                        <p className='font-bold'>Automatic</p>
-                                                    </div>
-                                                </div>
-                                                <div className='flex justify-between items-center'>
-                                                    <div>
-                                                        <div className='price font-bold mt-2'>
-                                                            <p>50$ /Day</p>
-                                                        </div>
-                                                        <div className='font-bold text-gray-400'>
-                                                            <p>Agadir</p>
-                                                        </div>
-                                                    </div>
-                                                    <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
-                                            <div className='car-img  h-[180px] w-full bg-white'>
-                                                <img src="./src/assets/carmain10.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
-                                            </div>
-                                            <div className='car-contents mt-3 flex flex-col pl-2'>
-                                                <div>
-                                                    <div>
-                                                        <h1 className='text-black'>Bmw SUV</h1>
-                                                        <p>car bmwx360 all</p>
-                                                    </div>
-                                                </div>
-                                                <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <GiCarSeat />
-                                                        <p className='font-bold'>5</p>
-                                                    </div>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <BsFuelPumpFill />
-                                                        <p className='font-bold'>Diesel</p>
-                                                    </div>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <PiSteeringWheelFill />
-                                                        <p className='font-bold'>Automatic</p>
-                                                    </div>
-                                                </div>
-                                                <div className='flex justify-between items-center'>
-                                                    <div>
-                                                        <div className='price font-bold mt-2'>
-                                                            <p>50$ /Day</p>
-                                                        </div>
-                                                        <div className='font-bold text-gray-400'>
-                                                            <p>Agadir</p>
-                                                        </div>
-                                                    </div>
-                                                    <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
-                                            <div className='car-img  h-[180px] w-full bg-white'>
-                                                <img src="./src/assets/carmain14.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
-                                            </div>
-                                            <div className='car-contents mt-3 flex flex-col pl-2'>
-                                                <div>
-                                                    <div>
-                                                        <h1 className='text-black'>Bmw SUV</h1>
-                                                        <p>car bmwx360 all</p>
-                                                    </div>
-                                                </div>
-                                                <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <GiCarSeat />
-                                                        <p className='font-bold'>5</p>
-                                                    </div>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <BsFuelPumpFill />
-                                                        <p className='font-bold'>Diesel</p>
-                                                    </div>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <PiSteeringWheelFill />
-                                                        <p className='font-bold'>Automatic</p>
-                                                    </div>
-                                                </div>
-                                                <div className='flex justify-between items-center'>
-                                                    <div>
-                                                        <div className='price font-bold mt-2'>
-                                                            <p>50$ /Day</p>
-                                                        </div>
-                                                        <div className='font-bold text-gray-400'>
-                                                            <p>Agadir</p>
-                                                        </div>
-                                                    </div>
-                                                    <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='cars-list mt-[50px] h-[320px] w-[250px]  rounded-[10px] '>
-                                            <div className='car-img  h-[180px] w-full bg-white'>
-                                                <img src="./src/assets/carblog2.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-[10px]' />
-                                            </div>
-                                            <div className='car-contents mt-3 flex flex-col pl-2'>
-                                                <div>
-                                                    <div>
-                                                        <h1 className='text-black'>Bmw SUV</h1>
-                                                        <p>car bmwx360 all</p>
-                                                    </div>
-                                                </div>
-                                                <div className=' text-gray-900 border-b-[3px] border-b-slate-100 flex gap-5 pb-2 pt-2'>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <GiCarSeat />
-                                                        <p className='font-bold'>5</p>
-                                                    </div>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <BsFuelPumpFill />
-                                                        <p className='font-bold'>Diesel</p>
-                                                    </div>
-                                                    <div className='icon flex gap-3 items-center'>
-                                                        <PiSteeringWheelFill />
-                                                        <p className='font-bold'>Automatic</p>
-                                                    </div>
-                                                </div>
-                                                <div className='flex justify-between items-center'>
-                                                    <div>
-                                                        <div className='price font-bold mt-2'>
-                                                            <p>50$ /Day</p>
-                                                        </div>
-                                                        <div className='font-bold text-gray-400'>
-                                                            <p>Agadir</p>
-                                                        </div>
-                                                    </div>
-                                                    <FavoriteBorderIcon className='hover:text-red-600 cursor-pointer' />
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div className='flex justify-end gap-4 w-[80%] m-auto'>
+                                        <KeyboardDoubleArrowLeftIcon className='prevbtncity'  />
+                                        <KeyboardDoubleArrowRightIcon className='nextbtncity'   />
                                     </div>
+                                    <div className='scrollbar-content max-w-[80%]   m-auto scroll-smooth h-fit ' id='scrollbareffect'>
+
+                                        {/* {cities.map((city, index) => (
+                                            <Link to={`/car-rental/cars/bydestination/${city.name}`}>
+                                                <div className='cars-list mt-[20px] h-fit min-w-[250px] rounded-[10px] border-gray-200 border overflow-hidden' key={index}>
+                                                    <div className='car-img  h-[150px] w-full bg-white'>
+                                                        <img src={city.url} alt="" className='w-full object-cover h-full ' />
+                                                    </div>
+                                                    <div className='car-contents mt-2 flex flex-col pl-2 pb-2'>
+                                                        <div>
+                                                            <div>
+                                                                <h1 className='text-black'>{city.name}</h1>
+                                                                <p className='text-[12px] font-semibold text-gray-500'>Morocco</p>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        ))} */}
+                                        <Swiper
+                                            navigation={{
+                                                nextEl: ".nextbtncity",
+                                                prevEl: ".prevbtncity",
+
+                                            }}
+                                            mousewheel={true}
+                                            pagination={false}
+                                            spaceBetween={30} // Space between slides in pixels
+                                            slidesPerView={3} // Number of slides per view (visible slides)
+                                            direction={'horizontal'}
+
+
+                                            freeMode={true}
+                                            scrollbar={true}
+
+                                            breakpoints={{ // Breakpoints for responsive design
+                                                640: {
+                                                    slidesPerView: 2,
+                                                    spaceBetween: 20
+                                                },
+                                                600: {
+                                                    slidesPerView: 2,
+                                                    spaceBetween: 20
+                                                },
+                                                530: {
+                                                    slidesPerView: 2,
+                                                    spaceBetween: 20
+                                                },
+                                                500: {
+                                                    slidesPerView: 3,
+                                                    spaceBetween: 20
+                                                },
+                                                400: {
+                                                    slidesPerView: 2,
+                                                    spaceBetween: 20
+                                                },
+                                                300: {
+                                                    slidesPerView: 2,
+                                                    spaceBetween: 20
+                                                },
+                                                768: {
+                                                    slidesPerView: 2,
+                                                    spaceBetween: 30
+                                                },
+                                                700: {
+                                                    slidesPerView: 2,
+                                                    spaceBetween: 30
+                                                },
+                                                1024: {
+                                                    slidesPerView: 3,
+                                                    spaceBetween: 20
+                                                }
+                                            }}
+                                            modules={[Pagination, Navigation, FreeMode, Scrollbar, Mousewheel]}
+                                            className="mySwiper mt-9 " 
+
+                                        >
+
+                                            {cities.map((city, index) => (
+                                                <SwiperSlide className='card w-[250px] h-[fit]' key={index} >
+                                                    <Link to={`/car-rental/cars/search/bydestination/${city.name}`}>
+                                                        <div className='cars-list mt-[20px] h-fit min-w-[250px] rounded-[10px] border-gray-200 border overflow-hidden' key={index}>
+                                                            <div className='car-img  h-[150px] w-full bg-white'>
+                                                                <img src={city.url} alt="" className='w-full object-cover h-full ' />
+                                                            </div>
+                                                            <div className='car-contents mt-2 flex flex-col pl-2 pb-2'>
+                                                                <div>
+                                                                    <div>
+                                                                        <h1 className='text-black'>{city.name}</h1>
+                                                                        <p className='text-[12px] font-semibold text-gray-500'>Morocco</p>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </Link>
+                                                </SwiperSlide>
+
+                                            ))}
+                                        </Swiper>
+
+                                    </div>
+
+
                                 </>
                             )}
 
@@ -416,6 +393,20 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                     <div className='cars-list mt-[50px] h-[270px] w-[250px] rounded-[10px] shadow-md '>
                                         <div className='car-img  h-[150px] w-full bg-white'>
                                             <img src="./src/assets/carmain14.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-tl-[10px]' />
+                                        </div>
+                                        <div className='car-contents'>
+                                        </div>
+                                    </div>
+                                    <div className='cars-list mt-[50px] h-[270px] w-[250px]  rounded-[10px] shadow-md '>
+                                        <div className='car-img  h-[150px] w-full bg-white'>
+                                            <img src="./src/assets/carmain8.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-tl-[10px]' />
+                                        </div>
+                                        <div className='car-contents'>
+                                        </div>
+                                    </div>
+                                    <div className='cars-list mt-[50px] h-[270px] w-[250px]  rounded-[10px] shadow-md '>
+                                        <div className='car-img  h-[150px] w-full bg-white'>
+                                            <img src="./src/assets/carmain8.jpg" alt="" className='w-full object-cover h-full rounded-tr-[10px] rounded-tl-[10px]' />
                                         </div>
                                         <div className='car-contents'>
                                         </div>
@@ -463,9 +454,9 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                 </>
                             )}
                         </div>
-                        <div className='flex justify-center mt-8'>
+                        {/* <div className='flex justify-center mt-8'>
                             <button className='  border-[2px] pr-3 pl-3 pt-2 pb-2 bg-white ]'>See more about {city}'s Cars</button>
-                        </div>
+                        </div> */}
                     </div>
                 </section>
 
