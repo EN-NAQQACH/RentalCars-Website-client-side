@@ -16,11 +16,27 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { message } from 'antd';
+import { Button, Modal } from 'antd';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+
+import { Navigation } from 'swiper/modules';
 
 const { Option } = Select;
 import '../cardeffect.css'
-import { useParams,Link } from 'react-router-dom';
+import { useParams, Link,useNavigate } from 'react-router-dom';
 function CarPage() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
     const [carData, setCarData] = useState(null);
     const { carId } = useParams();
     const dateFormat = 'YYYY/MM/DD';
@@ -52,7 +68,6 @@ function CarPage() {
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}/${month}/${day}`;
     };
-
     // const getcar = async () => {
     //     try {
     //         const reponse = await fetch(`http://localhost:5600/api/getusercar/${carId}`, {
@@ -84,9 +99,9 @@ function CarPage() {
     //     }
     // }
     const [cars, setCars] = useState([]);
-    const [firstName,setFirsname] = useState('')
-    const [lastName,setLasname] = useState('');
-    const [userphoto , setuserphoto] = useState(null);
+    const [firstName, setFirsname] = useState('')
+    const [lastName, setLasname] = useState('');
+    const [userphoto, setuserphoto] = useState(null);
     const [userid, setuserid] = useState(null)
     const getCar = async () => {
         try {
@@ -161,9 +176,11 @@ function CarPage() {
     useEffect(() => {
         getCar();
     }, [carId])
+    const history = useNavigate();
+
     return (
         <div className='carpage p-0 m-0 ' >
-            <div className='ml-5 rounded-[15px] bg-transparent  border-black w-fit text-black p-1 hover:bg-gray-100 hover:text-black transition-all duration-[0.3s] cursor-pointer'>
+            <div className='ml-5 rounded-[15px] bg-transparent  border-black w-fit text-black p-1 hover:bg-gray-100 hover:text-black transition-all duration-[0.3s] cursor-pointer' onClick={()=> history(-1)} >
                 <ArrowBackIcon />
             </div>
             <div className='carpagecontents'>
@@ -173,18 +190,34 @@ function CarPage() {
                             <p className='text-[25px] font-bold'>{make} {model} {year}</p>
                         </div>
                         <div>
-                        {cars.map((car) => (
-                                                <div className={car.isSaved ? 'btnsave3' : 'btnsave2'} key={car.id}>
-                                                    <button id="btnsave4" onClick={() => favoriteCar(car.id)} className='text-center  p-2 w-[100%] rounded-lg border-[1px] border-gray-200 text-gray-800 text-[13px]'>
-                                                    {car.isSaved ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
-                                                        
-                                                    </button>
-                                                </div>
-                                            ))}
-                            {image.length > 3 &&
-                                <div>
-                                    <button className='border p-1 border-gray-500 rounded-[5px]'><CollectionsOutlinedIcon /> more photos</button>
+                            {cars.map((car) => (
+                                <div className={car.isSaved ? 'btnsave3' : 'btnsave2'} key={car.id}>
+                                    <button id="btnsave4" onClick={() => favoriteCar(car.id)} className='text-center  p-2 w-[100%] rounded-lg border-[1px] border-gray-200 text-gray-800 text-[13px]'>
+                                        {car.isSaved ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
+
+                                    </button>
                                 </div>
+                            ))}
+                            {image.length > 3 &&
+                                <>
+                                    <div>
+                                        <button className='border p-1 border-gray-500 rounded-[5px]' onClick={showModal}><CollectionsOutlinedIcon /> {image.length - 3} more photos</button>
+                                    </div>
+                                    <Modal  width={800} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} style={{
+                                        top: 50,
+                                    }}>
+                                        <div className='text-center mb-3'>
+                                        <p className='text-[15px] text-center font-bold'>{make} {model} {year}</p>
+                                        <p className='font-semibold text-gray-400 text-[12px]'>by {lastName}</p>
+                                        </div>
+
+                                        <Swiper navigation={true} modules={[Navigation]} className="mySwiper rounded-lg">
+                                            {image.slice(3).map((image, index) => (
+                                                <SwiperSlide className='rounded-lg'><img src={image} alt="" className='rounded-lg ' /></SwiperSlide>
+                                            ))}
+                                        </Swiper>
+                                    </Modal>
+                                </>
                             }
                         </div>
                     </div>
@@ -233,17 +266,17 @@ function CarPage() {
                                     <div className='seo-host-content'>
                                         <p className='text-[13px] font-bold uppercase mb-2 mt-2'>Hosted By</p>
                                         <div className='flex items-center gap-[280px] border-[1px] p-2 rounded-lg border-gray-200'>
-                                            
-                                                <Link to={`/Account/${firstName} ${lastName}/${userid}`}>
+
+                                            <Link to={`/profile/${firstName}/${lastName}/${userid}`}>
                                                 <div className='flex items-center gap-3'>
-                                                <div className='seo-host-photo w-[60px] h-[60px]'>
-                                                    <img src={userphoto} alt="" className='h-full w-full object-cover rounded-[50%]' />
+                                                    <div className='seo-host-photo w-[60px] h-[60px]'>
+                                                        <img src={userphoto} alt="" className='h-full w-full object-cover rounded-[50%]' />
+                                                    </div>
+                                                    <div className=''>
+                                                        <p className='font-bold text-[13px]'>{firstName} {lastName}.</p>
+                                                        <p className='text-gray-400 text-[11px]'>Joined 2024</p>
+                                                    </div>
                                                 </div>
-                                                <div className=''>
-                                                    <p className='font-bold text-[13px]'>{firstName} {lastName}.</p>
-                                                    <p className='text-gray-400 text-[11px]'>Joined 2024</p>
-                                                </div>
-                                            </div>
                                             </Link>
                                             <div className='contact-info'>
                                                 <div className='flex items-center gap-3'>
@@ -538,7 +571,7 @@ function CarPage() {
                                             {cars.map((car) => (
                                                 <div className={car.isSaved ? 'btnsave3' : 'btnsave2'} key={car.id}>
                                                     <button id="btnsave4" onClick={() => favoriteCar(car.id)} className='text-center  p-2 w-[100%] rounded-lg border-[1px] border-gray-200 text-gray-800 text-[13px]'>
-                                                    {car.isSaved ? <FavoriteOutlinedIcon className='mr-3'/> : <FavoriteBorderOutlinedIcon  className='mr-3'/>}
+                                                        {car.isSaved ? <FavoriteOutlinedIcon className='mr-3' /> : <FavoriteBorderOutlinedIcon className='mr-3' />}
                                                         Add to favorites
                                                     </button>
                                                 </div>
