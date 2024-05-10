@@ -51,7 +51,7 @@ const GoogleLoginButton2 = (props) => {
             render={renderProps => (
                 
                 <div  className="flex justify-center  space-x-4 mt-4 rounded-lg border border-black hover:bg-slate-50 " onClick={renderProps.onClick} disabled={renderProps.disabled} >
-                    <a href="#" className=" px-3 py-2 text-center bg-white-400 text-black font-medium  w-full flex justify-center items-center"><img src="./src/assets/Gmail.png" alt="" width={"25px"} className='mr-5' />Continue with Google</a>
+                    <a href="#" className=" px-3 py-2 text-center bg-white-400 text-black font-medium  w-full flex justify-center items-center"><img src="/Gmail.png" alt="" width={"25px"} className='mr-5' />Continue with Google</a>
                 </div>
             )}
         />

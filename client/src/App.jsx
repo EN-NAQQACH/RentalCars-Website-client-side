@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes,useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import './App.css'
 import { gapi } from "gapi-script";
@@ -18,6 +18,8 @@ import AccounttoUser from './components/User/AccounttoUser';
 import EditYourCar from './components/Car/EditYourCar';
 import Page404 from '../public/Page';
 import MyBooking from './components/User/MyBooking';
+import CarpageBymake from './components/Car/CarpageBymake';
+import CarpageBydestination from './components/Car/CarpageBydestination';
 
 function App() {
   useEffect(() => {
@@ -28,13 +30,18 @@ function App() {
       });
     });
   }, []);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <>
       <Navbar />
       <Routes>
         <Route path='/' element={<Rentalcar />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/profile/:firstName/:lastName/:userid' element={<Profile />} />
         <Route path='/account' element={<Account />} >
           <Route index element={<PersonalDetails />} />
           <Route path='personal_details' element={<PersonalDetails />} />
@@ -43,6 +50,8 @@ function App() {
           <Route path='my-listing/edit-your-car/:carId' element={<EditYourCar />} />
           <Route path='my-booking' element={<MyBooking />} />
         </Route>
+         <Route path='/car-rental/cars/search/bymake/:make' element={<CarpageBymake />}/>
+         <Route path='/car-rental/cars/search/bydestination/:destination' element={<CarpageBydestination />}/>
         <Route path='/accounttoUser' element={<AccounttoUser />} />
         <Route path='/my_listing' element={<MyListing />} />
         <Route path='/become_a_host' >
