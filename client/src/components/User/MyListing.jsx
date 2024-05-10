@@ -89,7 +89,9 @@ function MyListing() {
                                         <p className='text-gray-400 text-[12px] font-bold'><span className='font-bold text-[#937eff] text-[15px]'>{car.price}{' '}DH </span>/ Day</p>
                                     </div>
                                 </div>
-                                <p className='text-[14px] font-bold text-gray-500  '>{car.make}{' '}{car.model}{' '}{car.year}</p>
+                                <div className='overflow-hidden max-w-[90%]'>
+                                <p className='text-[14px] font-bold text-gray-500 truncate '>{car.make}{' '}{car.model}{' '}{car.year}</p>
+                                </div>
                                 <div className='flex gap-3 mt-2  '>
                                     <p className='flex gap-3 items-center'>
                                         <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold'>{car.carSeats} seats
