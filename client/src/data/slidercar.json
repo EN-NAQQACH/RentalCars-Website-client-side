@@ -1,0 +1,22 @@
+[
+    {
+        "name": "bmw",
+        "url": "/Bmw.jpg"
+    },
+    {
+        "name": "mercedes",
+        "url": "/mercedes.jpg"
+    },
+    {
+        "name": "peugeot",
+        "url": "/peugeot.jpg"
+    },
+    {
+        "name": "hyndai",
+        "url": "/hyndai.jpg"
+    },
+    {
+        "name": "range rover",
+        "url": "/range rover.jpg"
+    }
+]
