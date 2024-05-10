@@ -10,24 +10,23 @@ import distancee from '../../data/distance.json'
 import carmake from '../../data/carmake.js'; import generateYears from '../../data/caryear.js';
 import { Button, message, Steps, theme, Radio, Input, Select, Checkbox, Modal } from 'antd';
 const featuresList = [
-    "Cruise Control",
-    "Airbags",
-    "Leather Seats",
-    "Navigation/GPS System",
-    "Air Conditioning",
-    "Sunroof",
-    "Remote Central Locking",
-    "Alloy Wheels",
-    "ESP",
-    "Rear Parking Radar",
-    "Onboard Computer",
-    "Child seat",
-    "Rear View Camera",
-    "ABS",
-    "Speed Limiter",
-    "Electric Windows",
-    "CD/MP3/Bluetooth"
-];
+    { name: "Cruise Control", icon: "/steering-wheel.png" },
+    { name: "Airbags", icon: "/airbag.png" },
+    { name: "Leather Seats", icon: "/heat.png" },
+    { name: "Navigation/GPS System", icon: "/location.png" },
+    { name: "Air Conditioning", icon: "/car.png" },
+    { name: "Sunroof", icon: "/sun.png" },
+    { name: "Alloy Wheels", icon: "/alloy-wheel.png" },
+    { name: "ESP", icon: "/esp.png" },
+    { name: "Rear Parking Radar", icon: "/parking.png" },
+    { name: "Onboard Computer", icon: "/steering-wheel.png" },
+    { name: "Child seat", icon: "/baby-car-seat.png" },
+    { name: "Rear View Camera", icon: "/360-degree.png" },
+    { name: "ABS", icon: "/abs.png" },
+    { name: "Speed Limiter", icon: "/speedometer.png" },
+    { name: "Electric Windows", icon: "/window.png" },
+    { name: "CD/MP3/Bluetooth", icon: "/bluetooth.png" }
+  ];
 function EditYourCar() {
     const [car, setCar] = useState();
     const [location, setlocation] = useState('');
@@ -56,6 +55,9 @@ function EditYourCar() {
         setValue(e.target.value);
         setTransmission(e.target.value)
     };
+    const isSelected = (feature) => {
+        return selectedFeatures.some((selectedFeature) => selectedFeature.name === feature.name);
+      };
     useEffect(() => {
         const getCar = async () => {
             try {
@@ -67,22 +69,26 @@ function EditYourCar() {
                     }
                 });
                 const result = await reponse.json();
-                setCar(result);
-                setlocation(result.location);
-                setYear(result.year);
-                setMake(result.make);
-                setModel(result.model);
-                setPrice(result.price);
-                setDescription(result.description);
-                setTransmission(result.transmission);
-                setdistance(result.distance);
-                setFuel(result.fuel);
-                setmaxtrip(result.maxTrip);
-                setmintrip(result.minTrip);
-                setSeats(result.carSeats);
-                setImage(result.imageUrls);
-                setSelectedFeatures(result.features);
-                setType(result.Type)
+                setCar(result.car);
+                setlocation(result.car.location);
+                setYear(result.car.year);
+                setMake(result.car.make);
+                setModel(result.car.model);
+                setPrice(result.car.price);
+                setDescription(result.car.description);
+                setTransmission(result.car.transmission);
+                setdistance(result.car.distance);
+                setFuel(result.car.fuel);
+                setmaxtrip(result.car.maxTrip);
+                setmintrip(result.car.minTrip);
+                setSeats(result.car.carSeats);
+                setImage(result.car.imageUrls);
+                const parsedFeatures = result.car.features.map(feature => {
+                    const [name, icon] = feature.split(":");
+                    return { name,icon};
+                });
+                setSelectedFeatures(parsedFeatures);
+                setType(result.car.Type)
             } catch (e) {
                 console.log(e);
             }
@@ -94,22 +100,29 @@ function EditYourCar() {
         const newPhotos = Array.from(files);
         setphotos([...photos, ...newPhotos]);
     }
+    // const handleDragPhoto = (result) => {
+    //     if (!result.destination) return;
+    //     const items = Array.from(image);
+    //     const [reorderedPhoto] = items.splice(result.source.index, 1);
+    //     items.splice(result.destination.index, 0, reorderedPhoto);
+    //    setimages(items);
+    // };
     const handleDragPhoto = (result) => {
         if (!result.destination) return;
-        const items = Array.from(image);
+        const items = Array.from(car.imageUrls);
         const [reorderedPhoto] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedPhoto);
-        setImage(items);
+       setCar({ ...car, imageUrls: items });
     };
     const handledeletephoto = (index) => {
         setNewPhotos((prevphotos) => prevphotos.filter((_, i) => i !== index))
     };
     const handleCheckboxChange = (feature) => {
-        if (selectedFeatures.includes(feature)) {
-            setSelectedFeatures(selectedFeatures.filter(item => item !== feature));
-        } else {
+        if (isSelected(feature)) {
+            setSelectedFeatures(selectedFeatures.filter(item => item.name !== feature.name));
+          } else {
             setSelectedFeatures([...selectedFeatures, feature]);
-        }
+          }
     };
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
@@ -139,8 +152,9 @@ function EditYourCar() {
             formData.append('type', type);
             formData.append('description', description);
             featuresArray.forEach((feature, index) => {
-                formData.append(`features[${index}]`, feature);
-            });
+                const featureString = `${feature.name}:${feature.icon}`;
+                formData.append(`features[${index}]`, featureString);
+              });
             deletedimagesArray.forEach((image, index) => {
                 formData.append(`deletedImages[${index}]`, image);
             });
@@ -169,7 +183,7 @@ function EditYourCar() {
         }
     }
     const caryear = generateYears()
-    console.log(newPhotos)
+    console.log(selectedFeatures)
     return (
         <div className='edityourcar border rounded-xl p-3 h-[100%]'>
             <div className='flex flex-col justify-center'>
@@ -299,10 +313,10 @@ function EditYourCar() {
                                         <label>
                                             <input
                                                 type="checkbox"
-                                                checked={selectedFeatures.includes(feature)}
+                                                checked={isSelected(feature)}
                                                 onChange={() => handleCheckboxChange(feature)}
                                             />
-                                            {feature}
+                                            {feature.name}
                                         </label>
                                     </div>
                                 ))}
