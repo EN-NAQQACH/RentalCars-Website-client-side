@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useContext } from 'react'
+import { Radio, Select, Rate, Flex, message } from 'antd';
 import SearchIcon from '@mui/icons-material/Search';
 import { StyleContext } from '../Stylecontext'; // Import StyleContext as a named export
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
@@ -19,8 +20,18 @@ import styled, { keyframes, css } from "styled-components";
 import datacarsslider from '../data/slidercar.json'
 import cities from '../data/cities.json'
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { DatePicker, Space } from 'antd';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+dayjs.extend(customParseFormat);
+const { RangePicker } = DatePicker;
+const disabledDate = (current) => {
+    // Disable dates before the current day
+    return current && current < dayjs().startOf('day');
+};
+import { useNavigate } from 'react-router-dom';
 
 
 function Main() {
@@ -58,7 +69,43 @@ function Main() {
         "https://i.ibb.co/mtGMm9G/Peugeot-logo-2010-640x451-removebg-preview.png",
     ];
 
+    const [location, setlocation] = useState('');
+    const [dateRange, setDateRange] = useState([dayjs(), dayjs()]);
+    const [startdate, setstartdate] = useState('');
+    const [enddate, setenddate] = useState('');
+    const [days,setdays] = useState();
 
+    const handleSearch = () => {
+        if (!startdate || !enddate || !location) {
+            message.error(' location or date is missed');
+            return;
+        }
+        if (location.trim() && dateRange && dateRange[0] && dateRange[1]) {
+            localStorage.setItem('lastquerySearch', JSON.stringify(lastquerySearch));
+            navigate(`/carhome/search?where=${location}&startdate=${startdate}&enddate=${enddate}&days=${days}`);
+        }
+    };
+    const lastquerySearch = {
+        location: location,
+        startdate: startdate,
+        enddate: enddate,
+        days: days
+    }
+    const dateFormat = 'YYYY/MM/DD';
+    const navigate = useNavigate();
+    const onchange = (dates, dateString) => {
+        setDateRange(dates)
+        const startDateString = String(dateString[0]);
+        const endDateString = String(dateString[1]);
+        setstartdate(startDateString)
+        setenddate(endDateString)
+        const startDate = new Date(startDateString);
+        const endDate = new Date(endDateString);
+        const differenceInMilliseconds = endDate - startDate;
+        const differenceInDays = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+        console.log('Difference in days:', differenceInDays);
+        setdays(differenceInDays)
+    }
 
     return (
         <>
@@ -66,26 +113,22 @@ function Main() {
 
                 <section className='find-your-car-section '>
                     <div className='h-lvh mb-[150px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing }}>
-                        <div className='location-section mt-[80px] flex justify-center flex-col w-fit m-auto '>
-                            <h1 className='text-center mb-[50px] text-4xl z-[15]'>Find your Car</h1>
-                            <div className='divider-find bg-gray-100 h-6 mt-[-70px] mb-6 w-[40%] m-auto'></div>
-                            <div className='location-content-section flex items-center justify-center border rounded-3xl p-1 pl-4 pr-4  z-[10] bg-white shadow-sm '>
-                                <div className='flex flex-col w-[250px] border-gray-200 border-r-[1px] mr-[15px] '>
-                                    <label htmlFor="">where</label>
-                                    <input type="text" placeholder='agadir,marakkech' className='mr-5  text-gray-400' />
+                        <div className='location-section w-[100%]  mb-7 ml-2 mt-5 '>
+                            <div className='location-content-section-carhome gap-2 rounded-[30px]  border-gray-100 border-[0.2px] shadow-md w-fit p-3'>
+                                <div className='border-r-[1px]'>
+                                    <label htmlFor="" className='pl-2 text-[13px] font-bold text-gray-500'>Location</label>
+                                    <input type="text" className='border-none w-[100%] h-[20px] rounded-[7px] pl-2 text-[13px]' placeholder='Enter Location' value={location} onChange={(e) => setlocation(e.target.value)} />
                                 </div>
-                                <div className='flex flex-col w-fit mr-[15px] border-gray-200 border-r-[1px]'>
-                                    <label htmlFor="">from</label>
-                                    <input type="date" className='mr-5 text-gray-400' />
+                                <div className='flex flex-col justify-center border-r-[1px]'>
+                                    <label htmlFor="" className='text-[13px] font-bold text-gray-500'>Check in-out</label>
+                                    <div className='flex items-center w-[100%]'>
+                                        <Space direction="vertical" size={12}>
+                                            <RangePicker disabledDate={disabledDate} onChange={onchange} format={dateFormat} />
+                                        </Space>
+                                    </div>
                                 </div>
-                                <div className='flex flex-col w-fit'>
-                                    <label htmlFor="">untill</label>
-                                    <input type="date" className='mr-5  text-gray-400' />
-                                </div>
-                                <div className='flex flex-col w-fit'>
-                                    <button className='bg-black rounded-full p-2 text-white text-center'>
-                                        <SearchIcon className='m-auto' />
-                                    </button>
+                                <div className='flex items-center justify-center  rounded-[50%] h-[40px] w-[40px]  transition-all duration-75 cursor-pointer bg-[#7357ff] hover:bg-[#5c3cfc] m-auto'>
+                                    <button onClick={handleSearch}><SearchIcon className='text-white' /></button>
                                 </div>
                             </div>
                         </div>
@@ -261,8 +304,8 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                             {selectedDestination === '' && (
                                 <>
                                     <div className='flex justify-end gap-4 w-[80%] m-auto'>
-                                        <KeyboardDoubleArrowLeftIcon className='prevbtncity hover:bg-gray-200 hover:rounded-[50%] '  />
-                                        <KeyboardDoubleArrowRightIcon className='nextbtncity hover:bg-gray-200 hover:rounded-[50%] '    />
+                                        <KeyboardDoubleArrowLeftIcon className='prevbtncity hover:bg-gray-200 hover:rounded-[50%] ' />
+                                        <KeyboardDoubleArrowRightIcon className='nextbtncity hover:bg-gray-200 hover:rounded-[50%] ' />
                                     </div>
                                     <div className='scrollbar-content max-w-[80%]   m-auto scroll-smooth h-fit ' id='scrollbareffect'>
 
@@ -339,7 +382,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                                 }
                                             }}
                                             modules={[Pagination, Navigation, FreeMode, Scrollbar, Mousewheel]}
-                                            className="mySwiper mt-9 " 
+                                            className="mySwiper mt-9 "
 
                                         >
 
