@@ -1,4 +1,4 @@
-import { Route, Routes,useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation,useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import './App.css'
 import { gapi } from "gapi-script";
@@ -20,8 +20,12 @@ import Page404 from '../public/Page';
 import MyBooking from './components/User/MyBooking';
 import CarpageBymake from './components/Car/CarpageBymake';
 import CarpageBydestination from './components/Car/CarpageBydestination';
+import CarsListing from './components/Car/CarsListing';
+import CarsListingBysearch from './components/Car/CarsListingBysearch';
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
     gapi.load("client:auth2", () => {
       gapi.client.init({
@@ -35,6 +39,16 @@ function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  useEffect(() => {
+    
+    if (location.pathname === '/carhome/search' && location.search === '') {
+    const lastquerySearch =  localStorage.getItem('lastquerySearch');
+        if (lastquerySearch) {
+            const lastquerySearchParsed = JSON.parse(lastquerySearch);
+            navigate(`carhome/search?where=${lastquerySearchParsed.location}&startdate=${lastquerySearchParsed.startdate}&enddate=${lastquerySearchParsed.enddate}&days=${lastquerySearchParsed.days}`);
+        }
+      }
+}, [location, navigate]);
 
   return (
     <>
@@ -50,8 +64,8 @@ function App() {
           <Route path='my-listing/edit-your-car/:carId' element={<EditYourCar />} />
           <Route path='my-booking' element={<MyBooking />} />
         </Route>
-         <Route path='/car-rental/cars/search/bymake/:make' element={<CarpageBymake />}/>
-         <Route path='/car-rental/cars/search/bydestination/:destination' element={<CarpageBydestination />}/>
+        <Route path='/car-rental/cars/search/bymake/:make' element={<CarpageBymake />} />
+        <Route path='/car-rental/cars/search/bydestination/:destination' element={<CarpageBydestination />} />
         <Route path='/accounttoUser' element={<AccounttoUser />} />
         <Route path='/my_listing' element={<MyListing />} />
         <Route path='/become_a_host' >
@@ -59,7 +73,11 @@ function App() {
           <Route path='list-your-car/list' element={<List />} />
         </Route>
         <Route path='/car/car-rental/:make/:model/:year/:carId' element={<CarPage />} />
-        <Route path='/carhome' element={<CarHome />} />
+        {/* <Route path='/carhome' element={<CarHome />} /> */}
+        <Route path='/carhome' element={<CarHome />}>
+          <Route index element={<CarsListing />} />
+          <Route path="search" element={<CarsListing />} />
+        </Route>
         <Route path='*' element={<Page404 />} />
       </Routes>
       <Footer />
