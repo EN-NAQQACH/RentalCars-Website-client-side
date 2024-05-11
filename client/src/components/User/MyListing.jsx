@@ -94,7 +94,7 @@ function MyListing() {
                                 </div>
                                 <div className='flex gap-3 mt-2  '>
                                     <p className='flex gap-3 items-center'>
-                                        <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold'>{car.carSeats} seats
+                                        <AirlineSeatReclineNormalIcon /><span className='text-[12px] text-gray-600 font-bold truncate'>{car.carSeats} seats
                                         </span></p>
                                     <p className='flex gap-3 items-center'>
                                         <LocalGasStationIcon /><span className='text-[12px] text-gray-600 font-bold'>{car.transmission}

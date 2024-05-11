@@ -106,8 +106,8 @@ function Main() {
                         </div>
                         <div className='cslider mt-[20px] relative mr-[25px] ml-[25px]'>
                             <div className='flex gap-2 absolute right-0 z-[15] top-[-50px]'>
-                                <button className='review-swiper-button-prev border-transparent  rounded-full  pt-1 pb-1 pr-2 pl-2 bg-gray-100' ><ChevronLeftIcon /></button>
-                                <button className='review-swiper-button-next border-transparent  rounded-full pt-1 pb-1 pr-2 pl-2 bg-gray-100'><ChevronRightIcon /></button>
+                                <button className='review-swiper-button-prev border-transparent  rounded-full  pt-1 pb-1 pr-2 pl-2 bg-gray-100 hover:bg-gray-200 hover:rounded-[50%] ' ><ChevronLeftIcon /></button>
+                                <button className='review-swiper-button-next border-transparent  rounded-full pt-1 pb-1 pr-2 pl-2 bg-gray-100 hover:bg-gray-200 hover:rounded-[50%] '><ChevronRightIcon /></button>
                             </div>
                             <Swiper
                                 navigation={{
@@ -261,8 +261,8 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                             {selectedDestination === '' && (
                                 <>
                                     <div className='flex justify-end gap-4 w-[80%] m-auto'>
-                                        <KeyboardDoubleArrowLeftIcon className='prevbtncity'  />
-                                        <KeyboardDoubleArrowRightIcon className='nextbtncity'   />
+                                        <KeyboardDoubleArrowLeftIcon className='prevbtncity hover:bg-gray-200 hover:rounded-[50%] '  />
+                                        <KeyboardDoubleArrowRightIcon className='nextbtncity hover:bg-gray-200 hover:rounded-[50%] '    />
                                     </div>
                                     <div className='scrollbar-content max-w-[80%]   m-auto scroll-smooth h-fit ' id='scrollbareffect'>
 
@@ -346,9 +346,9 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                             {cities.map((city, index) => (
                                                 <SwiperSlide className='card w-[250px] h-[fit]' key={index} >
                                                     <Link to={`/car-rental/cars/search/bydestination/${city.name}`}>
-                                                        <div className='cars-list mt-[20px] h-fit min-w-[250px] rounded-[10px] border-gray-200 border overflow-hidden' key={index}>
-                                                            <div className='car-img  h-[150px] w-full bg-white'>
-                                                                <img src={city.url} alt="" className='w-full object-cover h-full ' />
+                                                        <div className='cars-list mt-[20px] h-fit min-w-[100%] rounded-[10px] overflow-hidden border' key={index}>
+                                                            <div className='car-img  h-[150px] w-full '>
+                                                                <img src={city.url} alt="" className='w-[100%] object-cover h-full border-none' />
                                                             </div>
                                                             <div className='car-contents mt-2 flex flex-col pl-2 pb-2'>
                                                                 <div>
