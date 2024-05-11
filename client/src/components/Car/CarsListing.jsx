@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { Checkbox } from 'antd';
-import { Radio, Select, Rate, Flex } from 'antd';
-import Slider from '@mui/material/Slider';
+import { Radio, Select, Rate, Flex, Slider } from 'antd';
 import TextField from '@mui/material/TextField';
 import '../cardeffect.css';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -27,8 +26,27 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import { useParams } from 'react-router-dom';
 dayjs.extend(customParseFormat);
+import carmake from '../../data/carmake.js';
 
-
+const featuresList = [
+    "Cruise Control",
+    "Airbags",
+    "Leather Seats",
+    "Navigation/GPS System",
+    "Air Conditioning",
+    "Sunroof",
+    "Remote Central Locking",
+    "Alloy Wheels",
+    "ESP",
+    "Rear Parking Radar",
+    "Onboard Computer",
+    "Child seat",
+    "Rear View Camera",
+    "ABS",
+    "Speed Limiter",
+    "Electric Windows",
+    "CD/MP3/Bluetooth"
+];
 
 
 
@@ -82,17 +100,13 @@ function CarsListing() {
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}/${month}/${day}`;
     };
-    const [value, setValue] = useState(1);
     const [rat, setRate] = useState('');
     const [price, setPrice] = useState([0, 999]);
-    const handlechange = (e, value) => {
-        setPrice(value);
-        console.log(price);
-    }
-    const onChange = (e) => {
-        console.log('radio checked', e.target.value);
-        setValue(e.target.value);
-    };
+    // const handlechange = (e, value) => {
+    //     setPrice(value);
+    //     console.log(price[0]);
+    // }
+
     const [value2, setValue2] = useState('');
     const onChangee = (value) => {
         console.log('selected', { value });
@@ -109,7 +123,7 @@ function CarsListing() {
     }
     const handleshowless = () => {
         const features = document.getElementById('features');
-        features.style.height = '160px';
+        features.style.height = '180px';
         const showbtn = document.getElementById('showbtn');
         showbtn.style.display = 'block';
         const hidebtn = document.getElementById('lessbtn');
@@ -144,14 +158,45 @@ function CarsListing() {
     const [transmission, settransmission] = useState('');
     const [fueltype, setfueltype] = useState('');
     const [type, setType] = useState('all');
-    const [features, setfeatures] = useState([]);
+    const [selectedFeatures, setSelectedFeatures] = useState([]);
 
     const url = window.location.search;
     const searchParams = new URLSearchParams(url);
     const location = searchParams.get('where');
     const days = searchParams.get('days');
-    console.log(sort)
 
+    const [sliderValue, setSliderValue] = useState([194, 499]);
+
+    const handleSliderChange = (value) => {
+        setSliderValue(value);
+        setpricemin(value[0]);
+        setpricemax(value[1]);
+    };
+    const onChange = (e) => {
+        settransmission(e.target.value);
+    };
+    const handleCheckboxChange = (feature) => {
+        if (selectedFeatures.includes(feature)) {
+            setSelectedFeatures(selectedFeatures.filter(item => item !== feature))
+        } else {
+            setSelectedFeatures([...selectedFeatures, feature]);
+        }
+    };
+    const handleClear = () => {
+        setSelectedFeatures([]);
+        setpricemin('');
+        setSliderValue([0, 0])
+        setpricemax('');
+        setmake('');
+        setseats('');
+        settransmission('');
+        setfueltype('');
+        setType('all');
+    }
+    const handletypechaneg = (e) =>{
+        setType(e.target.value);
+    }
+console.log(seats)
     return (
         <div className='carhome-section  bg-white h-fit m-[80px] mt-0'>
             <div className='aside border-[0.5px] border-gray-100 h-fit rounded-[15px]'>
@@ -159,112 +204,107 @@ function CarsListing() {
                     <div className='filter-content  pb-[30px]'>
                         <div className='flex justify-between mb-4 items-center border-b-[1px] p-3 rounded-tr-[15px] rounded-tl-[15px] bg-[#f4f4fc]'>
                             <p className='text-[14px] font-bold'>Filter</p>
-                            <button className='text-[12px] text-[#5c3cfc] border border-transparent hover:bg-gray-200 hover:border pl-2 font-semibold pr-2 pt-1 pb-1 rounded-md'>Clear All Filters</button>
+                            <button className='text-[12px] text-[#5c3cfc] border border-transparent hover:bg-gray-200 hover:border pl-2 font-semibold pr-2 pt-1 pb-1 rounded-md' onClick={handleClear}>Clear All Filters</button>
                         </div>
                         <div className="p-5">
                             <div className='filter-price mb-3'>
                                 <p className='text-[13px] font-bold text-gray-400'>Price</p>
-                                <Slider valueLabelDisplay="auto" value={price} onChange={handlechange} max={999} />
-                                <div className='flex gap-3 mt-2'>
-                                    <div>
-                                        <TextField
-                                            id="outlined-number"
-                                            label="Min (DH)"
-                                            type="text"
-                                            value={price[0]}
-                                            onChange={(e) => { setPrice((prev) => { return [e.target.value, prev[1]] }) }}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-
-                                    </div>
-                                    <div>
-                                        <TextField
-                                            id="outlined-number"
-                                            label="Max (DH)"
-                                            type="text"
-                                            value={price[1]}
-                                            onChange={(e) => { setPrice((prev) => { return [prev[0], e.target.value] }) }}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-                                    </div>
+                                <Slider
+                                    range={{
+                                        draggableTrack: true,
+                                    }}
+                                    defaultValue={[194, 499]}
+                                    max={999}
+                                    onChange={handleSliderChange}
+                                />
+                                <div className='flex gap-3 mt-5'>
+                                    <TextField
+                                        id="outlined-number"
+                                        label="Max (DH)"
+                                        type="text"
+                                        value={sliderValue[0]}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                    <TextField
+                                        id="outlined-number"
+                                        label="Max (DH)"
+                                        type="text"
+                                        value={sliderValue[1]}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
                                 </div>
+
+
                             </div>
                             <div className='filter-transmission mb-3'>
                                 <div>
                                     <p className='text-[13px]  mb-2 font-bold text-gray-400'>Transmission</p>
                                     <Radio.Group onChange={onChange} className='flex flex-col'>
-                                        <Radio value={"mohssine"} className='text-[13px]'>Manule</Radio>
+                                        <Radio value={"Manual"} className='text-[13px]'>Manule</Radio>
                                         <Radio value={"Automatic"} className='text-[13px]'>Automatic</Radio>
                                     </Radio.Group>
                                 </div>
                             </div>
-                            <div className='filter-make mb-2' >
-                                <p className='text-[13px] font-bold text-gray-400 mb-1'>Make</p>
-                                <Select onChange={onChangee} className='w-[100%]'>
-                                    <Option value={"mohssine"}>mohssine</Option>
-                                    <Option value={"yassine"}>mohssine</Option>
+                            <div className='filter-make mb-2 w-[100%]' >
+                                <p className='text-[13px] font-bold text-gray-400 mb-1w-[100%]'>Make</p>
+                                <Select placeholder="Make" value={make} onChange={(value) => setmake(String(value))} className='w-[100%]'>
+                                    {carmake.map((r, index) => (
+                                        <Option key={index} required value={r}>{r}</Option>
+                                    ))}
                                 </Select>
                             </div>
-                            {/* <div className='filter-model mb-3'>
-                        <p className='text-[13px] font-bold text-gray-400 mb-1'>model</p>
-                        <Select onChange={onChangee} className='w-[100%]'>
-                            <Option value={"mohssine"}>mohssine</Option>
-                            <Option value={"yassine"}>mohssine</Option>
-                        </Select>
-                    </div> */}
                             <div className='filter-features mb-3'>
                                 <p className='text-[13px] font-bold text-gray-400 mb-2'>Features</p>
-                                <div className='flex flex-col h-[160px] overflow-hidden p-2 mb-1' id='features'>
-                                    <Checkbox>Cruise Control</Checkbox>
-                                    <Checkbox>Airbags</Checkbox>
-                                    <Checkbox>Leather Seats</Checkbox>
-                                    <Checkbox>Navigation/GPS System</Checkbox>
-                                    <Checkbox>Air Conditioning</Checkbox>
-                                    <Checkbox>Sunroof</Checkbox>
-                                    <Checkbox>Remote Central Locking</Checkbox>
-                                    <Checkbox>Alloy Wheels</Checkbox>
-                                    <Checkbox>(ESP)</Checkbox>
-                                    <Checkbox>Rear Parking Radar</Checkbox>
-                                    <Checkbox>Onboard Computer</Checkbox>
-                                    <Checkbox>Child seat</Checkbox>
-                                    <Checkbox>Rear View Camera</Checkbox>
-                                    <Checkbox>Anti-lock Braking System (ABS)</Checkbox>
-                                    <Checkbox>Speed Limiter</Checkbox>
-                                    <Checkbox>Electric Windows</Checkbox>
-                                    <Checkbox>CD/MP3/Bluetooth</Checkbox>
+                                <div className='flex flex-col h-[180px] overflow-hidden p-2 mb-1' id='features'>
+                                    {featuresList.map((feature, index) => (
+                                        <div key={index}>
+                                            <label className='text-[13px]'>
+                                                <Checkbox
+                                                    className='mr-1'
+                                                    type="checkbox"
+                                                    checked={selectedFeatures.includes(feature)}
+                                                    onChange={() => handleCheckboxChange(feature)}
+                                                />
+                                                {feature}
+
+                                            </label>
+                                        </div>
+                                    ))}
                                 </div>
                                 <a className='text-[13px] text-[#5c3cfc] font-semibold cursor-pointer hover:underline' onClick={handleshowmore} id='showbtn'>Show more</a>
                                 <a className='text-[13px] text-[#5c3cfc] font-semibold cursor-pointer hover:underline hidden' onClick={handleshowless} id='lessbtn'>Show less</a>
                             </div>
                             <div className='filter-capacity mb-2'>
                                 <p className='text-[13px] font-bold text-gray-400 mb-1'>Capacity</p>
-                                <Select className='w-[100%]'>
-                                    <Option>2</Option>
-                                    <Option>4</Option>
-                                    <Option>5</Option>
-                                    <Option>more</Option>
+                                <Select className='w-[100%]' value={seats} onChange={(value) => setseats(value)}>
+                                    <Option key={1} value={2}>2</Option>
+                                    <Option key={2} value={4}>4</Option>
+                                    <Option key={3} value={5}>5</Option>
+                                    <Option key={4} value={'more'}>more</Option>
                                 </Select>
                             </div>
                             <div className='filter-fuel mb-3'>
                                 <p className='text-[13px] font-bold text-gray-400 mb-1'>Fuel Type</p>
-                                <Select className='w-[100%]'>
-                                    <Option>Petrol</Option>
-                                    <Option>Diesel</Option>
-                                    <Option>Hybrid</Option>
-                                    <Option>Electric</Option>
+                                <Select className='w-[100%]' value={fueltype} onChange={(value) => setfueltype(value)}>
+                                    <Option key={55} value={'Petrol'}>Petrol</Option>
+                                    <Option key={56} value={'Diesel'}>Diesel</Option>
+                                    <Option key={57} value={'Hybrid'}>Hybrid</Option>
+                                    <Option key={58} value={'Electric'}>Electric</Option>
                                 </Select>
                             </div>
                             <div className='filter-Vehicletype mb-3'>
                                 <p className='text-[13px] font-bold text-gray-400 mb-1'>Vehicle type</p>
                                 <div>
-                                    <Checkbox>Cars</Checkbox>
-                                    <Checkbox>SUV</Checkbox>
-                                    <Checkbox>Truck</Checkbox>
-                                    <Checkbox>Van</Checkbox>
+                                <Radio.Group onChange={handletypechaneg} className='flex flex-col'>
+                                        <Radio value={"Cars"} className='text-[13px]'>Cars</Radio>
+                                        <Radio value={"Suv"} className='text-[13px]'>Suv</Radio>
+                                        <Radio value={"Sedan"} className='text-[13px]'>Sedan</Radio>
+                                        <Radio value={"Coupe"} className='text-[13px]'>Coupe</Radio>
+                                    </Radio.Group>
                                 </div>
                             </div>
                             <div className='filter-reviews'>
@@ -294,37 +334,6 @@ function CarsListing() {
                         </div>
                     </div>
                     <div className='header '>
-                        {/* <Box sx={{ width: '100%' }}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <Tabs value={valuee} onChange={handleChange} aria-label="basic tabs example"
-                            variant="scrollable"
-                            scrollButtons="auto"
-                        >
-                            <Tab icon={<SiMercedes className='text-[15px]'/>} iconPosition="start" label="Bmw" />
-                        
-                            <Tab icon={<SiBmw className='text-[15px]'/>} iconPosition="start" label="Mercedes" />
-                            <Tab icon={<SiAudi className='text-[26px]'/>} iconPosition="start" label="Audi" />
-                            <Tab label="Audi" />
-                            <Tab label="Audi" />
-                        </Tabs>
-                    </Box>
-                    <CustomTabPanel value={valuee} index={0}>
-                        <div className='cars-components mt-5 max-w-[100%]'>
-                            <Carcomponents />
-                        </div>
-                    </CustomTabPanel>
-                    <CustomTabPanel value={valuee} index={1}>
-                        <div className='cars-components mt-5 max-w-[100%]'>
-
-                        </div>
-                    </CustomTabPanel>
-                    <CustomTabPanel value={valuee} index={2}>
-                        <div className='cars-components mt-5 max-w-[100%]'>
-                            <Carcomponents />
-                        </div>
-                    </CustomTabPanel>
-                    
-                </Box> */}
                         <div className='scrollbar-content flex items-center relative max-w-[80%]'>
                             {/* <div className='h-[24px] w-[50px]'  >
                         <KeyboardDoubleArrowLeftIcon className='absolute  top-[4px] felx items-center cursor-pointer text-[#7357ff]' onClick={sliderLeft} id='leftbtnslider' />
@@ -333,10 +342,10 @@ function CarsListing() {
 
                             >
                                 <button href="" className={type === "all" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("all")}>All</button>
-                                <button href="" className={type === "suv" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("suv")}>Suv</button>
-                                <button href="" className={type === "sedan" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("sedan")}>Sedan</button>
-                                <button href="" className={type === "coupe" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("coupe")}>Coupe</button>
-                                <button href="" className={type === "cars" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("cars")}>Cars</button>
+                                <button href="" className={type === "Suv" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("Suv")}>Suv</button>
+                                <button href="" className={type === "Sedan" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("Sedan")}>Sedan</button>
+                                <button href="" className={type === "Coupe" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("Coupe")}>Coupe</button>
+                                <button href="" className={type === "Cars" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("Cars")}>Cars</button>
                             </div>
                             {/* <div className='h-[24px] w-[50px]' id='rightbtnslider'>
                         <KeyboardDoubleArrowRightIcon className='absolute  top-[4px] text-[#7357ff] cursor-pointer right-[0px] felx items-center' onClick={sliderRight} />
@@ -348,6 +357,13 @@ function CarsListing() {
                                 location={location}
                                 sort={sort}
                                 type={type}
+                                minprice={pricemin}
+                                maxprice={pricemax}
+                                transmission={transmission}
+                                make={make}
+                                features={selectedFeatures}
+                                seats = {seats}
+                                fueltype = {fueltype}
 
 
 
