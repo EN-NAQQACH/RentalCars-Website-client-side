@@ -8,7 +8,7 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { message } from 'antd';
 
-function Carcomponents({ days, location,sort,type}) {
+function Carcomponents({ days, location,sort,type,minprice,maxprice,transmission,make,features,seats,fueltype}) {
     const [cars, setCars] = useState([]);
 
     const getAllCars = async () => {
@@ -18,9 +18,16 @@ function Carcomponents({ days, location,sort,type}) {
                 days: days || '',
                 location: location || '',
                 sort: sort || '',
-                type: type || ''
+                type: type || '',
+                minprice: minprice || '',
+                maxprice: maxprice || '',
+                transmission: transmission || '',
+                make: make || '',
+                features: features || '',
+                seats: seats || '',
+                fueltype: fueltype || '',
             });
-            const response = await fetch(token ? `http://localhost:5600/api/getallcars?${queryParams}` : "http://localhost:5600/api/getallcarsunauth", {
+            const response = await fetch(token ? `http://localhost:5600/api/getallcars?${queryParams}` : `http://localhost:5600/api/getallcarsunauth?${queryParams}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,7 +78,7 @@ function Carcomponents({ days, location,sort,type}) {
 
     useEffect(() => {
         getAllCars();
-    }, [days, location,sort,type]);
+    }, [days, location,sort,type,minprice,maxprice,transmission,make,features,seats,fueltype]);
 
     return (
         <>
