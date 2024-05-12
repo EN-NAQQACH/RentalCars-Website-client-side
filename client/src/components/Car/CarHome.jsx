@@ -26,7 +26,7 @@ import { SiAudi } from "react-icons/si";
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 dayjs.extend(customParseFormat);
-import { Link, Outlet,useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 
 
@@ -151,7 +151,7 @@ function CarHome() {
     const [dateRange, setDateRange] = useState([dayjs(), dayjs()]);
     const [startdate, setstartdate] = useState('');
     const [enddate, setenddate] = useState('');
-    const [days,setdays] = useState();
+    const [days, setdays] = useState();
 
     const handleSearch = () => {
         if (!startdate || !enddate || !location) {
@@ -172,16 +172,16 @@ function CarHome() {
     return (
         <div className='' style={{ fontFamily: "Space Grotesk" }}>
             <div className='location-section w-[100%]  mb-7 ml-2'>
-                <div className='location-content-section-carhome gap-2 rounded-[30px]  border-gray-100 border-[0.2px] shadow-sm w-fit p-3'>
-                    <div className='border-r-[1px]'>
+                <div className='location-content-section-carhome gap-2 rounded-[30px]  border-gray-100 border-[0.2px] shadow-sm w-fit pl-3 pr-3 pt-1 pb-1'>
+                    <div className='border-r-[1px] pr-5'>
                         <label htmlFor="" className='pl-2 text-[13px] font-bold text-gray-500'>Location</label>
-                        <input type="text" className='border-none w-[100%] h-[20px] rounded-[7px] pl-2 text-[13px]' placeholder='Enter Location' value={location} onChange={(e) => setlocation(e.target.value)} />
+                        <input type="text" className='border-none w-[100%] h-[20px] rounded-[2px]  pl-2 text-[13px]' placeholder='Enter Location' value={location} onChange={(e) => setlocation(e.target.value)} />
                     </div>
-                    <div className='flex flex-col justify-center border-r-[1px]'>
+                    <div className='flex flex-col justify-center '>
                         <label htmlFor="" className='text-[13px] font-bold text-gray-500'>Check in-out</label>
                         <div className='flex items-center w-[100%]'>
                             <Space direction="vertical" size={12}>
-                                <RangePicker disabledDate={disabledDate} onChange={onchange} format={dateFormat}  />
+                                <RangePicker disabledDate={disabledDate} onChange={onchange} format={dateFormat} />
                             </Space>
                         </div>
                     </div>
@@ -190,7 +190,7 @@ function CarHome() {
                     </div>
                 </div>
             </div>
-            
+
             <Outlet />
         </div>
     )

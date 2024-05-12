@@ -22,6 +22,7 @@ import CarpageBymake from './components/Car/CarpageBymake';
 import CarpageBydestination from './components/Car/CarpageBydestination';
 import CarsListing from './components/Car/CarsListing';
 import CarsListingBysearch from './components/Car/CarsListingBysearch';
+import MyNotifications from './components/User/MyNotifications';
 
 function App() {
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ function App() {
           <Route path='personal_details' element={<PersonalDetails />} />
           <Route path='my-listing' element={<MyListing />} />
           <Route path='my-Favorities' element={<Myfavorite />} />
+          <Route path='my-notifications' element={<MyNotifications />} />
           <Route path='my-listing/edit-your-car/:carId' element={<EditYourCar />} />
           <Route path='my-booking' element={<MyBooking />} />
         </Route>

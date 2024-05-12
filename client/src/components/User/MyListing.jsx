@@ -25,40 +25,40 @@ const { Option } = Select;
 function MyListing() {
     const [Mycars, setMyCars] = useState([]);
     const Mycarslisting = async () => {
-        try{
-        const reponse = await fetch('http://localhost:5600/api/getcar', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
-            }
-        });
-        const result = await reponse.json();
-        setMyCars(result);
-    }catch(e){
-        console.log(e);
-    }
+        try {
+            const reponse = await fetch('http://localhost:5600/api/getcar', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+                }
+            });
+            const result = await reponse.json();
+            setMyCars(result);
+        } catch (e) {
+            console.log(e);
+        }
     }
     const deleteCar = async (carId) => {
         try {
-          const token = localStorage.getItem('T_ID_Auth');
-          const response = await fetch(`http://localhost:5600/api/delete/car/${carId}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-          });
-          const result = await response.json();
-          if (result) {
-            message.success(result.message)
-          } else {
-            message.error(result.error);
-          }
+            const token = localStorage.getItem('T_ID_Auth');
+            const response = await fetch(`http://localhost:5600/api/delete/car/${carId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+            const result = await response.json();
+            if (result) {
+                message.success(result.message)
+            } else {
+                message.error(result.error);
+            }
         } catch (error) {
-          console.error(error);
+            console.error(error);
         }
-      }
+    }
     useEffect(() => {
         Mycarslisting();
     }, [])
@@ -90,7 +90,7 @@ function MyListing() {
                                     </div>
                                 </div>
                                 <div className='overflow-hidden max-w-[90%]'>
-                                <p className='text-[14px] font-bold text-gray-500 truncate '>{car.make}{' '}{car.model}{' '}{car.year}</p>
+                                    <p className='text-[14px] font-bold text-gray-500 truncate '>{car.make}{' '}{car.model}{' '}{car.year}</p>
                                 </div>
                                 <div className='flex gap-3 mt-2  '>
                                     <p className='flex gap-3 items-center'>
@@ -111,7 +111,7 @@ function MyListing() {
                             </div>
                         </div>
                         <div className='contentdiv'>
-                            <button  className='flex items-center gap-1 border rounded-lg pt-1 pb-1 pl-2 pr-2 text-[red]' onClick={() => deleteCar(car.id)}><HighlightOffIcon /> Delete</button>
+                            <button className='flex items-center gap-1 border rounded-lg pt-1 pb-1 pl-2 pr-2 text-[red]' onClick={() => deleteCar(car.id)}><HighlightOffIcon /> Delete</button>
                             <Link to={`/car/car-rental/${car.make}/${car.model}/${car.year}/${car.id}`} className='flex items-center gap-1 border rounded-lg pt-1 pb-1 pl-2 pr-2 text-[#4c4cc5]'><RemoveRedEyeIcon /> View</Link>
                             <Link to={`edit-your-car/${car.id}`} className='flex items-center gap-1 border rounded-lg pt-1 pb-1 pl-2 pr-2 text-[green]'><BorderColorIcon /> Edit</Link>
                         </div>

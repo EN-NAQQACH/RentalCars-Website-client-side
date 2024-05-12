@@ -153,7 +153,7 @@ function CarsListing() {
     const [sort, setSort] = useState(null);
     const [pricemin, setpricemin] = useState('');
     const [pricemax, setpricemax] = useState('');
-    const [make, setmake] = useState('');
+    
     const [seats, setseats] = useState();
     const [transmission, settransmission] = useState('');
     const [fueltype, setfueltype] = useState('');
@@ -164,7 +164,7 @@ function CarsListing() {
     const searchParams = new URLSearchParams(url);
     const location = searchParams.get('where');
     const days = searchParams.get('days');
-
+    const [make, setmake] = useState(searchParams.get('make'));
     const [sliderValue, setSliderValue] = useState([194, 499]);
 
     const handleSliderChange = (value) => {
@@ -187,7 +187,7 @@ function CarsListing() {
         setpricemin('');
         setSliderValue([0, 0])
         setpricemax('');
-        setmake('');
+        setmake(searchParams.get('make'));
         setseats('');
         settransmission('');
         setfueltype('');
