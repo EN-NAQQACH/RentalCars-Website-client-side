@@ -565,7 +565,7 @@ nav h6 {
 
 .profile-section {
     display: grid;
-    grid-template-columns: 150px 100px auto auto auto auto auto;
+    grid-template-columns: 130px 100px auto auto auto auto auto;
     gap: 15px;
 }
 
@@ -781,6 +781,8 @@ nav h6 {
     width: 300px !important;
     height: 370px !important;
     font-size: 12px !important;
+    border: transparent !important;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
 }
 .epr_6daqyu * {
     font-family: "Space Grotesk" !important;

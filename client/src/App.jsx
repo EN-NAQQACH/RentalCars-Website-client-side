@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation,useNavigate } from 'react-router-dom'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import './App.css'
 import { gapi } from "gapi-script";
@@ -23,6 +23,8 @@ import CarpageBydestination from './components/Car/CarpageBydestination';
 import CarsListing from './components/Car/CarsListing';
 import CarsListingBysearch from './components/Car/CarsListingBysearch';
 import MyNotifications from './components/User/MyNotifications';
+import ChatRoom from './components/User/ChatRoom';
+import ChatHome from './components/User/ChatHome';
 
 function App() {
   const navigate = useNavigate();
@@ -41,15 +43,15 @@ function App() {
     window.scrollTo(0, 0);
   }, [pathname]);
   useEffect(() => {
-    
+
     if (location.pathname === '/carhome/search' && location.search === '') {
-    const lastquerySearch =  localStorage.getItem('lastquerySearch');
-        if (lastquerySearch) {
-            const lastquerySearchParsed = JSON.parse(lastquerySearch);
-            navigate(`carhome/search?where=${lastquerySearchParsed.location}&startdate=${lastquerySearchParsed.startdate}&enddate=${lastquerySearchParsed.enddate}&days=${lastquerySearchParsed.days}`);
-        }
+      const lastquerySearch = localStorage.getItem('lastquerySearch');
+      if (lastquerySearch) {
+        const lastquerySearchParsed = JSON.parse(lastquerySearch);
+        navigate(`carhome/search?where=${lastquerySearchParsed.location}&startdate=${lastquerySearchParsed.startdate}&enddate=${lastquerySearchParsed.enddate}&days=${lastquerySearchParsed.days}`);
       }
-}, [location, navigate]);
+    }
+  }, [location, navigate]);
 
   return (
     <>
@@ -62,7 +64,10 @@ function App() {
           <Route path='personal_details' element={<PersonalDetails />} />
           <Route path='my-listing' element={<MyListing />} />
           <Route path='my-Favorities' element={<Myfavorite />} />
-          <Route path='my-notifications' element={<MyNotifications />} />
+          <Route path='my-notifications' element={<MyNotifications />}>
+            <Route index element={<ChatHome />} />
+            <Route path='chats/:chatId' element={<ChatRoom />} />
+          </Route>
           <Route path='my-listing/edit-your-car/:carId' element={<EditYourCar />} />
           <Route path='my-booking' element={<MyBooking />} />
         </Route>
