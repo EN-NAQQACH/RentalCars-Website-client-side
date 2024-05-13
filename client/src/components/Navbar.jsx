@@ -22,6 +22,11 @@ import AllInboxIcon from '@mui/icons-material/AllInbox';
 import { Button, message, Steps, theme, Radio, Input, Select, Checkbox, Modal, Form } from 'antd';
 import CryptoJS from 'crypto-js';
 
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Avatar from '@mui/material/Avatar';
+import { Dropdown, Space } from 'antd';
+import { Menu } from 'antd';
 function Navbar() {
 
   const next = () => {
@@ -39,8 +44,8 @@ function Navbar() {
       .validateFields()
       .then(() => {
         handeLogin();
-        
-      })   
+
+      })
       .catch((errorInfo) => {
         console.log('Validation failed:', errorInfo);
       });
@@ -57,7 +62,7 @@ function Navbar() {
   };
   const [form] = Form.useForm();
   const [form2] = Form.useForm();
-  const [form3]= Form.useForm();
+  const [form3] = Form.useForm();
   const [form4] = Form.useForm();
   const navigate = useNavigate();
   const [isuserauth, setUserauth] = useState(false)
@@ -73,7 +78,7 @@ function Navbar() {
 
   const [emaillogin, setEmaillogin] = useState('');
   const [passwordlogin, setpasswordlogin] = useState('');
-  const [emailreset , setemailreset] = useState('')
+  const [emailreset, setemailreset] = useState('')
 
   const [picture, setpicture] = useState('');
 
@@ -114,6 +119,7 @@ function Navbar() {
       if (data) {
         message.success(data.message)
         localStorage.setItem('T_ID_Auth', data.token);
+        localStorage.setItem('T_ID_User', data.userId);
         setIsLoggedIn(true);
       } else {
         console.error(data.error);
@@ -219,6 +225,62 @@ function Navbar() {
       modal4.close(); // Hide modal 4
     }
   }
+  const menu = (
+    <Menu className='w-[250px]'>
+      <Menu.Item className=''>
+        <Link to="/account/my-Favorities" className='flex items-center gap-4'>
+          <FavoriteBorderOutlinedIcon /> Favorites
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to="" className='flex items-center gap-4'>
+          <AllInboxIcon /> Inbox
+        </Link>
+      </Menu.Item>
+      <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
+      <Menu.Item>
+        <Link to="/become_a_host/list-your-car" className='flex items-center gap-4'>
+          <CarRentalOutlinedIcon /> Become a host
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to="/Account" className='flex items-center gap-4'>
+          <AccountCircleOutlinedIcon /> Account
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to="/Profile" className='flex items-center gap-4'>
+          <PersonOutlineOutlinedIcon /> Profile
+        </Link>
+      </Menu.Item>
+      <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
+      <Menu.Item>
+        <a className='flex items-center gap-4'>
+          <PolicyIcon /> Policies
+        </a>
+      </Menu.Item>
+      <Menu.Item>
+        <a className='flex items-center gap-4'>
+          <EmailIcon /> Contact
+        </a>
+      </Menu.Item>
+      <Menu.Item>
+        <a className='flex items-center gap-4'>
+          <DirectionsCarIcon /> Our cars
+        </a>
+      </Menu.Item>
+      <Menu.Item>
+        <a className='flex items-center gap-4'>
+          <LocationOnIcon /> Our locations
+        </a>
+      </Menu.Item>
+      <Menu.Item onClick={handleLogout}>
+        <Link to="/" className='flex items-center gap-4'>
+          <LoginIcon /> Log out
+        </Link>
+      </Menu.Item>
+    </Menu>
+  );
   return (
     <>
       {/* <Helmet>
@@ -291,7 +353,7 @@ function Navbar() {
                   <div className="h-px bg-gray-300 w-1/2"></div>
                 </div>
                 {/* <button onClick={signupwithgoogle}>si</button> */}
-                <GoogleLoginButton2 userauth={setUserauth}/>
+                <GoogleLoginButton2 userauth={setUserauth} />
                 <div className="text-sm text-center mt-4">
                   Not a member? <Link to={""} className="text-blue-500 hover:underline" onClick={handleSignUpClick}>Sign up</Link>
                 </div>
@@ -351,32 +413,32 @@ function Navbar() {
               </div>
               <form className="space-y-4">
                 <div className="flex flex-col">
-                <Form form={form3} name="basic">
-                      <label htmlFor="" className="block mb-1 text-[14px] font-semibold">Email</label>
-                      <Form.Item
-                        className=''
-                        name="emailrestpassword"
-                        rules={[
-                          {
-                            required: true,
-                            message: 'you forgot your email',
-                            pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  <Form form={form3} name="basic">
+                    <label htmlFor="" className="block mb-1 text-[14px] font-semibold">Email</label>
+                    <Form.Item
+                      className=''
+                      name="emailrestpassword"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'you forgot your email',
+                          pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 
-                          },
-                        ]}
-                      >
-                        <Input type='email' placeholder="Email" className='rounded-[5px] p-2' value={emailreset} onChange={(e) => setemailreset(e.target.value)} />
-                      </Form.Item>
-                      <Button id="signupbtn" onClick={() => nexttt()}  >
-                        Continue
-                      </Button>
+                        },
+                      ]}
+                    >
+                      <Input type='email' placeholder="Email" className='rounded-[5px] p-2' value={emailreset} onChange={(e) => setemailreset(e.target.value)} />
+                    </Form.Item>
+                    <Button id="signupbtn" onClick={() => nexttt()}  >
+                      Continue
+                    </Button>
                   </Form>
                 </div>              </form>
               <div className="text-center mt-6">
                 <a href="#" className="text-sm text-gray-400 hover:underline">We'll send the password to your email .</a>
               </div>
               <div className="flex items-center justify-center mt-4">
-                <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close() ; form3.resetFields() }}>Back</a>
+                <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close(); form3.resetFields() }}>Back</a>
               </div>
 
             </div>
@@ -398,34 +460,34 @@ function Navbar() {
               </div>
               <form className="space-y-4">
                 <div className="flex flex-col">
-                <Form form={form4} name="basic">
-                      <label htmlFor="" className="block mb-1 text-[14px] font-semibold">Email</label>
-                      <Form.Item
-                        className=''
-                        name="newpassword"
-                        rules={[
-                          {
-                            required: true,
-                            message: 'you forgot your email',
+                  <Form form={form4} name="basic">
+                    <label htmlFor="" className="block mb-1 text-[14px] font-semibold">Email</label>
+                    <Form.Item
+                      className=''
+                      name="newpassword"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'you forgot your email',
 
-                          },
-                        ]}
-                      >
-                        <Input.Password type='text' placeholder="password" className='rounded-[5px] p-2' value={emaillogin} onChange={(e) => setEmaillogin(e.target.value)} />
-                      </Form.Item>
-                      <Form.Item
-                        className=''
-                        name="confirmpassword"
-                        rules={[
-                          {
-                            required: true,
-                            message: 'you forgot your password',
+                        },
+                      ]}
+                    >
+                      <Input.Password type='text' placeholder="password" className='rounded-[5px] p-2' value={emaillogin} onChange={(e) => setEmaillogin(e.target.value)} />
+                    </Form.Item>
+                    <Form.Item
+                      className=''
+                      name="confirmpassword"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'you forgot your password',
 
-                          },
-                        ]}
-                      >
-                        <Input.Password type='text' placeholder="password" className='rounded-[5px] p-2' value={passwordlogin} onChange={(e) => setpasswordlogin(e.target.value)} />
-                      </Form.Item>
+                        },
+                      ]}
+                    >
+                      <Input.Password type='text' placeholder="password" className='rounded-[5px] p-2' value={passwordlogin} onChange={(e) => setpasswordlogin(e.target.value)} />
+                    </Form.Item>
                   </Form>
                 </div>
                 <button type="submit" className="block w-full px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700">Continue</button>
@@ -434,7 +496,7 @@ function Navbar() {
                 <a href="#" className="text-sm text-gray-400 hover:underline">We'll send the password to your email .</a>
               </div>
               <div className="flex items-center justify-center mt-4">
-                <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close() ; form3.resetFields() }}>Back</a>
+                <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close(); form3.resetFields() }}>Back</a>
               </div>
 
             </div>
@@ -562,7 +624,7 @@ function Navbar() {
               </ul>
             </div>
             <div className="navbar-end ">
-              <div className="dropdown dropdown-hover dropdown-end ">
+              {/* <div className="dropdown dropdown-hover dropdown-end ">
                 <div tabIndex={0} role="button" className="border rounded-[5px] m-1 p-2   text-black transition duration-500    shadow-sm flex items-center gap-3">
                   <MenuIcon />
                   <img src={localStorage.getItem('image')} alt="" className='w-[30px] h-[30px] rounded-[50%]' />
@@ -581,7 +643,28 @@ function Navbar() {
                   <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><LocationOnIcon />Our locations</a></li>
                   <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link onClick={handleLogout}><LoginIcon /> Log out</Link></li>
                 </ul>
-              </div>
+              </div> */}
+              <Space direction="vertical">
+                <Space wrap>
+                <Dropdown overlay={menu} placement="bottomRight" arrow >
+                    <Tooltip >
+                  
+                      <IconButton
+
+                        size="small"
+                        sx={{ ml: 2,}}
+                        aria-controls={open ? 'account-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                      > 
+                      
+                        <Avatar sx={{ width: 36, height: 36,}} className='shadow-lg'><img src={localStorage.getItem('image')} alt="" className='w-full h-full ' />
+                        </Avatar>
+                      </IconButton>
+                    </Tooltip>
+                  </Dropdown>
+                </Space>
+              </Space>
             </div>
           </div>
 
