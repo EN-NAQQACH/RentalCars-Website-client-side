@@ -795,3 +795,13 @@ nav h6 {
 .epr_-tbk56u {
     background-size: calc(var(--epr-category-navigation-button-size)* 10) !important;
 }
+:where(.css-dev-only-do-not-override-1qfezbu).ant-dropdown .ant-dropdown-menu, :where(.css-dev-only-do-not-override-1qfezbu).ant-dropdown-menu-submenu .ant-dropdown-menu {
+    padding: 10px;
+    box-shadow: inset;
+}
+:where(.css-dev-only-do-not-override-1qfezbu) a:hover{
+    color: #1b8efa !important;
+}
+#r1p{
+    background-color: #3c84f4 !important;
+}

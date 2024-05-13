@@ -24,6 +24,7 @@ const GoogleLoginButton = () => {
             const data = await res.json();
             if (res.ok) {
               console.log(data.message);
+              localStorage.setItem('T_ID_User', data.userId);
               window.location.href="/home"
             } else {
               console.error(data.error);

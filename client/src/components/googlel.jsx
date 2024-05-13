@@ -24,6 +24,7 @@ const GoogleLoginButton2 = (props) => {
             if (res.ok) {
               console.log(data.message);
               localStorage.setItem('T_ID_Auth', data.token);
+              localStorage.setItem('T_ID_User', data.userId);
               localStorage.setItem('image', response.profileObj.imageUrl);
               props.userauth(true)
               window.location.pathname = '/home';
