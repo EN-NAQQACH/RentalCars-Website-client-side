@@ -7,16 +7,25 @@ import TagFacesIcon from '@mui/icons-material/TagFaces';
 import '../cardeffect.css'
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import SendIcon from '@mui/icons-material/Send';
+import {io} from 'socket.io-client';
 export const LastMessageContext = createContext();
 function MyNotifications() {
-    
+    const [socket, setsocket] = useState();
     const [chats, setChats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [lastMessage, setlastmessage] = useState(null);
+    const [selectedChat, setSelectedChat] = useState(null);
+    const currentuser = localStorage.getItem('T_ID_User')
     const fetchChats = async () => {
         try {
 
-            const response = await fetch('http://localhost:5600/api/chats');
+            const response = await fetch('http://localhost:5600/api/chats',{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+                }
+            });
             const data = await response.json();
 
             if (data) {
@@ -33,11 +42,14 @@ function MyNotifications() {
         fetchChats();
         setLoading(true)
     }, [lastMessage]);
-    const [selectedChat, setSelectedChat] = useState(null);
-
-    const handleChatClick = (chat) => {
-        setSelectedChat(chat);
+ 
+    const handleChatClick = (index) => {
+        setSelectedChat(index);
     };
+    useEffect(() => {
+       setsocket(io("http://localhost:4000/"));
+    }, []);
+
 
     return (
         <div className='mynotifications  border border-transparent rounded-xl overflow-hidden min-h-[100vh] grid grid-cols-3 '>
@@ -47,11 +59,11 @@ function MyNotifications() {
                         <SearchIcon className='text-gray-400 mr-2' />
                         <input type="text" placeholder='Search Chats...' className='bg-transparent outline-none text-[13px]' />
                     </div>
-                    <div className='flex flex-col items-center mt-5'>
+                    <div className='flex flex-col gap-1 items-center mt-5'>
 
                         {chats.map((chat, index) => (
-                            <Link to={`chats/${chat.id}`} key={index}>
-                                <div className='center w-[100%]  flex items-center gap-3 transition-all duration-700 cursor-pointer hover:bg-gray-100 hover:rounded-md p-3' >
+                            <Link to={`chats/${chat.id}`} key={index} onClick={() => handleChatClick(chat.reseivedUser.id)} className={selectedChat == chat.reseivedUser.id ? "bg-[#f4f6fb] rounded-[2px] border-none" : "bg-white rounded-md border-none"}>
+                                <div className='center w-[100%]  flex items-center gap-3  cursor-pointer  p-3' >
                                     <div className=''>
                                         <img src={chat.reseivedUser.picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover' />
                                     </div>
@@ -71,7 +83,7 @@ function MyNotifications() {
                 </div>
             </div>
 
-            <LastMessageContext.Provider value={{ lastMessage, setlastmessage }}>
+            <LastMessageContext.Provider value={{ lastMessage, setlastmessage, socket }}>
                 <Outlet />
             </LastMessageContext.Provider>
 

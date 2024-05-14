@@ -12,6 +12,7 @@ import {LastMessageContext} from './MyNotifications';
 
 function ChatRoom() {
     const { setlastmessage } = useContext(LastMessageContext);
+    const {socket} = useContext(LastMessageContext)
     const [showPicker, setShowPicker] = useState(false);
     const [chosenEmoji, setChosenEmoji] = useState(null);
     const [inputValue, setInputValue] = useState('');
@@ -27,27 +28,56 @@ function ChatRoom() {
     const [currentuserId, setcurrentuserId] = useState('');
     const userId = localStorage.getItem('T_ID_User')
     const messageEndRef = useRef();
+    const [receiver,setreceiver] = useState(null);
+    const [sender,setsender] = useState(null);
+    const currentuser = localStorage.getItem('T_ID_User')
 
     useEffect(() => {
-            messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [chat])
+        const messageBox = document.getElementById('message-box');
+        if (messageBox) {
+            const scrollHeight = messageBox.scrollHeight;
+            messageBox.scrollTo({
+                top: scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    }, [chat]);
 
     useEffect(() => {
         async function fetchChat() {
             try {
-                const response = await fetch(`http://localhost:5600/api/chats/${chatId}`);
+                const response = await fetch(`http://localhost:5600/api/chats/${chatId}`,{
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+                    }
+                });
                 const data = await response.json();
                 if (data) {
-                    setChat(data);
+                    setChat(data.chat);
+                    setsender(data.userSender)
+                    setreceiver(data.userReceiver)
+                    setcurrentuserId(userId);
                 }
             } catch (error) {
                 console.error('Error fetching chat:', error);
             }
         }
-
         fetchChat();
-        setcurrentuserId(userId);
     }, [chatId]);
+
+    // useEffect(() => {
+    //     if (currentuser && receiver) {
+    //         socket?.emit("newSender", {
+    //             senderId: currentuser,
+    //         });
+    //         socket?.emit("newReceiver", {
+    //             receiverId: receiver.id,
+    //         });
+    //     }
+    // }, [currentuser, receiver]);
+
 
     const handleSubmitMessage = async () => {
        
@@ -57,6 +87,7 @@ function ChatRoom() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
                 },
                 body: JSON.stringify({ content: inputValue }),
             });
@@ -65,6 +96,12 @@ function ChatRoom() {
                 throw new Error('Failed to send message');
             }
             setChat((prev) => ({...prev,messages:[...prev.messages,data]}))
+            socket.emit('sendmessage', {
+                data : data,
+                chatId : chatId,
+                sender : sender,
+                receiver : receiver.id,
+            });
             setlastmessage(data.content)
             setInputValue('');
         } catch (error) {
@@ -120,6 +157,34 @@ function ChatRoom() {
         const selectedFile = event.target.files[0];
         console.log('Selected file:', selectedFile);
     };
+    useEffect(()=>{
+        currentuser && socket?.emit("newuser",currentuser);
+    },[receiver])
+
+    useEffect(()=>{
+        const read = async ()=>{
+            const response = await fetch(`http://localhost:5600/api/chats/${chatId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+                },
+            });
+        }
+        if(chat && socket){
+            socket.on('getmessage',(data)=>{
+                if(chat.id === data.chatId){
+                    setChat((prev) => ({...prev, messages: [...prev.messages, data]}));
+                    read()
+                    setlastmessage(data.content)
+                }
+            })    
+        }
+        return () => {
+            socket?.off('getmessage');
+        };
+        
+    },[socket,chat])
     return (
         <div className='messages-box  bg-[#f7f9fc] h-[100%] col-start-2 col-end-4 relative' >
             <div className='pr-2 pt-2 '>
@@ -128,10 +193,10 @@ function ChatRoom() {
                         {chat && (
                             <>
                                 <div className=''>
-                                    <img src={chat.users[1].picture} alt="" className='w-[45px] h-[45px] rounded-[50%] object-cover' />
+                                    <img src={receiver.picture} alt="" className='w-[45px] h-[45px] rounded-[50%] object-cover' />
                                 </div>
                                 <div>
-                                    <p className='text-[12px] font-semibold'>{chat.users[1].firstName} {chat.users[1].lastName}</p>
+                                    <p className='text-[12px] font-semibold'>{receiver.firstName} {receiver.lastName}</p>
                                 </div>
                             </>
 
@@ -143,7 +208,7 @@ function ChatRoom() {
                         <Tooltip title={
                             <>
                                 <div className='flex flex-col justify-center items-center m-auto'>
-                                    <img src={chat.users[1].picture} alt="" className='w-[45px] h-[45px] rounded-[50%] object-cover' /> <p className='text-[12px] font-semibold'>{chat.users[1].firstName} {chat.users[1].lastName}</p>
+                                    <img src={receiver.picture} alt="" className='w-[45px] h-[45px] rounded-[50%] object-cover' /> <p className='text-[12px] font-semibold'>{receiver.firstName} {receiver.lastName}</p>
 
                                 </div>
 
@@ -172,7 +237,8 @@ function ChatRoom() {
                                                     <p className='text-[10px] mt-[-2px] flex justify-end'>{message.hour}</p>
                                                 </div>
                                                 <div>
-                                                    <img src={chat.users[0].picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' />
+                                                    {/* {chat.users[0].id == currentuserId ? <img src={chat.users[0].picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' /> : <img src={chat.users[1].picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' /> } */}
+                                                    <img src={sender.picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' />
                                                 </div>
                                             </div>
                                         </div>
@@ -180,7 +246,8 @@ function ChatRoom() {
                                         <div className='chat-room p-3'>
                                             <div className='flex items-end gap-3'>
                                                 <div>
-                                                    <img src={chat.users[1].picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' />
+                                                {/* {chat.users[1].id != currentuserId ? <img src={chat.users[1].picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' /> : <img src={chat.users[0].picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' /> } */}
+                                                <img src={receiver.picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' />
                                                 </div>
                                                 <div className='flex flex-col max-w-[350px]'>
                                                     <p className='text-[11px] border-none shadow-sm p-2 rounded-tr-xl rounded-tl-xl rounded-br-xl mb-3 overflow-hidden text-justify bg-[white] text-gray-600'>
