@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef,useContext } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { Link, useOutlet, useOutletContext, useParams } from 'react-router-dom'
 import SearchIcon from '@mui/icons-material/Search';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -8,11 +8,12 @@ import '../cardeffect.css'
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import SendIcon from '@mui/icons-material/Send';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
-import {LastMessageContext} from './MyNotifications';
+import { LastMessageContext } from './MyNotifications';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function ChatRoom() {
     const { setlastmessage } = useContext(LastMessageContext);
-    const {socket} = useContext(LastMessageContext)
+    const { socket } = useContext(LastMessageContext)
     const [showPicker, setShowPicker] = useState(false);
     const [chosenEmoji, setChosenEmoji] = useState(null);
     const [inputValue, setInputValue] = useState('');
@@ -20,17 +21,14 @@ function ChatRoom() {
     const fileInputRef = useRef(null);
     const { chatId } = useParams();
     const [chat, setChat] = useState(null);
-    const [picturesender, setpicturesender] = useState()
-    const [picturereceiver, setpicturereceiver] = useState()
-    const [firstnamereceiver, setfirstnamereceiver] = useState()
-    const [lastNamereceiver, setLastnamereceiver] = useState();
     const [message, setMessage] = useState([]);
     const [currentuserId, setcurrentuserId] = useState('');
     const userId = localStorage.getItem('T_ID_User')
     const messageEndRef = useRef();
-    const [receiver,setreceiver] = useState(null);
-    const [sender,setsender] = useState(null);
+    const [receiver, setreceiver] = useState(null);
+    const [sender, setsender] = useState(null);
     const currentuser = localStorage.getItem('T_ID_User')
+    const [msg , setmsg] = useState();
 
     useEffect(() => {
         const messageBox = document.getElementById('message-box');
@@ -42,11 +40,10 @@ function ChatRoom() {
             });
         }
     }, [chat]);
-
     useEffect(() => {
         async function fetchChat() {
             try {
-                const response = await fetch(`http://localhost:5600/api/chats/${chatId}`,{
+                const response = await fetch(`http://localhost:5600/api/chats/${chatId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -66,22 +63,18 @@ function ChatRoom() {
         }
         fetchChat();
     }, [chatId]);
-
-    // useEffect(() => {
-    //     if (currentuser && receiver) {
-    //         socket?.emit("newSender", {
-    //             senderId: currentuser,
-    //         });
-    //         socket?.emit("newReceiver", {
-    //             receiverId: receiver.id,
-    //         });
-    //     }
-    // }, [currentuser, receiver]);
-
-
+    const read = async () => {
+        const response = await fetch(`http://localhost:5600/api/chats/${chatId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+            },
+        });
+    }
     const handleSubmitMessage = async () => {
-       
-        if(!inputValue) return;
+
+        if (!inputValue) return;
         try {
             const response = await fetch(`http://localhost:5600/api/Messages/${chatId}`, {
                 method: 'POST',
@@ -95,12 +88,12 @@ function ChatRoom() {
             if (!data) {
                 throw new Error('Failed to send message');
             }
-            setChat((prev) => ({...prev,messages:[...prev.messages,data]}))
+            setChat((prev) => ({ ...prev, messages: [...prev.messages, data] }))
             socket.emit('sendmessage', {
-                data : data,
-                chatId : chatId,
-                sender : sender,
-                receiver : receiver.id,
+                data: data,
+                chatId: chatId,
+                sender: sender,
+                receiver: receiver.id,
             });
             setlastmessage(data.content)
             setInputValue('');
@@ -108,6 +101,55 @@ function ChatRoom() {
             console.error('Error sending message:', error);
         }
     };
+    const handleRemoveMessage = async (messageId) => {
+        try {
+            const response = await fetch(`http://localhost:5600/api/Messages/${messageId}/${chatId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+                },
+            });
+            const data = await response.json();
+            if (!data) {
+                throw new Error('Failed to remove message');
+            }
+            setlastmessage(data.chat.lastMessage)
+            console.log(data.chat.lastMessage)
+            setChat((prev) => ({ ...prev, messages: prev.messages.filter((m) => m.id !== messageId) }));
+            setMessage(message.filter((m) => m.id !== messageId));
+            socket.emit('deletemessage', { 
+                messageId:messageId, 
+                receiver: receiver.id,
+                lastMessage: data.chat.lastMessage });
+        } catch (error) {
+            console.error('Error removing message:', error);
+        }
+    };
+    // const handleSubmitPicture = async (e) => {
+    //     e.preventDefault();
+    //     const file = e.target.picture.files[0];
+    //     const formData = new FormData();
+    //     formData.append('picture', file);
+    //     try {
+    //         const response = await fetch(`XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX${chatId}`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+    //             },
+    //             body: formData,
+    //         });
+    //         const data = await response.json();
+    //         if (!data) {
+    //             throw new Error('Failed to send message');
+    //         }
+    //         setChat((prev) => ({ ...prev, messages: [...prev.messages, data] }))
+    //         socket.emit('sendmessage', {
+    //             data: data,})
+    //         }catch{
+
+    //         }
+    //     }
 
     useEffect(() => {
 
@@ -157,34 +199,32 @@ function ChatRoom() {
         const selectedFile = event.target.files[0];
         console.log('Selected file:', selectedFile);
     };
-    useEffect(()=>{
-        currentuser && socket?.emit("newuser",currentuser);
-    },[receiver])
+    useEffect(() => {
+        currentuser && socket?.emit("newuser", currentuser);
+    }, [receiver])
+    useEffect(() => {
 
-    useEffect(()=>{
-        const read = async ()=>{
-            const response = await fetch(`http://localhost:5600/api/chats/${chatId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
-                },
-            });
-        }
-        if(chat && socket){
-            socket.on('getmessage',(data)=>{
-                if(chat.id === data.chatId){
-                    setChat((prev) => ({...prev, messages: [...prev.messages, data]}));
+        if (chat && socket) {
+            socket.on('getmessage', (data) => {
+                if (chat.id === data.chatId) {
+                    setChat((prev) => ({ ...prev, messages: [...prev.messages, data] }));
                     read()
                     setlastmessage(data.content)
                 }
-            })    
+            });
+            socket.on('removemessage', (messageId,lastMessage) => {
+                setMessage((prevMessages) => prevMessages.filter((m) => m.id !== messageId));
+                setlastmessage(lastMessage)
+                setChat((prev) => ({ ...prev, messages: prev.messages.filter((m) => m.id !== messageId) }));
+            });
         }
         return () => {
             socket?.off('getmessage');
+            socket?.off('removemessage');
         };
-        
-    },[socket,chat])
+
+    }, [socket, chat])
+
     return (
         <div className='messages-box  bg-[#f7f9fc] h-[100%] col-start-2 col-end-4 relative' >
             <div className='pr-2 pt-2 '>
@@ -204,19 +244,9 @@ function ChatRoom() {
 
                     </div>
                     {chat && (
-                    <div className='border-none pl-1 pr-1 pt-[1px] pb-[1px] rounded-[50%] bg-[#e9eef7] text-[blue]'>
-                        <Tooltip title={
-                            <>
-                                <div className='flex flex-col justify-center items-center m-auto'>
-                                    <img src={receiver.picture} alt="" className='w-[45px] h-[45px] rounded-[50%] object-cover' /> <p className='text-[12px] font-semibold'>{receiver.firstName} {receiver.lastName}</p>
+                        <div className='border-none pl-1 pr-1 pt-[1px] pb-[1px] rounded-[50%] bg-[#e9eef7] text-[blue]'>
 
-                                </div>
-
-                            </>
-                        }>
-                            <MoreHorizIcon />
-                        </Tooltip>
-                    </div>
+                        </div>
                     )}
 
                 </div>
@@ -231,9 +261,20 @@ function ChatRoom() {
                                         <div className='chat-room p-3 flex justify-end '>
                                             <div className='flex items-end gap-3'>
                                                 <div className='flex flex-col max-w-[350px]'>
-                                                    <p className='text-[11px] border-none shadow-sm p-2 rounded-tr-xl rounded-tl-xl rounded-bl-xl mb-3 overflow-hidden text-justify bg-[#2681ea] text-white'>
-                                                        {message.content}
-                                                    </p>
+                                                    <div className='flex gap-2'>
+                                                        <Tooltip title={
+                                                            <>
+                                                                <div className='cursor-pointer' onClick={() =>handleRemoveMessage(message.id)}>
+                                                                    <DeleteIcon className='text-red-400' />
+                                                                </div>
+                                                            </>
+                                                        }>
+                                                            <MoreHorizIcon className='text-gray-400 cursor-pointer' />
+                                                        </Tooltip>                                                        <p className='text-[11px] border-none shadow-sm p-2 rounded-tr-xl rounded-tl-xl rounded-bl-xl mb-3 overflow-hidden text-justify bg-[#2681ea] text-white'>
+                                                            {message.content}
+                                                        </p>
+                                                    </div>
+
                                                     <p className='text-[10px] mt-[-2px] flex justify-end'>{message.hour}</p>
                                                 </div>
                                                 <div>
@@ -246,8 +287,8 @@ function ChatRoom() {
                                         <div className='chat-room p-3'>
                                             <div className='flex items-end gap-3'>
                                                 <div>
-                                                {/* {chat.users[1].id != currentuserId ? <img src={chat.users[1].picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' /> : <img src={chat.users[0].picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' /> } */}
-                                                <img src={receiver.picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' />
+                                                    {/* {chat.users[1].id != currentuserId ? <img src={chat.users[1].picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' /> : <img src={chat.users[0].picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' /> } */}
+                                                    <img src={receiver.picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover shadow-md' />
                                                 </div>
                                                 <div className='flex flex-col max-w-[350px]'>
                                                     <p className='text-[11px] border-none shadow-sm p-2 rounded-tr-xl rounded-tl-xl rounded-br-xl mb-3 overflow-hidden text-justify bg-[white] text-gray-600'>
@@ -275,7 +316,7 @@ function ChatRoom() {
                                 <input
                                     type="text"
                                     name='message'
-                                    
+
                                     placeholder='Type a message...'
                                     className='bg-transparent outline-none text-[13px] w-[450px] '
                                     value={inputValue}
