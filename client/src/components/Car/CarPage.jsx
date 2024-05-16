@@ -8,8 +8,7 @@ import { BsWhatsapp } from "react-icons/bs";
 import { BiCurrentLocation, BiLocationPlus, BiMessageDetail } from "react-icons/bi";
 import { Progress } from 'antd';
 import StarIcon from '@mui/icons-material/Star';
-import { DatePicker, Flex, Select } from 'antd';
-const { RangePicker } = DatePicker;
+import { Flex, Select } from 'antd';
 import dayjs from 'dayjs';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -20,13 +19,19 @@ import { Button, Modal } from 'antd';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
-
 import { Navigation } from 'swiper/modules';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 const { Option } = Select;
 import '../cardeffect.css'
-import { useParams, Link,useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 function CarPage() {
+
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
         setIsModalOpen(true);
@@ -37,9 +42,10 @@ function CarPage() {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
+    const [loading, setloading] = useState(true)
     const [carData, setCarData] = useState(null);
     const { carId } = useParams();
-    const dateFormat = 'YYYY/MM/DD';
+    const dateFormat = 'YYYY-MM-DD';
     const [value, setValue] = useState('');
     const [location, setlocation] = useState('');
     const [year, setYear] = useState('');
@@ -57,17 +63,15 @@ function CarPage() {
     const [image, setImage] = useState([]);
     const [photo, setphoto] = useState(null);
     const [features, setfeatures] = useState([]);
+    const [StartDate, setStartDate] = useState('');
+    const [MinDate , setMindate] = useState('');
+    const [EndDate, setEndDate] = useState('');
+    const [doors, setdoors] = useState();
     const [selectedFeatures, setSelectedFeatures] = useState([]);
     const onChange = (date, dateString) => {
-        const datee = new Date();
-        console.log(dateString + datee);
+        console.log(dateString);
     };
-    const formatDate = date => {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}/${month}/${day}`;
-    };
+
     // const getcar = async () => {
     //     try {
     //         const reponse = await fetch(`http://localhost:5600/api/getusercar/${carId}`, {
@@ -125,6 +129,10 @@ function CarPage() {
             setSeats(result.car.carSeats)
             setImage(result.car.imageUrls);
             setphoto(result.car.picture);
+            setdoors(result.car.doors)
+            setStartDate(result.car.startTripDate)
+            setMindate(result.car.startTripDate)
+            setEndDate(result.car.endTripDate)
             const parsedFeatures = result.car.features.map(feature => {
                 const [name, icon] = feature.split(":");
                 return { name, icon };
@@ -135,8 +143,10 @@ function CarPage() {
             setLasname([result.user.lastName])
             setuserphoto([result.user.picture])
             setuserid([result.user.id]);
+            setloading(false)
         } catch (error) {
             console.log(error);
+            setloading(false)
         }
     };
     const favoriteCar = async (id) => {
@@ -172,15 +182,77 @@ function CarPage() {
             console.log(error);
         }
     };
-
     useEffect(() => {
         getCar();
+        setloading(true)
     }, [carId])
-    const history = useNavigate();
 
+    const [selectedStartDate, setSelecteStartdDate] = useState(null);
+    const [selectedEndDate, setSelecteEnddDate] = useState(null);
+
+    // const handleStartDateChange =  (newDate) => {
+    //     setSelecteStartdDate(dayjs(newDate).format("YYYY-MM-DD"))
+    // };
+    // const handleEndDateChange =  (d) => {
+    //     setSelecteEnddDate(dayjs(d).format("YYYY-MM-DD"))
+    // };
+    // useEffect(() => {
+    //     console.log("Selected Start Date:", selectedStartDate);
+    //   }, [selectedStartDate]);
+    
+    //   useEffect(() => {
+    //     console.log("Selected End Date:", selectedEndDate);
+    //   }, [selectedEndDate]);
+    // useEffect(() => {
+    //     if (selectedStartDate && selectedEndDate) {
+    //       const diffInDays = dayjs(selectedEndDate).diff(selectedStartDate, "day");
+    //       setDateDifference(diffInDays);
+    //     }
+    //   }, [selectedStartDate, selectedEndDate]);
+    //   console.log(dateDifference)
+
+    const [dateDifference, setDateDifference] = useState(0);
+
+    // Function to calculate the difference between two dates
+    const calculateDateDifference = (start, end) => {
+      const diffInDays = dayjs(end).diff(start, 'day');
+      return diffInDays;
+    };
+  
+    useEffect(() => {
+      // Initialize the date difference when both start date and end date are available
+      if (StartDate && EndDate) {
+        const diff = calculateDateDifference(StartDate, EndDate);
+        setDateDifference(diff);
+        console.log("Difference between start date and end date:", diff);
+      }
+    }, [StartDate, EndDate]);
+    const handleStartDateChange = (newDate) => {
+        const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
+        // Check if start date is greater than end date
+        if (dayjs(formattedDate).isAfter(EndDate)) {
+          setStartDate(EndDate); // Swap start date with end date
+          setEndDate(formattedDate); // Keep end date as it is
+        } else {
+          setStartDate(formattedDate);
+        }
+      };
+    
+      const handleEndDateChange = (newDate) => {
+        const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
+        // Check if end date is less than start date
+        if (dayjs(formattedDate).isBefore(StartDate)) {
+          setEndDate(StartDate); // Swap end date with start date
+          setStartDate(formattedDate); // Keep start date as it is
+        } else {
+          setEndDate(formattedDate);
+        }
+      };
+
+    
     return (
         <div className='carpage p-0 m-0 ' >
-            <div className='ml-5 rounded-[15px] bg-transparent  border-black w-fit text-black p-1 hover:bg-gray-100 hover:text-black transition-all duration-[0.3s] cursor-pointer' onClick={()=> history(-1)} >
+            <div className='ml-5 rounded-[15px] bg-transparent  border-black w-fit text-black p-1 hover:bg-gray-100 hover:text-black transition-all duration-[0.3s] cursor-pointer' onClick={() => history(-1)} >
                 <ArrowBackIcon />
             </div>
             <div className='carpagecontents'>
@@ -203,12 +275,12 @@ function CarPage() {
                                     <div>
                                         <button className='border p-1 border-gray-500 rounded-[5px]' onClick={showModal}><CollectionsOutlinedIcon /> {image.length - 3} more photos</button>
                                     </div>
-                                    <Modal  width={800} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} style={{
+                                    <Modal width={800} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} style={{
                                         top: 50,
                                     }}>
                                         <div className='text-center mb-3'>
-                                        <p className='text-[15px] text-center font-bold'>{make} {model} {year}</p>
-                                        <p className='font-semibold text-gray-400 text-[12px]'>by {lastName}</p>
+                                            <p className='text-[15px] text-center font-bold'>{make} {model} {year}</p>
+                                            <p className='font-semibold text-gray-400 text-[12px]'>by {lastName}</p>
                                         </div>
 
                                         <Swiper navigation={true} modules={[Navigation]} className="mySwiper rounded-lg">
@@ -243,7 +315,7 @@ function CarPage() {
                                         <div className='flex flex-col gap-4'>
                                             <div className='flex items-center gap-3'>
                                                 <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" fill="none" viewBox="0 0 24 24" class="seo-pages-0" role="img" version="1.1"><path fill="#121214" d="M19.67 21.45H7.27c-1.33 0-2.5-.85-2.91-2.1l-2.2-6.68c-.38-1.14-.05-2.4.83-3.21l6.08-5.63c.8-.75 2.28-1.33 3.38-1.33h8.92c.35 0 .62.28.62.62 0 .34-.28.62-.62.62h-8.92c-.78 0-1.96.46-2.53.99l-6.09 5.64c-.52.48-.71 1.23-.49 1.9l2.2 6.68c.25.75.94 1.25 1.72 1.25h12.4c.59 0 1.07-.48 1.07-1.07V5.51c0-.34.28-.62.62-.62.34 0 .62.28.62.62v13.61a2.3 2.3 0 0 1-2.3 2.33Z"></path><path fill="#121214" fill-rule="evenodd" d="M18.15 11.33H6.92c-.7 0-.93-.39-1-.56-.06-.17-.16-.62.35-1.1l4.27-4.03c.46-.43 1.27-.76 1.9-.76h5.71c.81 0 1.47.66 1.47 1.47v3.51c0 .81-.66 1.47-1.47 1.47Zm-10.5-1.25h10.5c.13 0 .22-.1.22-.22v-3.5c0-.12-.1-.22-.22-.22h-5.71c-.31 0-.82.2-1.04.42l-3.75 3.52Z" clip-rule="evenodd"></path><path fill="#121214" d="M17.04 13.72h1.95c.35 0 .62-.28.62-.62 0-.34-.27-.62-.62-.62h-1.95c-.34 0-.62.28-.62.62 0 .34.27.62.62.62Z"></path></svg>
-                                                <p className='text-[13px] text-gray-400'>5 doors</p>
+                                                <p className='text-[13px] text-gray-400'>{doors} doors</p>
                                             </div>
                                             <div className='flex items-center gap-3'>
                                                 <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" fill="none" viewBox="0 0 24 24" class="seo-pages-1b4ow2c-MediaObjectItem" role="img" version="1.1"><path fill="#121214" d="M11.936 19.52a.625.625 0 0 1-.625-.626v-4.726H9.05a.626.626 0 0 1 0-1.25h2.26V4.979a.625.625 0 0 1 1.25 0v7.939h2.259a.625.625 0 0 1 0 1.25h-2.26v4.726c0 .345-.28.625-.624.625Z"></path><path fill="#121214" fill-rule="evenodd" d="M19.204 22.902H4.725a.625.625 0 0 1-.625-.625V1.725c0-.344.28-.625.625-.625h14.479c.344 0 .625.281.625.625v20.552a.626.626 0 0 1-.625.625ZM5.35 21.652h13.229V2.35H5.35v19.302Z" clip-rule="evenodd"></path></svg>
@@ -310,66 +382,7 @@ function CarPage() {
                                                     <p className='text-[13px]'>{feature.name}</p>
                                                 </div>
                                             ))}
-                                            {/* <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/airbag.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>Airbags</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/heat.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>Leather Seats</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/location.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>GPS</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/car.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>Air Conditioning</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/sun.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>Sunroof</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/alloy-wheel.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>Alloy Wheels</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/speedometer.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>Speed Limiter</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/esp.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6] ' />
-                                                <p className='text-[13px]'>ESP</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/parking.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>Parking Radar</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/steering-wheel.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>Onboard Computer</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/baby-car-seat.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>Child seat</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/360-degree.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>Rear View Camera</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/abs.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>ABS</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/window.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>Electric Windows</p>
-                                            </div>
-                                            <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2'>
-                                                <img src="/bluetooth.png" alt="" className='object-cover h-[24px] w-[24px] opacity-[0.6]' />
-                                                <p className='text-[13px]'>CD/MP3/Bluetooth</p>
-                                            </div> */}
+
 
                                         </div>
                                     </div>
@@ -520,37 +533,84 @@ function CarPage() {
                                             <div className='flex flex-col gap-2'>
                                                 <div className='seo-price'>
                                                     <div className='mt-2 flex justify-end'>
-                                                        <p><span className='font-bold text-[23px]'>{price} Dh </span>/ day</p>
+                                                        {loading ? <p className='bg-gray-300 animate-pulse rounded-md w-[50px] h-[15px]'></p> : <p><span className='font-bold text-[23px]'>{price} Dh </span>/ day</p>
+                                                        }
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <p className='mb-2 text-[13px]'>Trip Start</p>
-                                                    <div className='flex items-center gap-2'>
-                                                        <DatePicker defaultValue={dayjs(formatDate(new Date()), dateFormat)} format={dateFormat} onChange={onChange} className='w-[100%] ' />
-                                                        <Select placeholder="Select Time"  >
-                                                            <Option required >11 pm</Option>
-                                                        </Select>
-                                                    </div>
+                                                <div >
+                                                <p className='mb-2 text-[13px]'>Trip Start</p>
+                                                    {loading ?
+                                                        (
+                                                            <>
+                                                                
+                                                                <div className='flex items-center gap-2'>
+                                                                    {/* <input type="date"  min={StartDate} className="mt-1 p-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" /> */}
+                                                                    <div className='w-[100%] h-[30px] mb-1 bg-gray-300 animate-pulse rounded-md'></div>
+                                                                </div>
+                                                            </>
+
+                                                        ) : <>
+                                                            
+                                                            <div className='flex items-center gap-2'>
+                                                                {/* <input type="date"  min={StartDate} className="mt-1 p-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" /> */}
+                                                                <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                                                    <DatePicker value={dayjs(StartDate)} minDate={dayjs(MinDate)} onChange={handleStartDateChange} />
+                                                                </LocalizationProvider>
+                                                            </div>
+                                                        </>
+                                                    }
+
                                                 </div>
-                                                <div>
+                                                <div >
+                                                <p className='mb-2 text-[13px]'>Trip End</p>
+                                                    {loading ?
+                                                        (
+                                                            <>
+                                                              
+                                                                <div className='flex items-center gap-2'>
+                                                                    {/* <input type="date"  min={StartDate} className="mt-1 p-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" /> */}
+                                                                    <div className='w-[100%] h-[30px] mb-1 bg-gray-300 animate-pulse rounded-md'></div>
+                                                                </div>
+                                                            </>
+
+                                                        ) : <>
+                                                            
+                                                            <div className='flex items-center gap-2'>
+                                                                {/* <input type="date"  min={StartDate} className="mt-1 p-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" /> */}
+                                                                <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                                                    <DatePicker value={dayjs(EndDate)} minDate={dayjs(MinDate)} onChange={handleEndDateChange} />
+                                                                </LocalizationProvider>
+                                                            </div>
+                                                        </>
+                                                    }
+
+                                                </div>
+                                                {/* <div>
                                                     <p className='mb-2 text-[13px]'>Trip End</p>
                                                     <div className='flex items-center gap-2'>
-                                                        <DatePicker defaultValue={dayjs(formatDate(new Date()), dateFormat)} format={dateFormat} onChange={onChange} className='w-[100%]' />
-                                                        <Select placeholder="Select Time" >
-                                                            <Option required >11 pm</Option>
-                                                        </Select>
+                                                         <DatePicker defaultValue={dayjs(formatDate(new Date(EndDate)), dateFormat)} format={dateFormat} onChange={onChange} className='w-[100%]' /> 
+                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                            <DatePicker value={dayjs(StartDate)} minDate={dayjs(StartDate)} />
+                                                        </LocalizationProvider>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                             </div>
                                             <div className='mt-4'>
                                                 <div className='flex justify-between bg-gray-100 p-3 rounded-lg border-gray-200 border-[1px] text-[13px]'>
-                                                    <p>1-week discount</p>
-                                                    <p className='text-green-600'>$159</p>
+                                                    <p>{dateDifference}-days discount</p>
+                                                    <p className='text-green-600'>{dateDifference * price} DH</p>
                                                 </div>
                                                 <div className='mt-4'>
-                                                    <button className='text-center bg-[#5c3cfc] p-2 w-[100%] text-white rounded-md text-[13px]'>
+                                                    {loading ? <button className='text-center bg-gray-300 animate-pulse h-[40px] p-2 w-[100%] text-white rounded-md text-[13px]'>
+                                                        <ClipLoader
+                                                            color="#000000"
+                                                            size={25}
+                                                            speedMultiplier={0.4}
+                                                        />
+                                                    </button> : <button className='text-center bg-[#5c3cfc] p-2 w-[100%] text-white rounded-md text-[13px]'>
                                                         Reserve
-                                                    </button>
+                                                    </button>}
+
                                                 </div>
                                             </div>
                                         </div>

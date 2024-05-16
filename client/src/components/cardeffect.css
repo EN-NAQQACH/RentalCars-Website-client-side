@@ -823,4 +823,9 @@ nav h6 {
   .center-box-messages::-webkit-scrollbar-thumb:hover {
     background-color: #3d6dccc0; 
   }
-  
+  .seo-aside-right .datecontent button {
+    box-shadow: none;
+  }
+  .css-z3c6am-MuiFormControl-root-MuiTextField-root {
+    width: 100% !important;
+  }
