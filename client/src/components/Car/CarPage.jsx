@@ -64,13 +64,16 @@ function CarPage() {
     const [photo, setphoto] = useState(null);
     const [features, setfeatures] = useState([]);
     const [StartDate, setStartDate] = useState('');
-    const [MinDate , setMindate] = useState('');
+    const [MinDate, setMindate] = useState('');
+    const [MaxDate, setMaxdate] = useState('');
     const [EndDate, setEndDate] = useState('');
     const [doors, setdoors] = useState();
     const [selectedFeatures, setSelectedFeatures] = useState([]);
-    const onChange = (date, dateString) => {
-        console.log(dateString);
-    };
+    const currentuser = localStorage.getItem('T_ID_User')
+    const [isreserved , setisreserved] = useState(false)
+    // const onChange = (date, dateString) => {
+    //     console.log(dateString);
+    // };
 
     // const getcar = async () => {
     //     try {
@@ -133,6 +136,7 @@ function CarPage() {
             setStartDate(result.car.startTripDate)
             setMindate(result.car.startTripDate)
             setEndDate(result.car.endTripDate)
+            setMaxdate(result.car.endTripDate)
             const parsedFeatures = result.car.features.map(feature => {
                 const [name, icon] = feature.split(":");
                 return { name, icon };
@@ -182,6 +186,33 @@ function CarPage() {
             console.log(error);
         }
     };
+    const handleReserve = async () => {
+        try {
+            const totalPrice = price * dateDifference;
+            const token = localStorage.getItem('T_ID_Auth');
+            const response = await fetch(`http://localhost:5600/api/reservation/create/${carId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                },
+                body: JSON.stringify({
+                    startDate: StartDate,
+                    endDate: EndDate,
+                    totalPrice : totalPrice,
+                }),
+            });
+            const result = await response.json();
+            if (response.ok) {
+                message.success(result.message);
+            } else {
+                message.error(result.error || 'Failed to make reservation');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            message.error('An unexpected error occurred');
+        }
+    };
     useEffect(() => {
         getCar();
         setloading(true)
@@ -199,7 +230,7 @@ function CarPage() {
     // useEffect(() => {
     //     console.log("Selected Start Date:", selectedStartDate);
     //   }, [selectedStartDate]);
-    
+
     //   useEffect(() => {
     //     console.log("Selected End Date:", selectedEndDate);
     //   }, [selectedEndDate]);
@@ -215,41 +246,41 @@ function CarPage() {
 
     // Function to calculate the difference between two dates
     const calculateDateDifference = (start, end) => {
-      const diffInDays = dayjs(end).diff(start, 'day');
-      return diffInDays;
+        const diffInDays = dayjs(end).diff(start, 'day');
+        return diffInDays;
     };
-  
+
     useEffect(() => {
-      // Initialize the date difference when both start date and end date are available
-      if (StartDate && EndDate) {
-        const diff = calculateDateDifference(StartDate, EndDate);
-        setDateDifference(diff);
-        console.log("Difference between start date and end date:", diff);
-      }
+        // Initialize the date difference when both start date and end date are available
+        if (StartDate && EndDate) {
+            const diff = calculateDateDifference(StartDate, EndDate);
+            setDateDifference(diff);
+            console.log("Difference between start date and end date:", diff);
+        }
     }, [StartDate, EndDate]);
     const handleStartDateChange = (newDate) => {
         const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
         // Check if start date is greater than end date
         if (dayjs(formattedDate).isAfter(EndDate)) {
-          setStartDate(EndDate); // Swap start date with end date
-          setEndDate(formattedDate); // Keep end date as it is
+            setStartDate(EndDate); // Swap start date with end date
+            setEndDate(formattedDate); // Keep end date as it is
         } else {
-          setStartDate(formattedDate);
+            setStartDate(formattedDate);
         }
-      };
-    
-      const handleEndDateChange = (newDate) => {
+    };
+
+    const handleEndDateChange = (newDate) => {
         const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
         // Check if end date is less than start date
         if (dayjs(formattedDate).isBefore(StartDate)) {
-          setEndDate(StartDate); // Swap end date with start date
-          setStartDate(formattedDate); // Keep start date as it is
+            setEndDate(StartDate); // Swap end date with start date
+            setStartDate(formattedDate); // Keep start date as it is
         } else {
-          setEndDate(formattedDate);
+            setEndDate(formattedDate);
         }
-      };
+    };
 
-    
+
     return (
         <div className='carpage p-0 m-0 ' >
             <div className='ml-5 rounded-[15px] bg-transparent  border-black w-fit text-black p-1 hover:bg-gray-100 hover:text-black transition-all duration-[0.3s] cursor-pointer' onClick={() => history(-1)} >
@@ -538,11 +569,11 @@ function CarPage() {
                                                     </div>
                                                 </div>
                                                 <div >
-                                                <p className='mb-2 text-[13px]'>Trip Start</p>
+                                                    <p className='mb-2 text-[13px]'>Trip Start</p>
                                                     {loading ?
                                                         (
                                                             <>
-                                                                
+
                                                                 <div className='flex items-center gap-2'>
                                                                     {/* <input type="date"  min={StartDate} className="mt-1 p-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" /> */}
                                                                     <div className='w-[100%] h-[30px] mb-1 bg-gray-300 animate-pulse rounded-md'></div>
@@ -550,11 +581,11 @@ function CarPage() {
                                                             </>
 
                                                         ) : <>
-                                                            
+
                                                             <div className='flex items-center gap-2'>
                                                                 {/* <input type="date"  min={StartDate} className="mt-1 p-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" /> */}
                                                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                                                    <DatePicker value={dayjs(StartDate)} minDate={dayjs(MinDate)} onChange={handleStartDateChange} />
+                                                                    <DatePicker value={dayjs(StartDate)} minDate={dayjs(MinDate)} maxDate={dayjs(MaxDate)}  onChange={handleStartDateChange} />
                                                                 </LocalizationProvider>
                                                             </div>
                                                         </>
@@ -562,11 +593,11 @@ function CarPage() {
 
                                                 </div>
                                                 <div >
-                                                <p className='mb-2 text-[13px]'>Trip End</p>
+                                                    <p className='mb-2 text-[13px]'>Trip End</p>
                                                     {loading ?
                                                         (
                                                             <>
-                                                              
+
                                                                 <div className='flex items-center gap-2'>
                                                                     {/* <input type="date"  min={StartDate} className="mt-1 p-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" /> */}
                                                                     <div className='w-[100%] h-[30px] mb-1 bg-gray-300 animate-pulse rounded-md'></div>
@@ -574,11 +605,11 @@ function CarPage() {
                                                             </>
 
                                                         ) : <>
-                                                            
+
                                                             <div className='flex items-center gap-2'>
                                                                 {/* <input type="date"  min={StartDate} className="mt-1 p-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" /> */}
                                                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                                                    <DatePicker value={dayjs(EndDate)} minDate={dayjs(MinDate)} onChange={handleEndDateChange} />
+                                                                    <DatePicker value={dayjs(EndDate)} minDate={dayjs(MinDate)} maxDate={dayjs(MaxDate)} onChange={handleEndDateChange} />
                                                                 </LocalizationProvider>
                                                             </div>
                                                         </>
@@ -607,9 +638,14 @@ function CarPage() {
                                                             size={25}
                                                             speedMultiplier={0.4}
                                                         />
-                                                    </button> : <button className='text-center bg-[#5c3cfc] p-2 w-[100%] text-white rounded-md text-[13px]'>
+                                                    </button> : userid != currentuser ? <button className='text-center bg-[#5c3cfc] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' onClick={handleReserve}>
                                                         Reserve
-                                                    </button>}
+                                                    </button> : <>
+                                                    <button className='text-center bg-[#979797d3] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' disabled>
+                                                        Reserve
+                                                    </button>
+                                                    <p className='text-[11px] font-semibold text-center mt-1 text-red-600'>you can reserve your car</p>
+                                                    </>}
 
                                                 </div>
                                             </div>
