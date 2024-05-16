@@ -28,6 +28,7 @@ import VerifyListing from '../ListYourCar/VerifyListing.jsx';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { DatePicker, Space } from 'antd';
 
 
 const steps = [
@@ -85,6 +86,7 @@ const Steppers = () => {
   const [mintrip, setmintrip] = useState();
   const [maxtrip, setmaxtrip] = useState();
   const [carseat, setcarseat] = useState();
+  const [cardoors , setcardoors] = useState();
   const [description, setdescription] = useState('');
   const [features, setfeatures] = useState([]);
   const [photos, setphotos] = useState([]);
@@ -94,10 +96,12 @@ const Steppers = () => {
   const { token } = theme.useToken();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
+  const [startDate , setStartDate] = useState('');
+  const [endDate , setEndDate] = useState('');
   const isSelected = (feature) => {
     return selectedFeatures.some((selectedFeature) => selectedFeature.name === feature.name);
   };
-  
+
   const handleCheckboxChange = (feature) => {
     if (isSelected(feature)) {
       setSelectedFeatures(selectedFeatures.filter(item => item.name !== feature.name));
@@ -137,7 +141,10 @@ const Steppers = () => {
     form
       .validateFields()
       .then(() => {
-        console.log('Selected Features:', selectedFeatures);
+        if(startDate > endDate){
+          message.error("Start date must be before end date");
+          return;
+        }
         storeDataLocalStorage();
         setCurrent((prevCurrent) => prevCurrent + 1);
       })
@@ -157,8 +164,11 @@ const Steppers = () => {
       transmission: transmission,
       fuel: fuel,
       type: type,
-      mintrip: mintrip,
-      maxtrip: maxtrip,
+      // mintrip: mintrip,
+      // maxtrip: maxtrip,
+      cardoors: cardoors,
+      startDate: startDate,
+      endDate: endDate,
       photos: photoUrls,
       carseat: carseat,
       description: description,
@@ -239,8 +249,11 @@ const Steppers = () => {
     formData.append('transmission', transmission);
     formData.append('fuel', fuel);
     formData.append('distance', distance);
-    formData.append('mintrip', mintrip);
-    formData.append('maxtrip', maxtrip);
+    // formData.append('mintrip', mintrip);
+    // formData.append('maxtrip', maxtrip);
+    formData.append('cardoors', cardoors);
+    formData.append('startdate',startDate);
+    formData.append('enddate', endDate);
     formData.append('carseat', carseat);
     formData.append('type', type);
     formData.append('description', description);
@@ -271,7 +284,16 @@ const Steppers = () => {
       console.log('Error:', error);
     }
   }
-console.log(selectedFeatures)
+  const datechangeStartDate = (date, dateString) => {
+    setStartDate(dateString);
+    
+  };
+    if(startDate < endDate){
+      console.log("nice one")
+    }
+  const datechangeEndDate = (date, dateString) => {
+    setEndDate(dateString);
+  };
   return (
     <>
       <Steps current={current} items={items} />
@@ -452,7 +474,7 @@ console.log(selectedFeatures)
                   </div>
                   <p>What’s the shortest and longest possible trip you’ll accept?</p>
                   <div>
-                    <label htmlFor=""> Minimum trip duration (days)</label>
+                    {/* <label htmlFor=""> Minimum trip duration (days)</label>
                     <Form.Item
                       className='w-[400px]'
                       name="min"
@@ -468,10 +490,23 @@ console.log(selectedFeatures)
                         <Option value="2" key={2} >2</Option>
                         <Option value="3" key={3} >3</Option>
                       </Select>
-                    </Form.Item>
+                    </Form.Item> */}
+                     <label htmlFor="">Trip Start Date</label>
+                    <Form.Item
+                      
+                      name="startdate"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Start Date!',
+                        },
+                      ]}
+                    >
+                      <DatePicker onChange={datechangeStartDate} className='w-[400px]' />
+                      </Form.Item>
                   </div>
-                  <div>
-                    <label htmlFor=""> Maximum trip duration (days)</label>
+                  <div className='min-w-[500px]'>
+                    {/* <label htmlFor=""> Maximum trip duration (days)</label>
                     <Form.Item
                       className='w-[400px]'
                       name="max"
@@ -483,7 +518,20 @@ console.log(selectedFeatures)
                       ]}
                     >
                       <Input min={4} name='max' type='number' placeholder="enter Maximum trip duration" className='rounded-[0px] ' value={maxtrip} onChange={(e) => setmaxtrip(parseInt(e.target.value))} />
-                    </Form.Item>
+                    </Form.Item> */}
+                    <label htmlFor="">Trip End Date</label>
+                    <Form.Item
+                      
+                      name="enddate"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Start Date!',
+                        },
+                      ]}
+                    >
+                      <DatePicker onChange={datechangeEndDate} className='w-[400px]' />
+                      </Form.Item>
                   </div>
                 </div>
               </div>
@@ -519,7 +567,7 @@ console.log(selectedFeatures)
                       <Checkbox value={"Electric Windows"} onChange={(e) => handlechangecheckbox(e)}>Electric Windows</Checkbox>
                       <Checkbox value={"CD/MP3/Bluetooth"} onChange={(e) => handlechangecheckbox(e)}>CD/MP3/Bluetooth</Checkbox>
                     </div> */}
-                    {featuresList.map((feature,index) => (
+                    {featuresList.map((feature, index) => (
                       <div key={index}>
                         <label>
                           <input
@@ -532,7 +580,7 @@ console.log(selectedFeatures)
                       </div>
                     ))}
                   </div>
-                  <div className='mb-2'>
+                  <div className=''>
                     <label htmlFor="" className='text-[14px]'> car seats</label>
                     <Form.Item
                       className='w-[400px] mt-2'
@@ -545,6 +593,21 @@ console.log(selectedFeatures)
                       ]}
                     >
                       <Input placeholder="car seats" className='rounded-[0px]' value={carseat} onChange={(e) => setcarseat(parseInt(e.target.value))} />
+                    </Form.Item>
+                  </div>
+                  <div className='mb-2'>
+                    <label htmlFor="" className='text-[14px]'> car doors</label>
+                    <Form.Item
+                      className='w-[400px] mt-2'
+                      name="car doors"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'car doors!',
+                        },
+                      ]}
+                    >
+                      <Input placeholder="car doors" className='rounded-[0px]' value={cardoors} onChange={(e) => setcardoors(parseInt(e.target.value))} />
                     </Form.Item>
                   </div>
                   <div>
