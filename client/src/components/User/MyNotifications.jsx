@@ -30,7 +30,7 @@ function MyNotifications() {
             if (data) {
                 setLoading(false);
                 setChats(data);
-                
+
             }
         } catch (error) {
             console.log(error)
@@ -77,73 +77,89 @@ function MyNotifications() {
     }, []);
     return (
         <div className='mynotifications  border border-transparent rounded-xl overflow-hidden min-h-[100vh] grid grid-cols-3 '>
-            <div className='list-of-users bg-[#f7f9fc] h-[100%] p-3 '>
-                <div className=' m-auto border border-transparent rounded-2xl h-[100%] bg-[#ffffff] '>
-                    <div className='bg-[#f4f6fb] flex pt-[5px] pl-3 pr-3 pb-[5px] m-auto w-[90%] rounded-[20px]  justify-center items-center top  border-none mt-5 shadow-sm'>
-                        <SearchIcon className='text-gray-400 mr-2' />
-                        <input type="text" placeholder='Search Chats...' className='bg-transparent outline-none text-[13px]' value={searchinput}
-                            onChange={handleSearchInputChange} />
-                    </div>
-                    <div className='flex flex-col gap-1 items-center mt-5'>
-                        {loading ?
-                            (
-                                <>
-                                    {chats.map((index) => (
-                                        <Link className='Skaletones' key={index}>
-                                            <div className='center w-[100%]  flex items-center gap-3  cursor-pointer  p-3' >
-                                                <div className=''>
-                                                    <div className='rounded-[50%] w-[40px] h-[40px] bg-gray-200 animate-pulse'></div>
-                                                </div>
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex items-center justify-between gap-[90px] w-[190px]'>
-                                                        <div className='font-semibold text-[5px] h-[9px] w-[64px] bg-gray-200 animate-pulse rounded-md'></div>
-                                                        <div className='font-semibold text-[5px] h-[9px] w-[36px] bg-gray-200 animate-pulse rounded-md'></div>
-                                                    </div>
-                                                    <div className=''>
-                                                        <div className='font-semibold text-[5px] h-[9px]  bg-gray-200 animate-pulse max-w[140px] rounded-md'></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </>
-                            ) : (
-
-                                <>
-                                    {chats && <>
-
-                                        {chats.map((chat, index) => (
-                                            <Link to={`chats/${chat.id}`} key={index} onClick={() => handleChatClick(chat.reseivedUser.id)} className={selectedChat == chat.reseivedUser.id ? "bg-[#f4f6fb] rounded-[2px] border-none" : "bg-white rounded-md border-none"}>
-                                                <div className='center w-[100%]  flex items-center gap-3  cursor-pointer  p-3' >
-                                                    <div className=''>
-                                                        <img src={chat.reseivedUser.picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover' />
-                                                    </div>
-                                                    <div className='flex flex-col'>
-                                                        <div className='flex items-center justify-between gap-[90px]'>
-                                                            <p className='font-semibold text-[14px]'>{chat.reseivedUser.firstName}</p>
-                                                            <p className='truncate text-[10px] text-gray-700 font-semibold'>{chat.lastMessageHour}</p>
+            {chats.length > 0 ?
+                (
+                    <>
+                        <div className='list-of-users bg-[#f7f9fc] h-[100%] p-3 '>
+                            <div className=' m-auto border border-transparent rounded-2xl h-[100%] bg-[#ffffff] '>
+                                <div className='bg-[#f4f6fb] flex pt-[5px] pl-3 pr-3 pb-[5px] m-auto w-[90%] rounded-[20px]  justify-center items-center top  border-none mt-5 shadow-sm'>
+                                    <SearchIcon className='text-gray-400 mr-2' />
+                                    <input type="text" placeholder='Search Chats...' className='bg-transparent outline-none text-[13px]' value={searchinput}
+                                        onChange={handleSearchInputChange} />
+                                </div>
+                                <div className='flex flex-col gap-1 items-center mt-5'>
+                                    {loading ?
+                                        (
+                                            <>
+                                                {chats.map((index) => (
+                                                    <Link className='Skaletones' key={index}>
+                                                        <div className='center w-[100%]  flex items-center gap-3  cursor-pointer  p-3' >
+                                                            <div className=''>
+                                                                <div className='rounded-[50%] w-[40px] h-[40px] bg-gray-200 animate-pulse'></div>
+                                                            </div>
+                                                            <div className='flex flex-col gap-2'>
+                                                                <div className='flex items-center justify-between gap-[90px] w-[190px]'>
+                                                                    <div className='font-semibold text-[5px] h-[9px] w-[64px] bg-gray-200 animate-pulse rounded-md'></div>
+                                                                    <div className='font-semibold text-[5px] h-[9px] w-[36px] bg-gray-200 animate-pulse rounded-md'></div>
+                                                                </div>
+                                                                <div className=''>
+                                                                    <div className='font-semibold text-[5px] h-[9px]  bg-gray-200 animate-pulse max-w[140px] rounded-md'></div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div className=''>
-                                                            <p className='truncate text-[10px] text-gray-500 font-semibold max-w-[140px]'>{chat.lastMessage}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        ))}
+                                                    </Link>
+                                                ))}
+                                            </>
+                                        ) : (
 
-                                    </>
-                                    }
-                                </>
-                            )}
+                                            <>
+                                                {chats && <>
+
+                                                    {chats.map((chat, index) => (
+                                                        <Link to={`chats/${chat.id}`} key={index} onClick={() => handleChatClick(chat.reseivedUser.id)} className={selectedChat == chat.reseivedUser.id ? "bg-[#f4f6fb] rounded-[2px] border-none" : "bg-white rounded-md border-none"}>
+                                                            <div className='center w-[100%]  flex items-center gap-3  cursor-pointer  p-3' >
+                                                                <div className=''>
+                                                                    <img src={chat.reseivedUser.picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover' />
+                                                                </div>
+                                                                <div className='flex flex-col'>
+                                                                    <div className='flex items-center justify-between gap-[90px]'>
+                                                                        <p className='font-semibold text-[14px]'>{chat.reseivedUser.firstName}</p>
+                                                                        <p className='truncate text-[10px] text-gray-700 font-semibold'>{chat.lastMessageHour}</p>
+                                                                    </div>
+                                                                    <div className=''>
+                                                                        <p className='truncate text-[10px] text-gray-500 font-semibold max-w-[140px]'>{chat.lastMessage}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </Link>
+                                                    ))}
+
+                                                </>
+                                                }
+                                            </>
+                                        )}
 
 
-                    </div>
-                </div>
-            </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <LastMessageContext.Provider value={{ lastMessage, setlastmessage, socket, setChats }}>
-                <Outlet />
-            </LastMessageContext.Provider>
+                        <LastMessageContext.Provider value={{ lastMessage, setlastmessage, socket, setChats }}>
+                            <Outlet />
+                        </LastMessageContext.Provider>
+                    </>
+                ) :
+                (
+                    <>
+                        <div className='messages-box  bg-[#f7f9fc] h-[100%] justify-center items-center flex col-start-1 col-end-4 relative' >
+                            <p className='font-semibold text-[18px] text-gray-400'>there is no conversations yet</p>
+                        </div>
+                    </>
+
+
+                )
+            }
+
 
 
         </div >

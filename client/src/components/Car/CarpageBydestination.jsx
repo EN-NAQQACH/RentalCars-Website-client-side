@@ -43,8 +43,8 @@ function CarpageBydestination() {
         setDateRange(dates)
         const startDateString = String(dateString[0]);
         const endDateString = String(dateString[1]);
-        setstartdate(startDateString)
-        setenddate(endDateString)
+        setstartdate(dayjs(startDateString).format('YYYY-MM-DD'))
+        setenddate(dayjs(endDateString).format('YYYY-MM-DD'))
         const startDate = new Date(startDateString);
         const endDate = new Date(endDateString);
         const differenceInMilliseconds = endDate - startDate;
@@ -371,7 +371,7 @@ function CarpageBydestination() {
 
                         </Swiper>
 
-                        <Link className='text-center flex justify-center m-auto rounded-md mt-8 border w-fit p-2 font-semibold text-[14px] text-white bg-[#5c3cfc] hover:bg-[#3d2b97]'>Rent in {destination}</Link>
+                        <Link to={`/carhome/search?where=${location}`} className='text-center flex justify-center m-auto rounded-md mt-8 border w-fit p-2 font-semibold text-[14px] text-white bg-[#5c3cfc] hover:bg-[#3d2b97]'>Rent in {destination}</Link>
                     </div>
                 </div>
                 : <div className='h-lvh justify-center flex items-center flex-col'>

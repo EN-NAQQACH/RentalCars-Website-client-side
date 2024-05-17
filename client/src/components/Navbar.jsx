@@ -233,15 +233,15 @@ function Navbar() {
         </Link>
       </Menu.Item>
       <Menu.Item>
-        <Link to="" className='flex items-center gap-4'>
+        <a href="/account/my-notifications" className='flex items-center gap-4'>
           <AllInboxIcon /> Inbox
-        </Link>
+        </a>
       </Menu.Item>
       <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
       <Menu.Item>
-        <Link to="/become_a_host/list-your-car" className='flex items-center gap-4'>
+        <a href="/become_a_host/list-your-car" className='flex items-center gap-4'>
           <CarRentalOutlinedIcon /> Become a host
-        </Link>
+        </a>
       </Menu.Item>
       <Menu.Item>
         <Link to="/Account" className='flex items-center gap-4'>
@@ -249,9 +249,9 @@ function Navbar() {
         </Link>
       </Menu.Item>
       <Menu.Item>
-        <Link to="/Profile" className='flex items-center gap-4'>
-          <PersonOutlineOutlinedIcon /> Profile
-        </Link>
+        <a href="/account/my-listing" className='flex items-center gap-4'>
+          <PersonOutlineOutlinedIcon /> My Cars
+        </a>
       </Menu.Item>
       <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
       <Menu.Item>
@@ -265,19 +265,14 @@ function Navbar() {
         </a>
       </Menu.Item>
       <Menu.Item>
-        <a className='flex items-center gap-4'>
+        <a href='/carhome' className='flex items-center gap-4'>
           <DirectionsCarIcon /> Our cars
         </a>
       </Menu.Item>
-      <Menu.Item>
-        <a className='flex items-center gap-4'>
-          <LocationOnIcon /> Our locations
-        </a>
-      </Menu.Item>
       <Menu.Item onClick={handleLogout}>
-        <Link to="/" className='flex items-center gap-4'>
+        <a className='flex items-center gap-4'>
           <LoginIcon /> Log out
-        </Link>
+        </a>
       </Menu.Item>
     </Menu>
   );
@@ -619,7 +614,7 @@ function Navbar() {
             <div className="navbar-center hidden lg:flex">
               <ul className="menu menu-horizontal px-1">
                 <li><a href='/carhome'>Our Cars</a></li>
-                <li><a>Our Locations</a></li>
+                <li><a href='/#destinations'>Our Destinations</a></li>
                 <li><a>Contact us</a></li>
               </ul>
             </div>
@@ -676,7 +671,7 @@ function Navbar() {
             <div className="navbar-center hidden lg:flex">
               <ul className="menu menu-horizontal px-1">
                 <li><a href='/carhome'>Our Cars</a></li>
-                <li><a>Our Blogs</a></li>
+                <li><a href='#destinations'>Our Destinations</a></li>
                 <li><a>Contact us</a></li>
               </ul>
             </div>
@@ -689,11 +684,12 @@ function Navbar() {
                 <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box min-w-80 mt-1">
                   <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px] ' > <button onClick={() => document.getElementById('my_modal_3').showModal()} >Log in</button></li>
                   <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><button onClick={() => document.getElementById('my_modal_4').showModal()} >Sign up</button></li>
-                  <div className="divider p-0 m-0 mr-1 ml-1"></div>
+                  <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
+
                   <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><PolicyIcon />Policies</a></li>
                   <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><EmailIcon />Contact</a></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><DirectionsCarIcon />Our cars</a></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><LocationOnIcon />Our locations</a></li>
+                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='/carhome'><DirectionsCarIcon />Our cars</a></li>
+                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='#destinations'><LocationOnIcon />Our destinations</a></li>
                 </ul>
               </div>
             </div>

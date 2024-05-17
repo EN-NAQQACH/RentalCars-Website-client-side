@@ -8,9 +8,10 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { message } from 'antd';
 
-function Carcomponents({ days, location, sort, type, minprice, maxprice, transmission, make, features, seats, fueltype }) {
+function Carcomponents({ days, location, sort, type, minprice, maxprice, transmission, make, features, seats, fueltype,startDate,endDate }) {
     const [loading, setLoading] = useState(true);
     const [cars, setCars] = useState([]);
+    const [index,setindex] = useState([])
 
     const getAllCars = async () => {
         try {
@@ -27,6 +28,8 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
                 features: features || '',
                 seats: seats || '',
                 fueltype: fueltype || '',
+                startDate: startDate || '',
+                endDate: endDate || '',
             });
             const response = await fetch(token ? `http://localhost:5600/api/getallcars?${queryParams}` : `http://localhost:5600/api/getallcarsunauth?${queryParams}`, {
                 method: 'GET',
@@ -37,14 +40,13 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
             });
             const result = await response.json();
             setCars(result);
+            setindex(Array.from({ length: result.length }, (_, i) => i + 1));
             setLoading(false);
         } catch (error) {
             console.log(error);
             setLoading(false);
         }
     };
-
-
     const favoriteCar = async (id) => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
@@ -82,12 +84,13 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
     useEffect(() => {
         getAllCars();
         setLoading(true)
-    }, [days, location, sort, type, minprice, maxprice, transmission, make, features, seats, fueltype]);
+    }, [days, location, sort, type, minprice, maxprice, transmission, make, features, seats, fueltype,startDate,endDate]);
 
     return (
         <>
             {loading ? ( // Display loading indicator if loading is true
                 <>
+                
                 {[1,2,3,4,5,6].map((index) => (
                     <div className="car-card ">
                     <div className='car-card-components  cursor-pointer relative w-[100%] h-fit rounded-lg skeleton' key={index}>

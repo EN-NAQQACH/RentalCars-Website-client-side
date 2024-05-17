@@ -164,6 +164,8 @@ function CarsListing() {
     const searchParams = new URLSearchParams(url);
     const location = searchParams.get('where');
     const days = searchParams.get('days');
+    const startdate = searchParams.get('startdate');
+    const enddate = searchParams.get('enddate');
     const [make, setmake] = useState(searchParams.get('make'));
     const [sliderValue, setSliderValue] = useState([194, 499]);
 
@@ -196,7 +198,7 @@ function CarsListing() {
     const handletypechaneg = (e) =>{
         setType(e.target.value);
     }
-console.log(seats)
+
     return (
         <div className='carhome-section  bg-white h-fit m-[80px] mt-0'>
             <div className='aside border-[0.5px] border-gray-100 h-fit rounded-[15px]'>
@@ -364,6 +366,8 @@ console.log(seats)
                                 features={selectedFeatures}
                                 seats = {seats}
                                 fueltype = {fueltype}
+                                startDate = {startdate}
+                                endDate = {enddate}
 
 
 

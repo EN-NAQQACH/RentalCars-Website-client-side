@@ -73,7 +73,7 @@ function Main() {
     const [dateRange, setDateRange] = useState([dayjs(), dayjs()]);
     const [startdate, setstartdate] = useState('');
     const [enddate, setenddate] = useState('');
-    const [days,setdays] = useState();
+    const [days, setdays] = useState();
 
     const handleSearch = () => {
         if (!startdate || !enddate || !location) {
@@ -97,8 +97,8 @@ function Main() {
         setDateRange(dates)
         const startDateString = String(dateString[0]);
         const endDateString = String(dateString[1]);
-        setstartdate(startDateString)
-        setenddate(endDateString)
+        setstartdate(dayjs(startDateString).format('YYYY-MM-DD'))
+        setenddate(dayjs(endDateString).format('YYYY-MM-DD'))
         const startDate = new Date(startDateString);
         const endDate = new Date(endDateString);
         const differenceInMilliseconds = endDate - startDate;
@@ -112,41 +112,41 @@ function Main() {
             <main >
 
                 <section className='find-your-car-section '>
-                    <div className='h-lvh mb-[150px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing }}>
-                        <div className='location-section w-[100%]  mb-7 ml-2 mt-5 '>
-                            <div className='location-content-section-carhome gap-2 rounded-[30px]  border-gray-100 border-[0.2px] shadow-md w-fit p-3'>
-                                <div className='border-r-[1px]'>
+                    <div className='flex justify-center items-center h-lvh mb-[90px] relative' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing }}>
+                        <div className='location-section  w-[100%]  absolute  bottom-[60%] tr z-[15] mb-7 ml-2 mt-5 '>
+                            <div className='location-content-section-carhome  gap-2 rounded-[30px] bg-[white]  shadow-lg w-fit p-[4px] pl-2 pr-2'>
+                                <div className='border-r-[1px] '>
                                     <label htmlFor="" className='pl-2 text-[13px] font-bold text-gray-500'>Location</label>
-                                    <input type="text" className='border-none w-[100%] h-[20px] rounded-[7px] pl-2 text-[13px]' placeholder='Enter Location' value={location} onChange={(e) => setlocation(e.target.value)} />
+                                    <input type="text" className='border-none w-[100%] h-[20px] rounded-[7px] pl-2 text-[13px] bg-transparent text-black outline-none' placeholder='Enter Location' value={location} onChange={(e) => setlocation(e.target.value)} />
                                 </div>
                                 <div className='flex flex-col justify-center border-r-[1px]'>
                                     <label htmlFor="" className='text-[13px] font-bold text-gray-500'>Check in-out</label>
-                                    <div className='flex items-center w-[100%]'>
-                                        <Space direction="vertical" size={12}>
-                                            <RangePicker disabledDate={disabledDate} onChange={onchange} format={dateFormat} />
+                                    <div className='flex items-center w-[100%] '>
+                                        <Space direction="vertical" size={12} className='bg-transparent'>
+                                            <RangePicker disabledDate={disabledDate} onChange={onchange} format={dateFormat} className='bg-transparent text-black' />
                                         </Space>
                                     </div>
                                 </div>
-                                <div className='flex items-center justify-center  rounded-[50%] h-[40px] w-[40px]  transition-all duration-75 cursor-pointer bg-[#7357ff] hover:bg-[#5c3cfc] m-auto'>
+                                <div className='flex items-center justify-center  rounded-[50%] h-[40px] w-[40px]  transition-all duration-75 cursor-pointer bg-[#612e2e] hover:bg-[#1a133f] m-auto'>
                                     <button onClick={handleSearch}><SearchIcon className='text-white' /></button>
                                 </div>
                             </div>
                         </div>
-                        <div className=' relative h-[520px] w-[full] mt-[50px]  m-auto mr-[60px] ml-[60px]  '>
+                        <div className=' relative h-[100vh] w-[full] mt-[50px]  m-auto mr-[60px] ml-[60px]  '>
                             <img src="./src/assets/carmain50.jpg" alt="Description" className=" object-cover w-full h-full rounded-[10px] " />
-                            <button className=' border-[2px]  p-2 absolute bottom-[50px] left-[50px] pl-8 pr-8 bg-transparent transition duration-500 hover:bg-transparent text-white'>
-                                <a href="">Explore our Cars</a>
+                            <button className=' border-[2px]  p-2 absolute bottom-[50px] left-[50px] pl-8 pr-8 bg-transparent transition duration-500 hover:bg-white hover:text-black text-white'>
+                                <a href="/carhome">Explore our Cars</a>
                             </button>
                         </div>
                     </div>
                 </section>
 
-                <section className='cars-slider h-fit mb-[85px]'>
+                <section id='explore' className='cars-slider h-fit mb-[50px] mr-[25px] ml-[25px]'>
                     <div className='car-slider-content p-3 ' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
-                        <div className='content flex justify-center flex-col  m-auto'>
-                            <h1 className='text-center mb-[50px] text-4xl z-[1]'>Browse by make</h1>
-                            <div className='divider-slider bg-gray-100 h-6 mt-[-70px] mb-6 w-[23%] m-auto'></div>
-                        </div>
+                    <div className='flex justify-center flex-col items-center mb-[20px]'>
+                        <h1 className='text-center mb-[50px] text-4xl z-[1]'>Explore By make</h1>
+                        <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
+                    </div>
                         <div className='cslider mt-[20px] relative mr-[25px] ml-[25px]'>
                             <div className='flex gap-2 absolute right-0 z-[15] top-[-50px]'>
                                 <button className='review-swiper-button-prev border-transparent  rounded-full  pt-1 pb-1 pr-2 pl-2 bg-gray-100 hover:bg-gray-200 hover:rounded-[50%] ' ><ChevronLeftIcon /></button>
@@ -263,12 +263,11 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                     </div>
                 </section>
 
-                <section className='blogs mb-[85px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                <section className='blogs mb-[50px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
                     <div className='flex justify-center flex-col items-center mb-[20px]'>
                         <h1 className='text-center mb-[50px] text-4xl z-[1]'>Explore cars for any occasion</h1>
                         <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
                         <p className='text-center w-[600px] mb-[5px]'>Our incredible selection of cars makes it easy to find a ride anytime, anywhere.</p>
-
                     </div>
                     <div className='flex justify-center items-center relative'>
                         <div className='bg-gray-50 w-[250px] h-[150px] absolute z-[15] left-[15%] flex  flex-col  rounded-[5px] p-5'>
@@ -287,7 +286,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
 
                 </section>
 
-                <section className='cars-list h-fit mb-[85px]  mt-8 mr-[25px] ml-[25px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                <section id="destinations" className='cars-list h-fit mb-[50px]  mr-[25px] ml-[25px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
                     <div className='flex justify-center flex-col'>
                         <h1 className='text-center mb-[50px] text-4xl z-[1]'>Explore by destination</h1>
                         <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
@@ -304,8 +303,8 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                             {selectedDestination === '' && (
                                 <>
                                     <div className='flex justify-end gap-4 w-[80%] m-auto'>
-                                        <KeyboardDoubleArrowLeftIcon className='prevbtncity hover:bg-gray-200 hover:rounded-[50%] ' />
-                                        <KeyboardDoubleArrowRightIcon className='nextbtncity hover:bg-gray-200 hover:rounded-[50%] ' />
+                                        <button className='prevbtncity border-transparent  rounded-full  pt-1 pb-1 pr-2 pl-2 bg-gray-100 hover:bg-gray-200 hover:rounded-[50%] ' ><ChevronLeftIcon /></button>
+                                        <button className='nextbtncity  border-transparent  rounded-full pt-1 pb-1 pr-2 pl-2 bg-gray-100 hover:bg-gray-200 hover:rounded-[50%] '><ChevronRightIcon /></button>
                                     </div>
                                     <div className='scrollbar-content max-w-[80%]   m-auto scroll-smooth h-fit ' id='scrollbareffect'>
 
@@ -382,7 +381,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                                 }
                                             }}
                                             modules={[Pagination, Navigation, FreeMode, Scrollbar, Mousewheel]}
-                                            className="mySwiper mt-9 "
+                                            className="mySwiper "
 
                                         >
 
@@ -503,7 +502,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                     </div>
                 </section>
 
-                <section className='brand-slider mb-[86px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                <section className='brand-slider mb-[50px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
                     <div className='flex justify-center flex-col  m-auto mb-[10px]'>
                         <h1 className='text-center mb-[50px] text-4xl z-[1]'>Our Partners</h1>
                         <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[23%] m-auto'></div>
@@ -547,49 +546,73 @@ absolute z-[15] bottom-[100px] left-[36%] */}
 
                 </section>
 
-                <section className='frequently-questions-section mb-[50px] w-[100%] '>
-                    <div className='frequently-content min-h-[100vh] p-3  w-[100%] ' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                <section className='frequently-questions-section m-auto w-[80%] '>
+                    <div className='frequently-content  p-3  w-[100%] ' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
                         <div className='flex justify-center items-center flex-col m-auto mb-4'>
                             <h1 className='text-center mb-[50px] text-4xl z-[1]'>Frequently asked questions</h1>
                             <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
                         </div>
                         <div className='frequently-content-card flex  justify-center gap-3 w-[100%]'>
-                            <div className='flex flex-col items-center gap-2 w-[100%]'>
-                                <div className="card-question collapse collapse-arrow bg-white text-black border rounded-[0px] w-[70%]">
+                        {/* flex flex-col items-center gap-2  */}
+                            <div className='grid grid-cols-2 gap-3  w-[100%]'>
+                                <div className="card-question collapse h-fit collapse-arrow bg-white text-black border rounded-[0px]">
                                     <input type="checkbox" />
                                     <div className="collapse-title text-[17px] font-medium">
-                                        Click me to show/hide content
+                                        What types of vehicles do you offer for rent ?
                                     </div>
                                     <div className="collapse-content">
-                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto repudiandae dignissimos rerum, sapiente officiis velit atque rem adipisci dolores, quia nemo voluptatum esse consectetur harum placeat. Id accusantium maiores nihil?</p>
+                                        <p>A: We offer a wide range of vehicles to suit your needs, including:</p>
+                                        <div className='flex flex-col gap-3 mt-2 pl-5 mb-2'>
+                                            <li><span className='font-bold'>Economy Cars :</span> Budget-friendly and fuel-efficient.</li>
+                                            <li><span className='font-bold'>Luxury Vehicles:</span> High-end cars for a premium driving experience.</li>
+                                            <li><span className='font-bold'>SUVs:</span> Spacious and comfortable for family trips or group travel.</li>
+                                            <li><span className='font-bold'>Coupes:</span> Stylish and sporty cars for a dynamic driving experience.</li>
+                                        </div>
+                                        <p>For a complete list and availability, please visit our vehicle selection page on the website.</p>
+
                                     </div>
                                 </div>
 
-                                <div className=" card-question collapse collapse-arrow bg-white text-black border rounded-[0px] w-[70%]">
+                                <div className=" card-question collapse h-fit collapse-arrow bg-white text-black border rounded-[0px] ">
                                     <input type="checkbox" />
                                     <div className="collapse-title text-[17px] font-medium">
-                                        Click me to show/hide content
+                                        Can I modify or cancel my reservation ?
                                     </div>
-                                    <div className="collapse-content">
-                                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos excepturi itaque quidem nesciunt! Aliquid expedita id, quam eum sapiente commodi non quos deleniti repudiandae aperiam rem reprehenderit officiis at eveniet.</p>
+                                    <div className="collapse-content flex flex-col gap-3">
+                                        <li>Modify Your Reservation: Log in to your account on our website or app, navigate to your booking, and make the necessary changes. Alternatively, you can contact our customer service team for assistance.</li>
+                                        <li>
+                                            Cancel Your Reservation: Log in to your account on our website or app, navigate to your booking, and click the "Cancel Booking" button. Alternatively, you can contact our customer service team for assistance.
+                                        </li>
                                     </div>
                                 </div>
-                                <div className=" card-question collapse collapse-arrow bg-white text-black border rounded-[0px] w-[70%]">
+                                <div className=" card-question collapse h-fit collapse-arrow bg-white text-black border rounded-[0px] ">
                                     <input type="checkbox" />
                                     <div className="collapse-title text-[17px] font-medium">
-                                        Click me to show/hide content
+                                        Rental Requirements ?
                                     </div>
                                     <div className="collapse-content">
-                                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. In obcaecati omnis dolore ipsum. Exercitationem sint a illo, praesentium consectetur autem, quam qui dolorem iure nihil alias modi non blanditiis ullam!</p>
+                                        <p> Renters must be at least 18 years old to rent a car. Additional fees may apply for drivers under 25.(your ID)</p>
                                     </div>
                                 </div>
-                                <div className=" card-question collapse collapse-arrow bg-white text-black border rounded-[0px] w-[70%]">
+                                <div className=" card-question collapse h-fit collapse-arrow bg-white text-black border rounded-[0px] ">
                                     <input type="checkbox" />
                                     <div className="collapse-title text-[17px] font-medium">
-                                        Click me to show/hide content
+                                        Can I extend my rental period ?
                                     </div>
                                     <div className="collapse-content">
-                                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. In obcaecati omnis dolore ipsum. Exercitationem sint a illo, praesentium consectetur autem, quam qui dolorem iure nihil alias modi non blanditiis ullam!</p>
+                                        Yes, you can extend your rental period. To do so, please contact us before your original return date. You can extend your rental by:
+
+                                        Logging in to your account on our website and call to the host of your car you are reserved
+
+                                    </div>
+                                </div>
+                                <div className=" card-question collapse h-fit collapse-arrow bg-white text-black border rounded-[0px] ">
+                                    <input type="checkbox" />
+                                    <div className="collapse-title text-[17px] font-medium">
+                                        What is your fuel policy ?
+                                    </div>
+                                    <div className="collapse-content">
+                                        <p>Our fuel policy typically requires you to return the car with the same amount of fuel it had when you picked it up. you can contact your host for more informatins </p>
                                     </div>
                                 </div>
                             </div>
@@ -614,6 +637,30 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                                     </div>
                                 </div>
                             </div> */}
+                        </div>
+                    </div>
+                </section>
+
+
+                <section class="bg-[#f7f7f7bd]  mt-5">
+                    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+                        <div class="mx-auto max-w-screen-md sm:text-center">
+                            <h2 class="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl dark:text-white">Sign up for our newsletter</h2>
+                            <p class="mx-auto mb-8 max-w-2xl font-light text-gray-500 md:mb-12 sm:text-xl dark:text-gray-400">Stay up to date with the roadmap progress, announcements and exclusive discounts feel free to sign up with your email.</p>
+                            <form action="#">
+                                <div class="items-center mx-auto mb-3 space-y-4 max-w-screen-sm sm:flex sm:space-y-0">
+                                    <div class="relative w-full">
+                                        <label for="email" class="hidden mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email address</label>
+                                        <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                                            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                                        </div>
+                                        <input class="block p-3 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:rounded-none sm:rounded-l-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Enter your email" type="email" id="email" required="" />
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="py-3 px-5 w-full text-sm font-medium text-center text-white rounded-lg border cursor-pointer bg-primary-700 border-primary-600 sm:rounded-none sm:rounded-r-lg hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Subscribe</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </section>
