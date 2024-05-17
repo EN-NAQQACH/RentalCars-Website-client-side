@@ -75,16 +75,27 @@ function Navbar() {
   const [lastName, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
-
   const [emaillogin, setEmaillogin] = useState('');
   const [passwordlogin, setpasswordlogin] = useState('');
   const [emailreset, setemailreset] = useState('')
+  const [errorgoogle, seterrorgoogle] = useState('');
+  const [iserrorgoogle, setiserrorgoogle] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [photo , setphoto] = useState('');
 
-  const [picture, setpicture] = useState('');
+  const [errorsignup, seterrorsignup] = useState('');
+  const [iserrorsignup, setiserrorsignup] = useState(false);
+  const [loadingsignup, setloadingsignup] = useState(false)
+
+  const [errorsendpassword, seterrorsentpassword]=useState('');
+  const [iserrorsendpassword, setiserrorsendpassword]=useState(false);
+  const [loadingsendpassword, setloadingsendpassword]=useState(false)
+  const [messageok,setmessageok]=useState('');
+  const [messagesent,setmessagesent] = useState(false);
 
   const handleSignup = async () => {
     try {
-
+      setloadingsignup(true);
       const response = await fetch('http://localhost:5600/api/account/signup', {
         method: 'POST',
         headers: {
@@ -94,10 +105,12 @@ function Navbar() {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log(data.message);
         setsignup(true);
+        setloadingsignup(false);
       } else {
-        console.error(data.error);
+        setiserrorsignup(true);
+        seterrorsignup(data.error);
+        setloadingsignup(false);
       }
     } catch (error) {
       console.error('Error occurred while submitting the form:', error);
@@ -105,6 +118,7 @@ function Navbar() {
   }
   const handeLogin = async () => {
     try {
+      setLoading(true);
       const response = await fetch('http://localhost:5600/api/account/login', {
         method: 'POST',
         headers: {
@@ -116,15 +130,19 @@ function Navbar() {
         })
       });
       const data = await response.json();
-      if (data) {
-        message.success(data.message)
+      setLoading(false);
+      if (response.ok) {
         localStorage.setItem('T_ID_Auth', data.token);
         localStorage.setItem('T_ID_User', data.userId);
         setIsLoggedIn(true);
+        window.location.href = "/"
+        localStorage.setItem('photo', data.photo);
+        localStorage.setItem('lastName', data.lastName); 
       } else {
-        console.error(data.error);
+        setIsLoggedIn(false);
         setiserror(true);
         seterror(data.error);
+        setLoading(false);
       }
     } catch (error) {
       console.error('Error occurred while submitting the form:', error);
@@ -132,6 +150,7 @@ function Navbar() {
   }
   const resetPassword = async () => {
     try {
+      setloadingsendpassword(true);
       const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/users/resetpassword', {
         method: 'POST',
         headers: {
@@ -143,12 +162,17 @@ function Navbar() {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log(data.message);
+        setmessagesent(true);
+        setmessageok(data.message);
+        setloadingsendpassword(false);
       } else {
-        console.error(data.error);
+        setloadingsendpassword(false);
+        setiserrorsendpassword(true);
+        seterrorsentpassword(data.error);
       }
     } catch (error) {
       console.error('Error occurred while submitting the form:', error);
+      setloadingsendpassword(false);
     }
   }
   useEffect(() => {
@@ -156,7 +180,31 @@ function Navbar() {
       setUserauth(true)
     }
   }, [])
-
+ useEffect(() => {
+  const getuserInfo = async () => {
+    try {
+        const reponse = await fetch('http://localhost:5600/api/users/info', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+            }
+        })
+        const data = await reponse.json();
+        if(data){
+          const fullName = {
+            firstName: data.firstName,
+            lastName: data.lastName
+        }
+        localStorage.setItem('fullName', JSON.stringify(fullName))
+        setphoto(data.picture)
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}
+getuserInfo()
+}, [token])
   const [showPassword, setShowPassword] = React.useState(false);
   const style = useContext(StyleContext);
   const handleSignUpClick = (e) => {
@@ -167,6 +215,7 @@ function Navbar() {
       modal3.close(); // Hide modal 3
       modal4.showModal(); // Show modal 4
     }
+    setiserror(false)
   };
 
   const handleLogInClick = (e) => {
@@ -177,6 +226,8 @@ function Navbar() {
       modal3.showModal(); // Show modal 3
       modal4.close(); // Hide modal 4
     }
+    setiserror(false)
+    setiserrorgoogle(false)
   }
   const handleforgetClick = (e) => {
     e.preventDefault();
@@ -186,6 +237,8 @@ function Navbar() {
       modal3.close(); // Hide modal 3
       modal5.showModal(); // Show modal 5
     }
+    setiserror(false)
+
   }
   const handlewithemailnClick = (e) => {
     e.preventDefault();
@@ -195,6 +248,7 @@ function Navbar() {
       modal6.showModal(); // Show modal 3
       modal4.close(); // Hide modal 4
     }
+    setiserrorgoogle(false)
   }
 
   const handleLogout = () => {
@@ -239,7 +293,7 @@ function Navbar() {
       </Menu.Item>
       <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
       <Menu.Item>
-        <a href="/become_a_host/list-your-car" className='flex items-center gap-4'>
+        <a href="/become_a_host" className='flex items-center gap-4'>
           <CarRentalOutlinedIcon /> Become a host
         </a>
       </Menu.Item>
@@ -255,12 +309,12 @@ function Navbar() {
       </Menu.Item>
       <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
       <Menu.Item>
-        <a className='flex items-center gap-4'>
+        <a href='/EaslyCars-Policies' className='flex items-center gap-4'>
           <PolicyIcon /> Policies
         </a>
       </Menu.Item>
       <Menu.Item>
-        <a className='flex items-center gap-4'>
+        <a href='/contactUs' className='flex items-center gap-4'>
           <EmailIcon /> Contact
         </a>
       </Menu.Item>
@@ -282,88 +336,86 @@ function Navbar() {
         <script src="https://accounts.google.com/gsi/client" async defer />
       </Helmet> */}
       {/* modal log in */}
-      {isLoggedIn ? (
-        <Dialog />
-      ) : (
-        <dialog id="my_modal_3" className="modal" >
-          <div className="modal-box bg-white">
-            <form method="dialog">
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => form2.resetFields()}>✕</button>
-            </form>
-            <div className="container mx-auto  flex items-center justify-center">
-              <div className="w-full max-w-md p-4 bg-white rounded-lg ">
-                <div className="text-center text-2xl font-bold mb-5">
-                  Sign in to your account
-                </div>
-                <form className="space-y-4">
-                  <div className="flex flex-col">
-                    <Form form={form2} name="basic">
-                      <label htmlFor="" className="block mb-1 text-[14px] font-semibold">Email</label>
-                      <Form.Item
-                        className=''
-                        name="email2"
-                        rules={[
-                          {
-                            required: true,
-                            message: 'you forgot your email',
-                            pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 
-                          },
-                        ]}
-                      >
-                        <Input type='email' placeholder="Email" className='rounded-[5px] p-2' value={emaillogin} onChange={(e) => setEmaillogin(e.target.value)} />
-                      </Form.Item>
-                      <label htmlFor="" className="block mb-1 text-[14px] font-semibold">Password</label>
-                      <Form.Item
-                        className=''
-                        name="password2"
-                        rules={[
-                          {
-                            required: true,
-                            message: 'you forgot your password',
-                          },
-                        ]}
-                      >
-                        <Input.Password type='text' placeholder="password" className='rounded-[5px] p-2' value={passwordlogin} onChange={(e) => setpasswordlogin(e.target.value)} />
-                      </Form.Item>
-                      <Button id="signupbtn" onClick={() => nextt()}  >
-                        Sign up
-                      </Button>
-                    </Form>
+      <dialog id="my_modal_3" className="modal" >
+        <div className="modal-box bg-white">
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => { form2.resetFields(); setiserror(false) }}>✕</button>
+          </form>
+          <div className="container mx-auto  flex items-center justify-center">
+            <div className="w-full max-w-md p-4 bg-white rounded-lg ">
+              <div className="text-center text-2xl font-bold mb-5">
+                Sign in to your account
+              </div>
+              {iserror ? (
+                <div className="flex flex-col border rounded-md justify-center m-auto p-2 items-center text-center mt-2  mb-5">
+                  <p className="text-sm text-red-600 font-medium">{error}</p>
+                </div>
+              ) : <></>}
+              <form className="space-y-4">
+                <div className="flex flex-col">
+                  <Form form={form2} name="basic">
+                    <label htmlFor="" className="block mb-1 text-[14px] font-semibold">Email</label>
+                    <Form.Item
+                      className=''
+                      name="email2"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'you forgot your email',
+                          pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+
+                        },
+                      ]}
+                    >
+                      <Input type='email' placeholder="Email" className='rounded-[5px] p-2' value={emaillogin} onChange={(e) => { setEmaillogin(e.target.value); setiserror(false) }} />
+                    </Form.Item>
+                    <label htmlFor="" className="block mb-1 text-[14px] font-semibold">Password</label>
+                    <Form.Item
+                      className=''
+                      name="password2"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'you forgot your password',
+                        },
+                      ]}
+                    >
+                      <Input.Password type='text' placeholder="password" className='rounded-[5px] p-2' value={passwordlogin} onChange={(e) => { setpasswordlogin(e.target.value); setiserror(false) }} />
+                    </Form.Item>
+
+                    {loading ? (<Button id="signupbtn" className='mt-2' onClick={() => nextt()} loading={true} >Sign in</Button>) : (<Button id="signupbtn" className='mt-2' onClick={() => nextt()}  >Sign In</Button>)}
+
+
+                  </Form>
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex items-center justify-end ">
+                    <Link to={""} className="text-sm text-blue-500 hover:underline" onClick={handleforgetClick}>Rest password?</Link>
                   </div>
-                  <div className="flex flex-col">
-                    <div className="flex items-center justify-end ">
-                      <Link to={""} className="text-sm text-blue-500 hover:underline" onClick={handleforgetClick}>Rest password?</Link>
-                    </div>
-                    {iserror && (
-                      <div className="flex flex-col">
-                        <p className="text-sm text-red-600 font-medium mt-2">{error}</p>
-                      </div>
-                    )}
-                  </div>
-                </form>
-                <div className="flex items-center mt-6">
-                  <div className="h-px bg-gray-300 w-1/2"></div>
-                  <p className="px-3 text-sm text-gray-400">Or</p>
-                  <div className="h-px bg-gray-300 w-1/2"></div>
+
                 </div>
-                {/* <button onClick={signupwithgoogle}>si</button> */}
-                <GoogleLoginButton2 userauth={setUserauth} />
-                <div className="text-sm text-center mt-4">
-                  Not a member? <Link to={""} className="text-blue-500 hover:underline" onClick={handleSignUpClick}>Sign up</Link>
-                </div>
-                <div className="text-sm text-center mt-4">
-                  By logging in, you agree to Carental Inc.'s <a href="" className="text-blue-500  hover:underline ">Terms of service </a>
-                </div>
+              </form>
+              <div className="flex items-center mt-6">
+                <div className="h-px bg-gray-300 w-1/2"></div>
+                <p className="px-3 text-sm text-gray-400">Or</p>
+                <div className="h-px bg-gray-300 w-1/2"></div>
+              </div>
+              {/* <button onClick={signupwithgoogle}>si</button> */}
+              <GoogleLoginButton2 userauth={setUserauth} />
+              <div className="text-sm text-center mt-4">
+                Not a member? <Link to={""} className="text-blue-500 hover:underline" onClick={handleSignUpClick}>Sign up</Link>
+              </div>
+              <div className="text-sm text-center mt-4">
+                By logging in, you agree to EaslyCars.'s <a href="/termsofService" className="text-blue-500  hover:underline ">Terms of service </a>
               </div>
             </div>
           </div>
-        </dialog >
-      )
-      }
+        </div >
+      </dialog >
 
       {/* sign up modal */}
-      <dialog id="my_modal_4" className="modal ">
+      <dialog dialog id="my_modal_4" className="modal " >
         <div className="modal-box bg-white">
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
@@ -373,7 +425,7 @@ function Navbar() {
               <div className="text-center text-2xl font-bold mb-8">
                 Welcome to CarEntal
               </div>
-              <GoogleLoginButton />
+              <GoogleLoginButton setiserrorgoogle={setiserrorgoogle} seterrorgoogle={seterrorgoogle} />
               <div className="flex justify-center  space-x-4 mt-4 rounded-lg border border-black hover:bg-slate-50 ">
                 <a href="#" className="inline-block px-3 py-2 text-center bg-white-400 text-black font-medium  w-full flex justify-center items-center" onClick={handlewithemailnClick}><img src="./src/assets/letter.png" alt="" width={"25px"} className='mr-5' />Continue with Email</a>
               </div>
@@ -382,21 +434,26 @@ function Navbar() {
                 <p className="px-3 text-sm text-gray-400">Or</p>
                 <div className="h-px bg-gray-300 w-1/2"></div>
               </div>
+              {iserrorgoogle ? (
+                <div className="flex flex-col border rounded-md justify-center m-auto p-2 items-center text-center mt-2  mb-5">
+                  <p className="text-sm text-red-600 font-medium">{errorgoogle}</p>
+                </div>
+              ) : <></>}
               <div className='mt-20'>
                 <div className="text-sm text-center mt-4">
                   Already have an Account? <a href="" className="text-black-500  text-blue-500  hover:underline " onClick={handleLogInClick}>Log in</a>
                 </div>
                 <div className="text-sm text-center mt-4">
-                  By logging in, you agree to Carental Inc.'s <a href="" className="text-blue-500  hover:underline ">Terms of service </a>
+                  By logging in, you agree to EaslyCars.'s <a href="/termsofService" className="text-blue-500  hover:underline ">Terms of service </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </dialog>
+      </dialog >
 
       {/* forget password modal */}
-      <dialog id="my_modal_5" className="modal ">
+      <dialog dialog id="my_modal_5" className="modal " >
         <div className="modal-box bg-white">
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => form3.resetFields()}>✕</button>
@@ -406,6 +463,16 @@ function Navbar() {
               <div className="text-center text-2xl font-bold mb-6">
                 Welcome to CarEntal
               </div>
+              {iserrorsendpassword ? (
+                <div className="flex flex-col border rounded-md justify-center m-auto p-2 items-center text-center mt-2  mb-5">
+                  <p className="text-sm text-red-600 font-medium">{errorsendpassword}</p>
+                </div>
+              ) : <></>}
+              {messagesent && (
+                <div className="flex flex-col border rounded-md justify-center m-auto p-2 items-center text-center mt-2  mb-5">
+                  <p className="text-sm text-green-600 font-medium">{messageok}</p>
+                </div>
+              )}
               <form className="space-y-4">
                 <div className="flex flex-col">
                   <Form form={form3} name="basic">
@@ -422,28 +489,26 @@ function Navbar() {
                         },
                       ]}
                     >
-                      <Input type='email' placeholder="Email" className='rounded-[5px] p-2' value={emailreset} onChange={(e) => setemailreset(e.target.value)} />
+                      <Input type='email' placeholder="Email" className='rounded-[5px] p-2' value={emailreset} onChange={(e) => {setemailreset(e.target.value);setiserrorsendpassword(false)}} />
                     </Form.Item>
-                    <Button id="signupbtn" onClick={() => nexttt()}  >
-                      Continue
-                    </Button>
+                    {loadingsendpassword ? (<Button id="signupbtn" className='mt-2' onClick={() => nexttt()} loading={true} >Continue</Button>) : (<Button id="signupbtn" className='mt-2' onClick={() => { nexttt()}}  >Continue</Button>)}
                   </Form>
                 </div>              </form>
               <div className="text-center mt-6">
-                <a href="#" className="text-sm text-gray-400 hover:underline">We'll send the password to your email .</a>
+                <p  className="text-sm text-gray-400 hover:underline">We'll send the password to your email .</p>
               </div>
               <div className="flex items-center justify-center mt-4">
-                <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close(); form3.resetFields() }}>Back</a>
+                <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close(); form3.resetFields();setiserrorsendpassword(false);setmessagesent(false) }}>Back</a>
               </div>
 
             </div>
           </div>
         </div>
-      </dialog>
+      </dialog >
 
       {/* password reseted */}
 
-      <dialog id="my_modal_5" className="modal ">
+      {/* <dialog dialog id="my_modal_5" className="modal " >
         <div className="modal-box bg-white">
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => form4.resetFields()}>✕</button>
@@ -488,7 +553,7 @@ function Navbar() {
                 <button type="submit" className="block w-full px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700">Continue</button>
               </form>
               <div className="text-center mt-6">
-                <a href="#" className="text-sm text-gray-400 hover:underline">We'll send the password to your email .</a>
+                <p href="#" className="text-sm text-gray-400 hover:underline">We'll send the password to your email .</p>
               </div>
               <div className="flex items-center justify-center mt-4">
                 <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close(); form3.resetFields() }}>Back</a>
@@ -497,7 +562,7 @@ function Navbar() {
             </div>
           </div>
         </div>
-      </dialog>
+      </dialog > */}
 
       {/* sign up modal with email */}
       {
@@ -507,13 +572,18 @@ function Navbar() {
           <dialog id="my_modal_6" className="modal" >
             <div className="modal-box bg-white">
               <form method="dialog">
-                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => form.resetFields()}>✕</button>
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => { form.resetFields(); setiserrorsignup(false) }}>✕</button>
               </form>
               <div className="container mx-auto  flex items-center justify-center">
                 <div className="w-full max-w-md p-4 bg-white rounded-lg ">
                   <div className="text-center text-2xl font-bold mb-5">
                     Sign in to your account
                   </div>
+                  {iserrorsignup ? (
+                    <div className="flex flex-col border rounded-md justify-center m-auto p-2 items-center text-center mt-2  mb-5">
+                      <p className="text-sm text-red-600 font-medium">{errorsignup}</p>
+                    </div>
+                  ) : <></>}
                   <form className="space-y-4">
                     {/* <div className="flex flex-col">
                     <label htmlFor="firstname" className="text-sm font-medium mb-2">firstName</label>
@@ -561,7 +631,7 @@ function Navbar() {
                           },
                         ]}
                       >
-                        <Input type='email' placeholder="Email" className='rounded-[5px] p-2 ' value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <Input type='email' placeholder="Email" className='rounded-[5px] p-2 ' value={email} onChange={(e) => { setEmail(e.target.value); setiserrorsignup(false) }} />
                       </Form.Item>
 
                       <label htmlFor="" className="block mb-1 text-[14px] font-semibold">Password</label>
@@ -577,9 +647,8 @@ function Navbar() {
                       >
                         <Input.Password type='text' placeholder="Password" className='rounded-[5px] p-2 ' value={password} onChange={(e) => setpassword(e.target.value)} />
                       </Form.Item>
-                      <Button id="signupbtn" onClick={() => next()}  >
-                        Sign up
-                      </Button>
+                      {loadingsignup ? (<Button id="signupbtn" className='mt-2' onClick={() => { next() }} loading={true} >Sign up</Button>) : (<Button id="signupbtn" className='mt-2' onClick={() => { next(); setiserrorsignup(false) }}  >Sign up</Button>)}
+
                     </Form>
 
                     {/* <div className="flex flex-col">
@@ -597,6 +666,9 @@ function Navbar() {
 
                     {/* <button type="submit" className="block w-full px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700" onClick={(e) => handleSignup(e)}>Sign in</button> */}
                   </form>
+                  <div className="flex items-center justify-center mt-4">
+                    <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_6').close(); form.resetFields(); form2.resetFields(); setiserrorsignup(false) }}>Back</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -615,7 +687,7 @@ function Navbar() {
               <ul className="menu menu-horizontal px-1">
                 <li><a href='/carhome'>Our Cars</a></li>
                 <li><a href='/#destinations'>Our Destinations</a></li>
-                <li><a>Contact us</a></li>
+                <li><a href='/contactUs'>Contact us</a></li>
               </ul>
             </div>
             <div className="navbar-end ">
@@ -641,20 +713,21 @@ function Navbar() {
               </div> */}
               <Space direction="vertical">
                 <Space wrap>
-                <Dropdown overlay={menu} placement="bottomRight" arrow >
+                  <Dropdown overlay={menu} placement="bottomRight" arrow >
                     <Tooltip >
-                  
+
                       <IconButton
 
                         size="small"
-                        sx={{ ml: 2,}}
+                        sx={{ ml: 2, }}
                         aria-controls={open ? 'account-menu' : undefined}
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
-                      > 
-                      
-                        <Avatar sx={{ width: 36, height: 36,}} className='shadow-lg'><img src={localStorage.getItem('image')} alt="" className='w-full h-full ' />
+                      >
+                        {photo ? (
+                        <Avatar sx={{ width: 39, height: 39, }} className='shadow-lg'><img src={photo} alt="" className='w-full h-full object-cover ' />
                         </Avatar>
+                        ):<Avatar src="/broken-image.jpg" />}
                       </IconButton>
                     </Tooltip>
                   </Dropdown>
@@ -672,7 +745,7 @@ function Navbar() {
               <ul className="menu menu-horizontal px-1">
                 <li><a href='/carhome'>Our Cars</a></li>
                 <li><a href='#destinations'>Our Destinations</a></li>
-                <li><a>Contact us</a></li>
+                <li><a href='/contactUs'>Contact us</a></li>
               </ul>
             </div>
             <div className="navbar-end ">
@@ -686,8 +759,8 @@ function Navbar() {
                   <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><button onClick={() => document.getElementById('my_modal_4').showModal()} >Sign up</button></li>
                   <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
 
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><PolicyIcon />Policies</a></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><EmailIcon />Contact</a></li>
+                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='/EaslyCars-Policies'><PolicyIcon />Policies</a></li>
+                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='/contactUs'><EmailIcon />Contact</a></li>
                   <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='/carhome'><DirectionsCarIcon />Our cars</a></li>
                   <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='#destinations'><LocationOnIcon />Our destinations</a></li>
                 </ul>

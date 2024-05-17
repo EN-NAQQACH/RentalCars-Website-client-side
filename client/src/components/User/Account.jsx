@@ -150,7 +150,7 @@ function Account() {
   return (
     <>
       {!token ? <Authorisation /> : (
-        <div className=' text-black mb-[20px]' >
+        <div className=' text-black mb-[20px] ' >
           <div className='profile-section ml-[80px] mt-[20px]  mr-[80px]'>
             <div className="asideprofile h-[100%] border rounded-xl">
               <div className='aside-content p-4 pt-2'>

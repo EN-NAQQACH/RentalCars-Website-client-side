@@ -59,17 +59,14 @@ function Footer() {
                                 </nav>
                                 <nav>
                                     <h6 className="footer-title">Legal</h6>
-                                    <a className="link link-hover">Terms of use</a>
-                                    <a className="link link-hover">Privacy policy</a>
-                                    <a className="link link-hover">Cookie policy</a>
+                                    <a href='/termsofService' className="link link-hover">Terms of Services</a>
+                                    <a href="/EaslyCars-Policies" className="link link-hover">Privacy policy</a>
                                 </nav>
                                 
                             </footer>
                             <footer className="footer footer-center p-10 bg-base-200 text-base-content rounded">
                                 <nav className="grid grid-flow-col gap-4">
-                                    <a className="link link-hover">Our  Cars</a>
-                                    <a className="link link-hover">Our  Destination</a>
-
+                                    <a href='/carhome' className="link link-hover">Our  Cars</a>
                                 </nav>
                                 <nav>
                                     <div className="grid grid-flow-col gap-4">

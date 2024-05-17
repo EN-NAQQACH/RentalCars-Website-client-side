@@ -31,11 +31,6 @@ function PersonalDetails() {
             setnumber(data.number)
             setAbout(data.about);
             setUserData(data);
-            const fullName = {
-                firstName: data.firstName,
-                lastName: data.lastName
-            }
-            localStorage.setItem('fullName', JSON.stringify(fullName))
         } catch (e) {
             console.log(e)
         }

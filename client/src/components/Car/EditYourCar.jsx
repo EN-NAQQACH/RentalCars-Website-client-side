@@ -9,6 +9,10 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import distancee from '../../data/distance.json'
 import carmake from '../../data/carmake.js'; import generateYears from '../../data/caryear.js';
 import { Button, message, Steps, theme, Radio, Input, Select, Checkbox, Modal } from 'antd';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 const featuresList = [
     { name: "Cruise Control", icon: "/steering-wheel.png" },
     { name: "Airbags", icon: "/airbag.png" },
@@ -26,7 +30,7 @@ const featuresList = [
     { name: "Speed Limiter", icon: "/speedometer.png" },
     { name: "Electric Windows", icon: "/window.png" },
     { name: "CD/MP3/Bluetooth", icon: "/bluetooth.png" }
-  ];
+];
 function EditYourCar() {
     const [car, setCar] = useState();
     const [location, setlocation] = useState('');
@@ -50,6 +54,8 @@ function EditYourCar() {
     const [value, setValue] = useState(1);
     const [newPhotos, setNewPhotos] = useState([]);
     const [deletedPhotos, setDeletedPhotos] = useState([]);
+    const [StartDate, setStartDate] = useState('');
+    const [EndDate, setEndDate] = useState('');
     const onChange = (e) => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
@@ -57,7 +63,7 @@ function EditYourCar() {
     };
     const isSelected = (feature) => {
         return selectedFeatures.some((selectedFeature) => selectedFeature.name === feature.name);
-      };
+    };
     useEffect(() => {
         const getCar = async () => {
             try {
@@ -80,12 +86,14 @@ function EditYourCar() {
                 setdistance(result.car.distance);
                 setFuel(result.car.fuel);
                 setmaxtrip(result.car.maxTrip);
+                setStartDate(result.car.startTripDate)
+                setEndDate(result.car.endTripDate)
                 setmintrip(result.car.minTrip);
                 setSeats(result.car.carSeats);
                 setImage(result.car.imageUrls);
                 const parsedFeatures = result.car.features.map(feature => {
                     const [name, icon] = feature.split(":");
-                    return { name,icon};
+                    return { name, icon };
                 });
                 setSelectedFeatures(parsedFeatures);
                 setType(result.car.Type)
@@ -112,7 +120,7 @@ function EditYourCar() {
         const items = Array.from(car.imageUrls);
         const [reorderedPhoto] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedPhoto);
-       setCar({ ...car, imageUrls: items });
+        setCar({ ...car, imageUrls: items });
     };
     const handledeletephoto = (index) => {
         setNewPhotos((prevphotos) => prevphotos.filter((_, i) => i !== index))
@@ -120,9 +128,9 @@ function EditYourCar() {
     const handleCheckboxChange = (feature) => {
         if (isSelected(feature)) {
             setSelectedFeatures(selectedFeatures.filter(item => item.name !== feature.name));
-          } else {
+        } else {
             setSelectedFeatures([...selectedFeatures, feature]);
-          }
+        }
     };
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
@@ -136,34 +144,36 @@ function EditYourCar() {
     };
     const handleUpdateCar = async () => {
         const formData = new FormData();
-            const featuresArray = Array.isArray(selectedFeatures) ? selectedFeatures : [selectedFeatures];
-            const deletedimagesArray = Array.isArray(deletedPhotos) ? deletedPhotos : [deletedPhotos];
-            formData.append('location', location);
-            formData.append('year', parseInt(year));
-            formData.append('price', price);
-            formData.append('make', make);
-            formData.append('model', model);
-            formData.append('transmission', transmission);
-            formData.append('fuel', fuel);
-            formData.append('distance', distance);
-            formData.append('mintrip', mintrip);
-            formData.append('maxtrip', maxtrip);
-            formData.append('carseat', seats);
-            formData.append('type', type);
-            formData.append('description', description);
-            featuresArray.forEach((feature, index) => {
-                const featureString = `${feature.name}:${feature.icon}`;
-                formData.append(`features[${index}]`, featureString);
-              });
-            deletedimagesArray.forEach((image, index) => {
-                formData.append(`deletedImages[${index}]`, image);
-            });
-            newPhotos.forEach((photo, index) => {
-                formData.append(`photos`, photo);
-            });
-            console.log(location);
-            console.log(make);
-            console.log(year)
+        const featuresArray = Array.isArray(selectedFeatures) ? selectedFeatures : [selectedFeatures];
+        const deletedimagesArray = Array.isArray(deletedPhotos) ? deletedPhotos : [deletedPhotos];
+        formData.append('location', location);
+        formData.append('year', parseInt(year));
+        formData.append('price', price);
+        formData.append('make', make);
+        formData.append('model', model);
+        formData.append('transmission', transmission);
+        formData.append('fuel', fuel);
+        formData.append('distance', distance);
+        formData.append('mintrip', mintrip);
+        formData.append('maxtrip', maxtrip);
+        formData.append('carseat', seats);
+        formData.append('type', type);
+        formData.append('startTripDate', StartDate);
+        formData.append('endTripDate', EndDate);
+        formData.append('description', description);
+        featuresArray.forEach((feature, index) => {
+            const featureString = `${feature.name}:${feature.icon}`;
+            formData.append(`features[${index}]`, featureString);
+        });
+        deletedimagesArray.forEach((image, index) => {
+            formData.append(`deletedImages[${index}]`, image);
+        });
+        newPhotos.forEach((photo, index) => {
+            formData.append(`photos`, photo);
+        });
+        console.log(location);
+        console.log(make);
+        console.log(year)
         try {
             const response = await fetch(`http://localhost:5600/api/updatecar/${carId}`, {
                 method: 'put',
@@ -184,6 +194,28 @@ function EditYourCar() {
     }
     const caryear = generateYears()
     console.log(selectedFeatures)
+
+    const handleStartDateChange = (newDate) => {
+        const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
+        // Check if start date is greater than end date
+        if (dayjs(formattedDate).isAfter(EndDate)) {
+            setStartDate(EndDate); // Swap start date with end date
+            setEndDate(formattedDate); // Keep end date as it is
+        } else {
+            setStartDate(formattedDate);
+        }
+    };
+
+    const handleEndDateChange = (newDate) => {
+        const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
+        // Check if end date is less than start date
+        if (dayjs(formattedDate).isBefore(StartDate)) {
+            setEndDate(StartDate); // Swap end date with start date
+            setStartDate(formattedDate); // Keep start date as it is
+        } else {
+            setEndDate(formattedDate);
+        }
+    };
     return (
         <div className='edityourcar border rounded-xl p-3 h-[100%]'>
             <div className='flex flex-col justify-center'>
@@ -265,17 +297,17 @@ function EditYourCar() {
                             <input type="text" className='border p-1 rounded-md' value={price} onChange={(e) => setPrice(e.target.value)} />
                         </div>
                         <div className='flex items-center gap-3 mt-2 w-[100%]' >
-                            <div className='flex flex-col min-w-[100%]'>
-                                <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Minimum trip duration</label>
-                                <Select placeholder="select year" value={mintrip} onChange={(value) => setmintrip(value)}>
-                                    <Option key="2" required value={1}>1</Option>
-                                    <Option key="3" required value={2}>2</Option>
-                                    <Option key="4" required value={3}>3</Option>
-                                </Select>
+                            <div className='flex flex-col min-w-[50%]'>
+                                <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Start Date</label>
+                                <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                    <DatePicker value={dayjs(StartDate)}  onChange={handleStartDateChange} />
+                                </LocalizationProvider>
                             </div>
-                            <div className='flex flex-col w-[100%]'>
-                                <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Maximum trip duration</label>
-                                <input type='number' className='border rounded-md p-1 ' value={maxtrip} onChange={(e) => setmaxtrip(e.target.value)} />
+                            <div className='flex flex-col w-[50%]'>
+                                <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> End Date</label>
+                                <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                    <DatePicker value={dayjs(EndDate)}  onChange={handleEndDateChange} />
+                                </LocalizationProvider>
                             </div>
                         </div>
                     </div>
@@ -328,7 +360,7 @@ function EditYourCar() {
                             <div>
                                 <div className=''>
                                     <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Description</label>
-                                    <Input.TextArea showCount maxLength={500} className='h-24' value={description} onChange={(e)=>setDescription(e.target.value)}/>
+                                    <Input.TextArea showCount maxLength={500} className='h-24' value={description} onChange={(e) => setDescription(e.target.value)} />
                                 </div>
                             </div>
                         </div>

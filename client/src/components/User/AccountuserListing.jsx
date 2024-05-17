@@ -22,7 +22,7 @@ import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 
 function AccountuserListing() {
     return (
-        <div className='carlistingtouser mt-5 max-w-[100%] felx items-center '>
+        <div className='carlistingtouser mt-5 max-w-[100%] felx items-center scroll-smooth '>
             <div className='carlistingtouser-card '>
                 <div className="carlistingtouser-card-content   h-fit border rounded-lg shadow-sm">
                     <img src="/carmain9.jpg" alt="" className='h-full w-full rounded-tr-lg rounded-tl-lg object-cover' />

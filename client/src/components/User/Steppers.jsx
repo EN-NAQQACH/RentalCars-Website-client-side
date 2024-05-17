@@ -48,10 +48,6 @@ const steps = [
     title: 'Car photos',
     content: 'Last-content',
   },
-  {
-    title: 'Submit your listing',
-    content: 'Last-content',
-  },
 ];
 
 const { Option } = Select;
@@ -348,7 +344,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select placeholder="Make" value={make} onChange={(value) => setMake(String(value))}>
+                      <Select  placeholder="Make" value={make} onChange={(value) => setMake(String(value))}>
                         {carmake.map((r, index) => (
                           <Option key={index} required value={r}>{r}</Option>
                         ))}
@@ -383,7 +379,7 @@ const Steppers = () => {
                           },
                         ]}
                       >
-                        <Select placeholder="Model" className='mb-1' value={distance} onChange={(value) => setDistance(value)}>
+                        <Select id='modeldistance' placeholder="Model" className='mb-1' value={distance} onChange={(value) => setDistance(value)}>
                           {distancee.map((distance, index) => (
                             <Option key={index} required value={distance}>{distance}</Option>
                           ))}
@@ -859,7 +855,6 @@ const Steppers = () => {
                       </Droppable>
                     </DragDropContext>
                   </div>
-                  <button onClick={handlesubmitlisting}>submit listing</button>
                 </div>
               </div>
             </div>)
@@ -868,7 +863,7 @@ const Steppers = () => {
 
         <div style={{ marginTop: 24 }}>
           {current > 0 && (
-            <Button id="prevbtn" onClick={prev} className='hidden'>
+            <Button id="prevbtn" onClick={prev}>
               Previous
             </Button>
           )}

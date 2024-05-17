@@ -25,7 +25,9 @@ import CarsListingBysearch from './components/Car/CarsListingBysearch';
 import MyNotifications from './components/User/MyNotifications';
 import ChatRoom from './components/User/ChatRoom';
 import ChatHome from './components/User/ChatHome';
-
+import TermsofService from './components/TermsofService';
+import PolicyPrivacy from './components/PolicyPrivacy';
+import ContactUs from './components/ContactUs';
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -57,7 +59,10 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path='/' element={<Rentalcar />} />
+        <Route path='/' element={<Rentalcar/>} />
+        <Route path='/termsofService' element={<TermsofService />} />
+        <Route path='/EaslyCars-Policies' element={<PolicyPrivacy />} />
+        <Route path='/contactUs' element={<ContactUs />} />
         <Route path='/profile/:firstName/:lastName/:userid' element={<Profile />} />
         <Route path='/account' element={<Account />} >
           <Route index element={<PersonalDetails />} />
@@ -76,8 +81,8 @@ function App() {
         <Route path='/accounttoUser' element={<AccounttoUser />} />
         <Route path='/my_listing' element={<MyListing />} />
         <Route path='/become_a_host' >
-          <Route path='list-your-car' element={<Listyourcar />} />
-          <Route path='list-your-car/list' element={<List />} />
+          <Route index element={<Listyourcar />} />
+          <Route path='list-your-car' element={<List />} />
         </Route>
         <Route path='/car/car-rental/:make/:model/:year/:carId' element={<CarPage />} />
         {/* <Route path='/carhome' element={<CarHome />} /> */}
