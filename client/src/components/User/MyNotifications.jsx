@@ -76,7 +76,7 @@ function MyNotifications() {
         setsocket(io("http://localhost:4000/"));
     }, []);
     return (
-        <div className='mynotifications  border border-transparent rounded-xl overflow-hidden min-h-[100vh] grid grid-cols-3 '>
+        <div className='mynotifications   border-transparent rounded-xl  min-h-[100vh] grid grid-cols-3 '>
             {chats.length > 0 ?
                 (
                     <>
@@ -151,9 +151,10 @@ function MyNotifications() {
                 ) :
                 (
                     <>
-                        <div className='messages-box  bg-[#f7f9fc] h-[100%] justify-center items-center flex col-start-1 col-end-4 relative' >
+                        <div className='messages-box border rounded-xl bg-[#fcfdff] h-[100%] justify-center items-center flex col-start-1 col-end-4 ' >
                             <p className='font-semibold text-[18px] text-gray-400'>there is no conversations yet</p>
                         </div>
+                        
                     </>
 
 

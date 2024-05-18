@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext,createContext } from 'react'
 import StarIcon from '@mui/icons-material/Star';
 import { Link, Outlet } from 'react-router-dom';
 import Loaderaccount from '../../utils/Loaderaccount';
@@ -21,7 +21,7 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 
 const { Option } = Select;
-
+export const photouser = createContext();
 const longText = `
 Tell hosts and guests about yourself and why you’re a responsible, trustworthy person. Share your favorite travel experiences, your hobbies, your dream car, or your driving experience. Feel free to include links to your LinkedIn, Twitter, or Facebook profiles so they get to know you even better.
 `;
@@ -37,6 +37,7 @@ function Account() {
   const [about, setabout] = useState('');
   const [photo, setphoto]= useState('');
   const [googleid, setgoogleid] = useState(false);
+  const [reservation , setreservations] = useState([])
 
   const fetchuser = async () => {
     try {
@@ -49,13 +50,14 @@ function Account() {
       })
       const data = await res.json()
       if (res.ok) {
-        const { firstName, lastName, about, number, email, googleId} = data;
+        const { firstName, lastName, about, number, email, googleId,reservations} = data;
         setfirsname(firstName);
         setlastname(lastName);
         setabout(about);
         setnumber(number);
         setemail(email);
         setphoto(data.picture)
+        setreservations(reservations)
         if (googleId) {
           setgoogleid(true)
         }
@@ -174,13 +176,16 @@ function Account() {
                     <Link to="my-notifications" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>Notifications</Link>
                     <Link to="my-listing"  className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My cars</Link>
                     <Link to="my-booking" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My booking</Link>
-                  </div>
+                    <Link to="my-reservations" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My reservations</Link>
+                    </div>
                 </div>
               </div>
             </div>
              <div className="main h-[100%] ">
               <div className='main-content h-[100%]' id>
-                <Outlet />
+              <photouser.Provider value={{ photo,firstName,lastName }}>
+                            <Outlet />
+                        </photouser.Provider>
               </div>
             </div> 
           </div>

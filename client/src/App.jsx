@@ -28,6 +28,7 @@ import ChatHome from './components/User/ChatHome';
 import TermsofService from './components/TermsofService';
 import PolicyPrivacy from './components/PolicyPrivacy';
 import ContactUs from './components/ContactUs';
+import Myreservations from './components/User/Myreservations';
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -75,6 +76,7 @@ function App() {
           </Route>
           <Route path='my-listing/edit-your-car/:carId' element={<EditYourCar />} />
           <Route path='my-booking' element={<MyBooking />} />
+          <Route path='my-reservations' element={<Myreservations />} />
         </Route>
         <Route path='/car-rental/cars/search/bymake/:make' element={<CarpageBymake />} />
         <Route path='/car-rental/cars/search/bydestination/:destination' element={<CarpageBydestination />} />

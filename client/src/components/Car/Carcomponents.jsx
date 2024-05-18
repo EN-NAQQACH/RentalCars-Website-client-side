@@ -117,7 +117,7 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
                                 <div className='car-card cursor-pointer relative w-[100%] h-fit rounded-lg  ' key={car.id}>
                                     <Link to={`/car/car-rental/${car.make}/${car.model}/${car.year}/${car.id}`}>
                                         <div className="car-card-components w-[100%]  h-[fit] border rounded-lg shadow-sm">
-                                            <img src={car.imageUrls[0]} alt="" className='h-[150px] w-[100%] rounded-tr-lg rounded-tl-lg object-cover transition-all duration-300 hover:transition-all hover:duration-300 hover:brightness-[90%]' />
+                                            <img src={car.imageUrls[0]} alt="" className='h-[150px] w-[100%]  rounded-tr-lg rounded-tl-lg object-cover transition-all duration-300 hover:transition-all hover:duration-300 hover:brightness-[90%]' />
                                             <div className='mt-2 p-2'>
                                                 <div className='flex justify-between'>
                                                     <div>

@@ -29,6 +29,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { DatePicker, Space } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 
 const steps = [
@@ -72,6 +73,7 @@ const featuresList = [
 ];
 
 const Steppers = () => {
+  const navigate = useNavigate()
   const [location, setLocation] = useState('');
   const [year, setYear] = useState();
   const [make, setMake] = useState("");
@@ -273,6 +275,8 @@ const Steppers = () => {
       const result = await response.json();
       if (result) {
         message.success(result.message);
+        navigate('/account/my-listing')
+        localStorage.setItem('currentStep', 0);
       } else {
         message.error(result.error);
       }
