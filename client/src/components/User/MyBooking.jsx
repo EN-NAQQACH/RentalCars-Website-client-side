@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useContext } from 'react'
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
@@ -5,7 +6,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import '../cardeffect.css'
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-import { Table, Modal,Select } from 'antd';
+import { Table, Modal, Select, message } from 'antd';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
@@ -13,18 +14,15 @@ import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import TimeToLeaveOutlinedIcon from '@mui/icons-material/TimeToLeaveOutlined';
 import { Link } from 'react-router-dom';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-const {Option} = Select;
+const { Option } = Select;
 function MyBooking() {
   const [reservations, setreservations] = useState([])
   const [reservations2, setreservations2] = useState([])
   const [data, setData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectdCarsreserved, setselectedCarsreserved] = useState(null);
-  const [person, setPerson] = useState({
-    name: 'John Doe',
-    age: 30,
-    job: 'Developer'
-  });
+  const [status, setstatus] = useState(null);
+
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 5, // Number of items per page
@@ -40,6 +38,32 @@ function MyBooking() {
     setselectedCarsreserved(reservation.reservations);
     setmodal(true);
   }
+
+
+  const handlestatuschange = (status, id) => {
+    setstatus(status);
+    const handleStatus = async (id) => {
+      try {
+        const response = await fetch(`http://localhost:5600/api/reservation/update/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+          },
+          body: JSON.stringify({
+            status: status
+          })
+        });
+        const data = await response.json();
+        if (data) {
+          getAllReservation()
+        }
+      } catch (error) {
+      }
+    }
+    handleStatus(id);
+  }
+  console.log(status)
   // const data = [];
   // for (let i = 0; i < 10; i++) {
   //   data.push({
@@ -54,28 +78,27 @@ function MyBooking() {
   const closeModal = () => {
     setmodal(false);
   };
-
-  useEffect(() => {
-    const getAllReservation = async () => {
-      try {
-        const response = await fetch("http://localhost:5600/api/reservation/getAllReservations", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": 'Bearer ' + localStorage.getItem('T_ID_Auth'),
-          },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setreservations(data);
-          setreservations2(data.reservationsByUser);
-        } else {
-          setreservations(null);
-        }
-      } catch (error) {
-        console.error(error);
+  const getAllReservation = async () => {
+    try {
+      const response = await fetch("http://localhost:5600/api/reservation/getAllReservations", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setreservations(data);
+        setreservations2(data.reservationsByUser);
+      } else {
+        setreservations(null);
       }
+    } catch (error) {
+      console.error(error);
     }
+  }
+  useEffect(() => {
     getAllReservation();
   }, [])
   useEffect(() => {
@@ -83,7 +106,9 @@ function MyBooking() {
       key: index,
       client: `${reservation.user.firstName} ${reservation.user.lastName}`,
       email: reservation.user.email,
-      TotalsCars: <div className='pr-2 pl-2 bg-yellow-300 rounded-lg w-fit flex justify-center'>{reservations.totalCars}</div>,
+      TotalsCars: <div className='pr-2 pl-2 bg-yellow-300 rounded-lg w-fit flex justify-center'>{reservation.
+        reservations.length
+      }</div>,
       action: (
         <button type="primary" className="border pl-3 pr-3 rounded-md border-gray-300 flex items-center gap-1 pt-1 pb-1 text-[#3838af]" onClick={() => handleselecteditem(reservation)}>
           <RemoveRedEyeOutlinedIcon />View
@@ -92,6 +117,7 @@ function MyBooking() {
     }));
     setData(newData);
   }, [reservations2]);
+  console.log(reservations)
   return (
     <>
       {reservations ?
@@ -247,10 +273,22 @@ function MyBooking() {
                                                     <h2 className="text-lg font-semibold">{res.car.make} {res.car.model} {res.car.year}</h2>
                                                     <div className="text-gray-500 dark:text-gray-400 text-sm">{res.car.Type}</div>
                                                   </div>
-                                                  <div className="flex items-center gap-2">
-                                                    <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                                    {res.status}
-                                                  </div>
+                                                  {res.status === "pending" ? (
+                                                    <>
+                                                      <div className="flex items-center gap-2">
+
+                                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
+                                                        {res.status}
+                                                      </div>
+                                                    </>
+                                                  ) : (
+                                                    <>
+                                                      <div className="flex items-center gap-2">
+                                                        <div className="h-2 w-2 rounded-full bg-green-500" />
+                                                        {res.status}
+                                                      </div>
+                                                    </>
+                                                  )}
                                                 </div>
 
                                                 <div className="grid gap-2 mt-4">
@@ -272,21 +310,21 @@ function MyBooking() {
                                           </div>
                                           <div className="collapse-content">
                                             <div className='mt-2'>
-                                            {/* value={sort} onChange={(value) => setSort(value)} */}
+                                              {/* value={sort} onChange={(value) => setSort(value)} */}
                                               <div className='flex items-center justify-between'>
                                                 <button className='pl-5 pt-1 pb-1 pr-5 border hover:text-red-600 rounded-md'> <div className='flex justify-between gap-2 mt-[0.5px]'><DeleteOutlineOutlinedIcon /><span>Cancel</span></div></button>
-                                                <Select className='w-[150px]  ' placeholder="Status" >
-                                                  <Option key={1} value='Pending'>
-                                                  <div className="flex items-center gap-2">
-                                                    <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                                    pending
-                                                  </div>
+                                                <Select className='w-[150px]  ' placeholder="Status" value={status} onChange={(value) => handlestatuschange(value, res.id)}>
+                                                  <Option key={1} value='pending'>
+                                                    <div className="flex items-center gap-2">
+                                                      <div className="h-2 w-2 rounded-full bg-yellow-500" />
+                                                      pending
+                                                    </div>
                                                   </Option>
-                                                  <Option key={2} value='Confirmed'>
-                                                  <div className="flex items-center gap-2">
-                                                    <div className="h-2 w-2 rounded-full bg-green-600" />
-                                                    Confirmed
-                                                  </div>
+                                                  <Option key={2} value='confirmed'>
+                                                    <div className="flex items-center gap-2">
+                                                      <div className="h-2 w-2 rounded-full bg-green-600" />
+                                                      Confirmed
+                                                    </div>
                                                   </Option>
                                                 </Select>
                                               </div>
