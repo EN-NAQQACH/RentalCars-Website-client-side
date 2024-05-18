@@ -9,7 +9,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
-import { Select, message } from 'antd';
+import { Select, message,Input } from 'antd';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import HelpIcon from '@mui/icons-material/Help';
@@ -25,10 +25,16 @@ const { Option } = Select;
 function MyListing() {
     const [Mycars, setMyCars] = useState([]);
     const [loading, setloading] = useState(true);
+    const [sort, setSort] = useState(null);
+    const [searchcar , setsearchcar] = useState(null)
     const Mycarslisting = async () => {
-        try {
+        try { 
+            const queryParams = new URLSearchParams({
+            sort: sort || '',
+            car: searchcar || '',
+        });
             setloading(true);
-            const reponse = await fetch('http://localhost:5600/api/getcar', {
+            const reponse = await fetch(`http://localhost:5600/api/getcar?${queryParams}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -65,18 +71,22 @@ function MyListing() {
     }
     useEffect(() => {
         Mycarslisting();
-    }, [])
+    }, [sort,searchcar])
     return (
         <div className='mylistinginfo border rounded-xl p-3 h-[100%]'>
-            <div className='flex justify-between items-center mb-3'>
-                <p className='text-[18px] font-semibold text-gray-700'>My Cars</p>
+            <p className='text-[18px] font-semibold text-gray-700'>My Cars</p>
+            <div className='flex justify-between items-center mb-3 mt-3'>
+                
                 <div className='sort-component  w-[220px]'>
-                    <Select className='w-[100%]' placeholder="Sort by">
-                        <Option>Newest</Option>
-                        <Option>Oldest</Option>
-                        <Option>Highest Price</Option>
-                        <Option>Lowest Price</Option>
+                    <Select className='w-[100%]' placeholder="Sort by" value={sort} onChange={(value) => setSort(value)}>
+                        <Option key={1} value='Newest'>Newest</Option>
+                        <Option key={2} value='Oldest'>Oldest</Option>
+                        <Option key={3} value='high'>Highest Price</Option>
+                        <Option key={4} value='low'>Lowest Price</Option>
                     </Select>
+                </div>
+                <div>
+                    <Input type="text" placeholder='Search' className='w-[300px] border outline-none p-1 text-[14px]' value={searchcar} onChange={(e)=>setsearchcar(e.target.value)} />
                 </div>
             </div>
             <div className='cars-componentss mt-5 max-w-[100%] h-fit felx items-center '>
