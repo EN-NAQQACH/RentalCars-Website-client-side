@@ -152,9 +152,9 @@ function Account() {
   return (
     <>
       {!token ? <Authorisation /> : (
-        <div className=' text-black mb-[20px] ' >
+        <div className=' text-black mb-[20px] min-h-[140vh]' >
           <div className='profile-section ml-[80px] mt-[20px]  mr-[80px]'>
-            <div className="asideprofile h-[100%] border rounded-xl">
+            <div className="asideprofile h-fit border rounded-xl shadow-sm">
               <div className='aside-content p-4 pt-2'>
                 <div className='image h-[150px] flex justify-center m-auto flex-col items-center '>
                   <img src={photo} alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' />

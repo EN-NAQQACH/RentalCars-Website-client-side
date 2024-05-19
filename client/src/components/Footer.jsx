@@ -25,7 +25,7 @@ function Footer() {
             {
                 isWideScreen ? (
                     <>
-                        <footer className='footer1 pl-[150px] pr-[150px] pt-[50px] pb-[20px] bg-[#f7f7f7bd] ' style={{
+                        <footer className='footer1 pl-[150px] pr-[150px] pt-[50px] h-lvh pb-[20px] bg-[#f7f7f7bd] ' style={{
                             fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing
                         }} id='footer1' >
                             <footer className="footer p-10 bg-base-200 text-base-content">

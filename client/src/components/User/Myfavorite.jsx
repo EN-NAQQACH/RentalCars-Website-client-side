@@ -5,6 +5,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { message } from 'antd';
+import ClipLoader from "react-spinners/ClipLoader";
 
 function MyFavorites() {
     const [favorites, setFavorites] = useState([]);
@@ -13,7 +14,7 @@ function MyFavorites() {
     const token = localStorage.getItem('T_ID_Auth');
     const fetchFavorites = async () => {
         try {
-            setloading(true); 
+            setloading(true);
             const response = await fetch("http://localhost:5600/api/getuserfavorites", {
                 method: 'GET',
                 headers: {
@@ -62,12 +63,12 @@ function MyFavorites() {
             <div className='flex justify-between items-center mb-3'>
                 <p className='text-[18px] font-semibold text-gray-700'>Mohssine’s favorites</p>
             </div>
-            <div className='favorites-componentss mt-5 max-w-[100%] h-fit felx items-center '>
+            <div className={loading ? 'h-[100%] flex  justify-center items-center':'favorites-componentss mt-5 max-w-[100%] h-fit felx items-center '}>
 
                 {loading ?
                     (
                         <>
-                            {[1,2,3].map((i) => (
+                            {/* {[1,2,3].map((i) => (
 
                                 <div className="car-card " key={i}>
                                     <div className='car-card-components  cursor-pointer relative w-[100%] h-fit rounded-lg skeleton' >
@@ -82,7 +83,17 @@ function MyFavorites() {
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                            ))} */}
+                            <div className=' '>
+                                <ClipLoader
+                                    color="#5c3cfc"
+                                    size={35}
+                                    speedMultiplier={0.3}
+                                    
+                                />
+                            </div>
+
+                            
                         </>
                     )
 

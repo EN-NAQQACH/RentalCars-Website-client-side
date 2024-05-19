@@ -170,7 +170,7 @@ function CarHome() {
         days: days
     }
     return (
-        <div className='' style={{ fontFamily: "Space Grotesk" }}>
+        <div className='min-h-[200vh]' style={{ fontFamily: "Space Grotesk" }}>
             <div className='location-section w-[100%]  mb-7 ml-2'>
                 <div className='location-content-section-carhome gap-2 rounded-[30px]  border-gray-100 border-[0.2px] shadow-sm w-fit pl-3 pr-3 pt-1 pb-1'>
                     <div className='border-r-[1px] pr-5'>

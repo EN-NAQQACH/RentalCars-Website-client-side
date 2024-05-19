@@ -6,7 +6,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import '../cardeffect.css'
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-import { Table, Modal, Select, message } from 'antd';
+import { Table, Modal, Select, message, Input } from 'antd';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
@@ -15,6 +15,7 @@ import TimeToLeaveOutlinedIcon from '@mui/icons-material/TimeToLeaveOutlined';
 import { Link } from 'react-router-dom';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 const { Option } = Select;
+import ClipLoader from "react-spinners/ClipLoader";
 function MyBooking() {
   const [reservations, setreservations] = useState([])
   const [reservations2, setreservations2] = useState([])
@@ -22,6 +23,7 @@ function MyBooking() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectdCarsreserved, setselectedCarsreserved] = useState(null);
   const [status, setstatus] = useState(null);
+  const [search, setsearch] = useState(null)
 
   const [pagination, setPagination] = useState({
     current: 1,
@@ -80,7 +82,8 @@ function MyBooking() {
   };
   const getAllReservation = async () => {
     try {
-      const response = await fetch("http://localhost:5600/api/reservation/getAllReservations", {
+      setLoading(true);
+      const response = await fetch(`http://localhost:5600/api/reservation/getAllReservations?search=${search || ''}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -91,16 +94,19 @@ function MyBooking() {
       if (response.ok) {
         setreservations(data);
         setreservations2(data.reservationsByUser);
+        setLoading(false);
       } else {
         setreservations(null);
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   }
   useEffect(() => {
     getAllReservation();
-  }, [])
+  }, [search])
   useEffect(() => {
     const newData = reservations2.map((reservation, index) => ({
       key: index,
@@ -120,241 +126,272 @@ function MyBooking() {
   console.log(reservations)
   return (
     <>
-      {reservations ?
-        (<div className='myBookinginfo border-gray-100 border rounded-xl p-3 h-[100%]' >
-          <div>
-            <div className='flex justify-between items-center mb-3'>
-              <p className='text-[18px] font-semibold text-gray-700'>Mohssine’s Booking</p>
-            </div>
-            <div className='Booking-componentss mt-5 max-w-[100%] felx items-center '>
-              <div className='Booking-cards   '>
-                <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2 ">
-                  <div className='p-2 flex flex-col gap-3'>
-                    <div className='flex justify-between items-center'>
-                      <p className='text-[13px]'>Pending Reservations</p>
-                      <p className='border pl-2 pt-1 pb-1 pr-2 rounded-[50%] font-semibold bg-[#e3ddffa2]'>{reservations.totalPendingReservations}</p>
-                    </div>
-                    <div>
-                      <p className='font-bold text-[25px] flex items-center'><MoreHorizOutlinedIcon className='mr-1  rounded-[50%] bg-yellow-300 text-white' /><span>{reservations.totalPendingReservations}</span></p>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                </div>
-              </div>
-              <div className='Booking-cards '>
-                <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2">
-                  <div className='p-2 flex flex-col gap-3'>
-                    <div className='flex  gap-2 justify-between items-center'>
-                      <p className='text-[13px] truncate'>Confirmed <span>Reservations</span></p>
-                      <p className='border pl-2 pt-1 pb-1 pr-2 rounded-[50%] font-semibold bg-[#e3ddffa2]'>{reservations.totalConfirmedReservations}</p>
-                    </div>
-                    <div>
-                      <p className='font-bold text-[25px] flex items-center'><CheckOutlinedIcon className='mr-1 rounded-[50%] bg-green-500 text-white' /><span>{reservations.totalConfirmedReservations}</span></p>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                </div>
-              </div>
-              <div className='Booking-cards  '>
-                <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2">
-                  <div className='p-2 flex flex-col gap-3'>
-                    <div className='flex justify-between items-center'>
-                      <p className='text-[13px]'>Total Clients</p>
-                      <p className='border pl-2 pt-1 pb-1 pr-2 rounded-[50%] font-semibold bg-[#e3ddffa2]'>{reservations.totalUsersReserved}</p>
-                    </div>
-                    <div>
-                      <p className='font-bold text-[25px] flex items-center'><GroupOutlinedIcon className='mr-1  rounded-[50%] bg-[#b1b1ff] text-white' /><span>{reservations.totalUsersReserved}</span></p>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                </div>
-              </div>
-              <div className='Booking-cards '>
-                <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2">
-                  <div className='p-2 flex flex-col gap-3'>
-                    <div className='flex justify-between items-center'>
-                      <p className='text-[13px]'>Total Cars</p>
-                      <p className='border pl-2 pt-1 pb-1 pr-2 rounded-[50%] font-semibold bg-[#e3ddffa2]'>{reservations.totalCars}</p>
-                    </div>
-                    <div>
-                      <p className='font-bold text-[25px] flex items-center'><TimeToLeaveOutlinedIcon className='mr-1 border rounded-[50%]' /><span>{reservations.totalCars}</span></p>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                </div>
-              </div>
-            </div>
+
+      <div className='myBookinginfo border-gray-100 border rounded-xl p-3 h-[100%]' >
+        <div>
+          <div className='flex justify-between items-center mb-3'>
+            <p className='text-[18px] font-semibold text-gray-700'>Mohssine’s Booking</p>
           </div>
-          <div className='border mt-2 rounded-md' >
-            <div>
-              <Table dataSource={data} className='p-3' pagination={pagination} onChange={handleTableChange} loading={loading}>
-                <Table.Column title="Client" dataIndex="client" key="client" sorter={(a, b) => a.client.localeCompare(b.client)} />
-                <Table.Column title="Email" dataIndex="email" key="email" sorter={(a, b) => a.email.localeCompare(b.email)} />
-                <Table.Column title="Totals Cars" dataIndex="TotalsCars" key="TotalsCars" sorter={(a, b) => a.TotalsCars.props.children.localeCompare(b.TotalsCars.props.children)} />
-                <Table.Column title="Car" dataIndex="car" key="car" sorter={(a, b) => a.car.localeCompare(b.car)} />
-                <Table.Column title="Action" dataIndex="action" key="action" />
-              </Table>
-              <Modal
-                title="Reservation Details"
-                visible={modal}
-                onCancel={closeModal}
-                footer={null}
-                style={
-                  {
-                    minWidth: "80%",
-                  }
-                }
-              >
-                {selectedUser && (
-                  <div>
-                    {/* <p>Name: {selectedUser.firstName} {selectedUser.lastName}</p>
-                    <p>Email: {selectedUser.email}</p>
-                    Display other user information  */}
-                    <div className='grid grid-cols-3 gap-2'>
-                      <div className='user-side bg-white  rounded-md mt-5'>
-                        <div className='p-3 mt-3'>
-                          <div className='user-info flex flex-col items-center'>
-                            <div className="mb-4 h-32 w-32 overflow-hidden rounded-full">
-                              <img
-                                alt="User Avatar"
-                                className="h-full w-full object-cover"
-                                height={128}
-                                src={selectedUser.picture}
-                                style={{
-                                  aspectRatio: "128/128",
-                                  objectFit: "cover",
-                                }}
-                                width={128}
-                              />
-                            </div>
-                            <h2 className="text-2xl font-bold mb-1">{selectedUser.firstName} {selectedUser.lastName}</h2>
-                            <p className="text-gray-500 mb-1">{selectedUser.email}</p>
-                            <p className="text-gray-500">+212 {selectedUser.number}</p>
-                            <Link to={`/profile/${selectedUser.firstName}/${selectedUser.lastName}/${selectedUser.id}`} className='pt-1 pb-1 pl-5 pr-5 rounded-md border  mt-3'>View Profile</Link>
-                          </div>
-                        </div>
+          {loading ? (
+            <>
+
+              <div className='flex justify-center items-center  h-[440px] '>
+                <ClipLoader
+                  color="#5c3cfc"
+                  size={35}
+                  speedMultiplier={0.3}
+
+                />
+              </div>
+            </>
+
+          ) :
+
+            (
+
+              <>
+                {reservations ?
+                  (
+                    <>
+                      <div className='flex justify-end'>
+                        <Select className='w-[24%]' placeholder="filter by status" value={search} onChange={(value) => setsearch(value)}>
+                          <Option key={1} value='pending'>Pending</Option>
+                          <Option key={2} value='confirmed'>Confirmed</Option>
+                        </Select>
                       </div>
-                      <div className='cars-side bg-white  col-start-2 col-end-6 rounded-md'>
-                        <div className='cars-side'>
-                          <div>
-                            <div className='car-info max-h-[70vh] overflow-y-scroll'>
-                              <div className="max-w-4xl mx-auto px-4 md:px-6 py-10">
-                                <h1 className="text-2xl font-bold mb-6">Your Car Rental Reservations</h1>
-                                <div className="grid gap-6">
 
-                                  {selectdCarsreserved &&
-
-                                    <>
-                                      {selectdCarsreserved.map((res, index) => (
-
-
-                                        <div className=" card-question collapse  bg-white text-black  rounded-lg shadow-md">
-                                          <input type="checkbox" />
-                                          <div className="collapse-title bg-white  rounded-lg  border-gray-200 dark:border-gray-800 overflow-hidden" key={res.id}>
-                                            <div className="grid md:grid-cols-[200px_1fr] gap-6">
-                                              <img
-                                                alt="Car Image"
-                                                className="w-full h-full object-cover"
-                                                height={150}
-                                                src={res.car.imageUrls[0]}
-                                                style={{
-                                                  aspectRatio: "200/150",
-                                                  objectFit: "cover",
-                                                }}
-                                                width={200}
-                                              />
-                                              <div className="p-4 md:p-6 flex flex-col justify-between">
-                                                <div className='flex items-center justify-between'>
-                                                  <div>
-                                                    <h2 className="text-lg font-semibold">{res.car.make} {res.car.model} {res.car.year}</h2>
-                                                    <div className="text-gray-500 dark:text-gray-400 text-sm">{res.car.Type}</div>
-                                                  </div>
-                                                  {res.status === "pending" ? (
-                                                    <>
-                                                      <div className="flex items-center gap-2">
-
-                                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                                        {res.status}
-                                                      </div>
-                                                    </>
-                                                  ) : (
-                                                    <>
-                                                      <div className="flex items-center gap-2">
-                                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                                        {res.status}
-                                                      </div>
-                                                    </>
-                                                  )}
-                                                </div>
-
-                                                <div className="grid gap-2 mt-4">
-                                                  <div className="flex justify-between">
-                                                    <div className="text-gray-500 dark:text-gray-400">Pick-up Date</div>
-                                                    <div>{res.startDate}</div>
-                                                  </div>
-                                                  <div className="flex justify-between">
-                                                    <div className="text-gray-500 dark:text-gray-400">Drop-off Date</div>
-                                                    <div>{res.endDate}</div>
-                                                  </div>
-                                                  <div className="flex justify-between">
-                                                    <div className="text-gray-500 dark:text-gray-400">Total</div>
-                                                    <div className="font-semibold">{res.totalPrice} Dh</div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="collapse-content">
-                                            <div className='mt-2'>
-                                              {/* value={sort} onChange={(value) => setSort(value)} */}
-                                              <div className='flex items-center justify-between'>
-                                                <button className='pl-5 pt-1 pb-1 pr-5 border hover:text-red-600 rounded-md'> <div className='flex justify-between gap-2 mt-[0.5px]'><DeleteOutlineOutlinedIcon /><span>Cancel</span></div></button>
-                                                <Select className='w-[150px]  ' placeholder="Status" value={status} onChange={(value) => handlestatuschange(value, res.id)}>
-                                                  <Option key={1} value='pending'>
-                                                    <div className="flex items-center gap-2">
-                                                      <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                                      pending
-                                                    </div>
-                                                  </Option>
-                                                  <Option key={2} value='confirmed'>
-                                                    <div className="flex items-center gap-2">
-                                                      <div className="h-2 w-2 rounded-full bg-green-600" />
-                                                      Confirmed
-                                                    </div>
-                                                  </Option>
-                                                </Select>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-
-
-                                      ))}
-
-
-                                    </>
-
-                                  }
-
-                                </div>
+                      <div className='Booking-componentss mt-5 max-w-[100%] felx items-center '>
+                        <div className='Booking-cards   '>
+                          <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2 ">
+                            <div className='p-2 flex flex-col gap-3'>
+                              <div className='flex justify-between items-center'>
+                                <p className='text-[13px]'>Pending Reservations</p>
+                                <p className='border pl-2 pt-1 pb-1 pr-2 rounded-[50%] font-semibold bg-[#e3ddffa2]'>{reservations.totalPendingReservations}</p>
+                              </div>
+                              <div>
+                                <p className='font-bold text-[25px] flex items-center'><MoreHorizOutlinedIcon className='mr-1  rounded-[50%] bg-yellow-300 text-white' /><span>{reservations.totalPendingReservations}</span></p>
                               </div>
                             </div>
                           </div>
+                          <div>
+                          </div>
+                        </div>
+                        <div className='Booking-cards '>
+                          <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2">
+                            <div className='p-2 flex flex-col gap-3'>
+                              <div className='flex  gap-2 justify-between items-center'>
+                                <p className='text-[13px] truncate'>Confirmed <span>Reservations</span></p>
+                                <p className='border pl-2 pt-1 pb-1 pr-2 rounded-[50%] font-semibold bg-[#e3ddffa2]'>{reservations.totalConfirmedReservations}</p>
+                              </div>
+                              <div>
+                                <p className='font-bold text-[25px] flex items-center'><CheckOutlinedIcon className='mr-1 rounded-[50%] bg-green-500 text-white' /><span>{reservations.totalConfirmedReservations}</span></p>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                          </div>
+                        </div>
+                        <div className='Booking-cards  '>
+                          <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2">
+                            <div className='p-2 flex flex-col gap-3'>
+                              <div className='flex justify-between items-center'>
+                                <p className='text-[13px]'>Total Clients</p>
+                                <p className='border pl-2 pt-1 pb-1 pr-2 rounded-[50%] font-semibold bg-[#e3ddffa2]'>{reservations.totalUsersReserved}</p>
+                              </div>
+                              <div>
+                                <p className='font-bold text-[25px] flex items-center'><GroupOutlinedIcon className='mr-1  rounded-[50%] bg-[#b1b1ff] text-white' /><span>{reservations.totalUsersReserved}</span></p>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                          </div>
+                        </div>
+                        <div className='Booking-cards '>
+                          <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2">
+                            <div className='p-2 flex flex-col gap-3'>
+                              <div className='flex justify-between items-center'>
+                                <p className='text-[13px]'>Total Cars</p>
+                                <p className='border pl-2 pt-1 pb-1 pr-2 rounded-[50%] font-semibold bg-[#e3ddffa2]'>{reservations.totalCars}</p>
+                              </div>
+                              <div>
+                                <p className='font-bold text-[25px] flex items-center'><TimeToLeaveOutlinedIcon className='mr-1 border rounded-[50%]' /><span>{reservations.totalCars}</span></p>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                )}
-              </Modal>
 
-            </div>
-          </div>
-        </div>) : <div>Loading...</div>
-      }
+                      <div className='border mt-2 rounded-md' >
+                        <div>
+                          <Table dataSource={data} className='p-3' pagination={pagination} onChange={handleTableChange} loading={false}>
+                            <Table.Column title="Client" dataIndex="client" key="client" sorter={(a, b) => a.client.localeCompare(b.client)} />
+                            <Table.Column title="Email" dataIndex="email" key="email" sorter={(a, b) => a.email.localeCompare(b.email)} />
+                            <Table.Column title="Totals Cars" dataIndex="TotalsCars" key="TotalsCars" sorter={(a, b) => a.TotalsCars.props.children.localeCompare(b.TotalsCars.props.children)} />
+                            <Table.Column title="Action" dataIndex="action" key="action" />
+                          </Table>
+                          <Modal
+                            title="Reservation Details"
+                            visible={modal}
+                            onCancel={closeModal}
+                            footer={null}
+                            style={
+                              {
+                                minWidth: "80%",
+                              }
+                            }
+                          >
+                            {selectedUser && (
+                              <div>
+                                {/* <p>Name: {selectedUser.firstName} {selectedUser.lastName}</p>
+                    <p>Email: {selectedUser.email}</p>
+                    Display other user information  */}
+                                <div className='grid grid-cols-3 gap-2'>
+                                  <div className='user-side bg-white  rounded-md mt-5'>
+                                    <div className='p-3 mt-3'>
+                                      <div className='user-info flex flex-col items-center'>
+                                        <div className="mb-4 h-32 w-32 overflow-hidden rounded-full">
+                                          <img
+                                            alt="User Avatar"
+                                            className="h-full w-full object-cover"
+                                            height={128}
+                                            src={selectedUser.picture}
+                                            style={{
+                                              aspectRatio: "128/128",
+                                              objectFit: "cover",
+                                            }}
+                                            width={128}
+                                          />
+                                        </div>
+                                        <h2 className="text-2xl font-bold mb-1">{selectedUser.firstName} {selectedUser.lastName}</h2>
+                                        <p className="text-gray-500 mb-1">{selectedUser.email}</p>
+                                        <p className="text-gray-500">+212 {selectedUser.number}</p>
+                                        <Link to={`/profile/${selectedUser.firstName}/${selectedUser.lastName}/${selectedUser.id}`} className='pt-1 pb-1 pl-5 pr-5 rounded-md border  mt-3'>View Profile</Link>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className='cars-side bg-white  col-start-2 col-end-6 rounded-md'>
+                                    <div className='cars-side'>
+                                      <div>
+                                        <div className='car-info max-h-[70vh] overflow-y-scroll'>
+                                          <div className="max-w-4xl mx-auto px-4 md:px-6 py-10">
+                                            <h1 className="text-2xl font-bold mb-6">Your Car Rental Reservations</h1>
+                                            <div className="grid gap-6">
+
+                                              {selectdCarsreserved &&
+
+                                                <>
+                                                  {selectdCarsreserved.map((res, index) => (
+
+
+                                                    <div className=" card-question collapse  bg-white text-black  rounded-lg shadow-md" key={index}>
+                                                      <input type="checkbox" />
+                                                      <div className="collapse-title bg-white  rounded-lg  border-gray-200 dark:border-gray-800 overflow-hidden" key={res.id}>
+                                                        <div className="grid md:grid-cols-[200px_1fr] gap-6">
+                                                          <img
+                                                            alt="Car Image"
+                                                            className="w-full h-full object-cover rounded-lg"
+                                                            height={150}
+                                                            src={res.car.imageUrls[0]}
+                                                            style={{
+                                                              aspectRatio: "200/150",
+                                                              objectFit: "cover",
+                                                            }}
+                                                            width={200}
+                                                          />
+                                                          <div className="p-4 md:p-6 flex flex-col justify-between">
+                                                            <div className='flex items-center justify-between'>
+                                                              <div>
+                                                                <h2 className="text-lg font-semibold">{res.car.make} {res.car.model} {res.car.year}</h2>
+                                                                <div className="text-gray-500 dark:text-gray-400 text-sm">{res.car.Type}</div>
+                                                              </div>
+                                                              {res.status === "pending" ? (
+                                                                <>
+                                                                  <div className="flex items-center gap-2">
+
+                                                                    <div className="h-2 w-2 rounded-full bg-yellow-500" />
+                                                                    {res.status}
+                                                                  </div>
+                                                                </>
+                                                              ) : (
+                                                                <>
+                                                                  <div className="flex items-center gap-2">
+                                                                    <div className="h-2 w-2 rounded-full bg-green-500" />
+                                                                    {res.status}
+                                                                  </div>
+                                                                </>
+                                                              )}
+                                                            </div>
+
+                                                            <div className="grid gap-2 mt-4">
+                                                              <div className="flex justify-between">
+                                                                <div className="text-gray-500 dark:text-gray-400">Pick-up Date</div>
+                                                                <div>{res.startDate}</div>
+                                                              </div>
+                                                              <div className="flex justify-between">
+                                                                <div className="text-gray-500 dark:text-gray-400">Drop-off Date</div>
+                                                                <div>{res.endDate}</div>
+                                                              </div>
+                                                              <div className="flex justify-between">
+                                                                <div className="text-gray-500 dark:text-gray-400">Total</div>
+                                                                <div className="font-semibold">{res.totalPrice} Dh</div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div className="collapse-content">
+                                                        <div className='mt-2'>
+                                                          {/* value={sort} onChange={(value) => setSort(value)} */}
+                                                          <div className='flex items-center justify-between'>
+                                                            <button className='pl-5 pt-1 pb-1 pr-5 border hover:text-red-600 rounded-md'> <div className='flex justify-between gap-2 mt-[0.5px]'><DeleteOutlineOutlinedIcon /><span>Cancel</span></div></button>
+                                                            <Select className='w-[150px]  ' placeholder="Status" value={status} onChange={(value) => handlestatuschange(value, res.id)}>
+                                                              <Option key={1} value='pending'>
+                                                                <div className="flex items-center gap-2">
+                                                                  <div className="h-2 w-2 rounded-full bg-yellow-500" />
+                                                                  pending
+                                                                </div>
+                                                              </Option>
+                                                              <Option key={2} value='confirmed'>
+                                                                <div className="flex items-center gap-2">
+                                                                  <div className="h-2 w-2 rounded-full bg-green-600" />
+                                                                  Confirmed
+                                                                </div>
+                                                              </Option>
+                                                            </Select>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+
+
+                                                  ))}
+
+
+                                                </>
+
+                                              }
+
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </Modal>
+                        </div>
+                      </div>
+                    </>
+                  ) : (<div className='flex h-[440px] justify-center items-center font-semibold text-[18px] text-gray-400'>no Booking</div>)}
+
+              </>)}
+
+        </div>
+      </div>
     </>
 
   )

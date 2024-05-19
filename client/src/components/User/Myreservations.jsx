@@ -10,14 +10,21 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled';
 import dayjs from 'dayjs';
 import { photouser } from './Account';
+import ClipLoader from "react-spinners/ClipLoader";
 function Myreservations() {
     const [sort, setSort] = React.useState(null);
     const { photo, firstName, lastName } = useContext(photouser);
-    const [searchcar, setsearchcar] = React.useState('');
+    const [search, setsearch] = React.useState('');
     const [reservations, setreservations] = useState([])
+    const [loading, setloading] = useState(false)
     const fetchreservations = async () => {
         try {
-            const response = await fetch('http://localhost:5600/api/user/myreservations', {
+            setloading(true)
+            const queryParams = new URLSearchParams({
+                sort: sort || '',
+                carName: search || '',
+            });
+            const response = await fetch(`http://localhost:5600/api/user/myreservations?${queryParams}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -26,10 +33,11 @@ function Myreservations() {
             });
             const data = await response.json();
             if (data) {
+                setloading(false)
                 setreservations(data);
             }
         } catch (error) {
-
+            setloading(false)
         }
 
     }
@@ -53,12 +61,12 @@ function Myreservations() {
     }
     useEffect(() => {
         fetchreservations();
-    }, [])
+    }, [search, sort])
     return (
         <div>
             <div className='myBookinginfo border-gray-100  rounded-xl p-3 h-fit' >
+                <p className='text-[18px] font-semibold text-gray-700'>My Reservations</p>
                 <div>
-                    <p className='text-[18px] font-semibold text-gray-700'>My Reservations</p>
                     <div className='flex justify-between items-center mb-3 mt-3'>
 
                         <div className='sort-component  w-[220px]'>
@@ -68,7 +76,7 @@ function Myreservations() {
                             </Select>
                         </div>
                         <div>
-                            <Input type="text" placeholder='Search' className='w-[300px] border outline-none p-1 text-[14px]' value={searchcar} onChange={(e) => setsearchcar(e.target.value)} />
+                            <Input type="text" placeholder='Search' className='w-[300px] border outline-none p-1 text-[14px]' value={search} onChange={(e) => setsearch(e.target.value)} />
                         </div>
                     </div>
                 </div>
@@ -195,7 +203,7 @@ function Myreservations() {
                                 ))}
                             </>
                         ) : (
-                            <div className='text-center text-gray-500 font-semibold h-lvh flex justify-center items-center'>No reservations found</div>
+                            <div className='text-center text-gray-500 font-semibold h-[440px] flex justify-center items-center'>No reservations found</div>
                         )
 
                     }
