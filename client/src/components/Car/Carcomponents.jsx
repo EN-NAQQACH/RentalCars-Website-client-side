@@ -9,12 +9,13 @@ import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { message } from 'antd';
 
 function Carcomponents({ days, location, sort, type, minprice, maxprice, transmission, make, features, seats, fueltype,startDate,endDate }) {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [cars, setCars] = useState([]);
     const [index,setindex] = useState([])
 
     const getAllCars = async () => {
         try {
+            setLoading(true);
             const token = localStorage.getItem('T_ID_Auth');
             const queryParams = new URLSearchParams({
                 days: days || '',
@@ -115,7 +116,7 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
                         {cars.length > 0 ? (
                             cars.map((car) => (
                                 <div className='car-card cursor-pointer relative w-[100%] h-fit rounded-lg  ' key={car.id}>
-                                    <Link to={`/car/car-rental/${car.make}/${car.model}/${car.year}/${car.id}`}>
+                                    <a href={`/car/car-rental/${car.make}/${car.model}/${car.year}/${car.id}`}>
                                         <div className="car-card-components w-[100%]  h-[fit] border rounded-lg shadow-sm">
                                             <img src={car.imageUrls[0]} alt="" className='h-[150px] w-[100%]  rounded-tr-lg rounded-tl-lg object-cover transition-all duration-300 hover:transition-all hover:duration-300 hover:brightness-[90%]' />
                                             <div className='mt-2 p-2'>
@@ -145,7 +146,7 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
                                                 <div className='mt-1 text-[12px] text-[#937eff] border-t-[1px] pt-1 font-semibold truncate'><p><LocationOnIcon /> {car.location}, Morocco</p></div>
                                             </div>
                                         </div>
-                                    </Link>
+                                    </a>
                                     <div className={car.isSaved ? 'btnsave3' : 'btnsave2'} key={car.id}>
                                         <button id="btnsave2" onClick={() => favoriteCar(car.id)}>
                                             {car.isSaved ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
