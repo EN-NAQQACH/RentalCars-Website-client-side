@@ -6,16 +6,13 @@ import AirlineSeatReclineNormalOutlinedIcon from '@mui/icons-material/AirlineSea
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import { BsWhatsapp } from "react-icons/bs";
 import { BiCurrentLocation, BiLocationPlus, BiMessageDetail } from "react-icons/bi";
-import { Progress } from 'antd';
 import StarIcon from '@mui/icons-material/Star';
-import { Flex, Select } from 'antd';
+import { Flex, Progress, Select, message, Modal, Input, Button } from 'antd';
 import dayjs from 'dayjs';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-import { message } from 'antd';
-import { Button, Modal } from 'antd';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -24,6 +21,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import ClipLoader from "react-spinners/ClipLoader";
+import { PiChatCircleBold } from "react-icons/pi";
+import CallIcon from '@mui/icons-material/Call';
+import SendIcon from '@mui/icons-material/Send';
+import WhatsApp from 'react-whatsapp';
+
+
 
 
 const { Option } = Select;
@@ -31,7 +34,14 @@ import '../cardeffect.css'
 import { useParams, Link, useNavigate } from 'react-router-dom';
 function CarPage() {
 
-
+    const [modal, setmodal] = useState(false);
+    const closeModal = () => {
+        setmodal(false);
+    };
+    const closeModal2 = () => {
+        setmodal2(false);
+    };
+    const [modal2, setmodal2] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
         setIsModalOpen(true);
@@ -70,7 +80,9 @@ function CarPage() {
     const [doors, setdoors] = useState();
     const [selectedFeatures, setSelectedFeatures] = useState([]);
     const currentuser = localStorage.getItem('T_ID_User')
-    const [isreserved , setisreserved] = useState(false)
+    const [isreserved, setisreserved] = useState(false)
+    const [joined, setjoined] = useState(null);
+    const [number, setnumber] = useState('');
     // const onChange = (date, dateString) => {
     //     console.log(dateString);
     // };
@@ -110,6 +122,62 @@ function CarPage() {
     const [lastName, setLasname] = useState('');
     const [userphoto, setuserphoto] = useState(null);
     const [userid, setuserid] = useState(null)
+    const [content, setcontent] = useState('Hi, I m interested in renting your car. Can you tell me more about the availability and any additional fees?');
+    const [chatId, setchatId] = useState(null);
+    const [chat, setChat] = useState(null);
+    const [hideChatIcon, setHideChatIcon] = useState(false);
+    useEffect(() => {
+        const chatStatus = localStorage.getItem(`chatSent_${carId}`);
+        if (chatStatus === 'true') {
+            setHideChatIcon(true);
+        }
+    }, [carId]);
+
+    async function fetchChat(chatId) {
+        if (!chatId) return;
+        try {
+            const response = await fetch(`http://localhost:5600/api/chats/${chatId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+                }
+            });
+            const data = await response.json();
+            if (data) {
+                setChat(data.chat);
+            }
+        } catch (error) {
+            console.error('Error fetching chat:', error);
+        }
+    }
+    const addchatandmessage = async () => {
+        if (!content) return;
+        try {
+            const response = await fetch(`http://localhost:5600/api/chats/AddandMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+                },
+                body: JSON.stringify({
+                    reseivedById: userid,
+                    content: content,
+                }),
+            });
+            const result = await response.json();
+            if (result) {
+                setchatId(result.chatId);
+                setHideChatIcon(true); // Hide chat icon
+                localStorage.setItem(`chatSent_${carId}`, 'true');
+                fetchChat(result.chatId);
+                message.success("please check your notification to continue your chat")
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const getCar = async () => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
@@ -137,6 +205,7 @@ function CarPage() {
             setMindate(result.car.startTripDate)
             setEndDate(result.car.endTripDate)
             setMaxdate(result.car.endTripDate)
+
             const parsedFeatures = result.car.features.map(feature => {
                 const [name, icon] = feature.split(":");
                 return { name, icon };
@@ -146,7 +215,9 @@ function CarPage() {
             setFirsname([result.user.firstName])
             setLasname([result.user.lastName])
             setuserphoto([result.user.picture])
-            setuserid([result.user.id]);
+            setuserid(result.user.id);
+            setnumber([result.user.number])
+            setjoined(dayjs(result.user.createdAt).format('YYYY'))
             setloading(false)
         } catch (error) {
             console.log(error);
@@ -199,7 +270,7 @@ function CarPage() {
                 body: JSON.stringify({
                     startDate: StartDate,
                     endDate: EndDate,
-                    totalPrice : totalPrice,
+                    totalPrice: totalPrice,
                 }),
             });
             const result = await response.json();
@@ -280,7 +351,8 @@ function CarPage() {
         }
     };
 
-
+    const currentuserid = localStorage.getItem('T_ID_User')
+    const currentcarid = localStorage.getItem('T_ID_Car')
     return (
         <div className='carpage p-0 m-0 ' >
             <div className='ml-5 rounded-[15px] bg-transparent  border-black w-fit text-black p-1 hover:bg-gray-100 hover:text-black transition-all duration-[0.3s] cursor-pointer' onClick={() => history(-1)} >
@@ -368,7 +440,7 @@ function CarPage() {
                                 <div className='seo-host-info mt-7'>
                                     <div className='seo-host-content'>
                                         <p className='text-[13px] font-bold uppercase mb-2 mt-2'>Hosted By</p>
-                                        <div className='flex items-center gap-[280px] border-[1px] p-2 rounded-lg border-gray-200'>
+                                        <div className='flex items-center justify-between border-[1px] p-2 rounded-lg border-gray-200'>
 
                                             <Link to={`/profile/${firstName}/${lastName}/${userid}`}>
                                                 <div className='flex items-center gap-3'>
@@ -377,14 +449,240 @@ function CarPage() {
                                                     </div>
                                                     <div className=''>
                                                         <p className='font-bold text-[13px]'>{firstName} {lastName}.</p>
-                                                        <p className='text-gray-400 text-[11px]'>Joined 2024</p>
+                                                        <p className='text-gray-400 text-[11px]'>Joined {joined}</p>
                                                     </div>
                                                 </div>
                                             </Link>
                                             <div className='contact-info'>
                                                 <div className='flex items-center gap-3'>
-                                                    <BsWhatsapp className='text-[20px] text-green-500 cursor-pointer transition-all duration-200 hover:translate-y-[-2px]' />
-                                                    <BiMessageDetail className='text-[20px] text-blue-500 cursor-pointer transition-all duration-200 hover:translate-y-[-2px]' />
+                                                    <div className='' >
+
+                                                        <WhatsApp
+                                                        className='bg-[#d9d9fc63] p-[9px] rounded-full'
+                                                            number={String(number)} // Replace with your WhatsApp number
+                                                            message="Salam, ila knti m2antirisi b tonobil dyal contactini" // Replace with your default message
+                                                        // Optional styling
+                                                        >
+                                                            <BsWhatsapp className='text-[20px] text-green-500 cursor-pointer transition-all duration-200 ' >
+                                                            </BsWhatsapp>
+                                                        </WhatsApp>
+
+
+
+
+                                                    </div>
+                                                    {userid === currentuserid ? (<></>) : (<>
+                                                        {!hideChatIcon && (
+                                                            <div className='bg-[#d9d9fc63] p-[9px] rounded-full' id='modal1' onClick={() => { localStorage.getItem('T_ID_Auth') ? setmodal(true) : message.error('please Log in !') }}>
+                                                                <PiChatCircleBold className='text-[20px] text-blue-500 cursor-pointer transition-all duration-200' />
+                                                            </div>
+                                                        )}
+                                                        <Modal
+                                                            title="Give'em a message"
+                                                            visible={modal}
+                                                            onCancel={closeModal}
+                                                            footer={null}
+                                                            centered
+                                                            style={
+                                                                {
+                                                                    minWidth: '80%',
+
+                                                                }
+                                                            }
+                                                        >
+                                                            <div className="flex flex-col lg:flex-row w-full max-h-[80vh] overflow-y-scroll">
+                                                                <div className="flex-1 h-[100%] bg-gray-50 dark:bg-gray-900 p-6 md:p-10 lg:p-5">
+                                                                    <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                                                                        <div className="grid gap-4">
+                                                                            <img
+                                                                                alt="Car Image"
+                                                                                className="rounded-lg object-cover w-full aspect-[16/9]"
+                                                                                height={500}
+                                                                                src={image[0]}
+                                                                                width={800}
+                                                                            />
+                                                                            <div className="grid grid-cols-3 gap-4">
+                                                                                <img
+                                                                                    alt="Car Image"
+                                                                                    className="rounded-lg object-cover w-full aspect-[4/3]"
+                                                                                    height={150}
+                                                                                    src={image[0]}
+                                                                                    width={200}
+                                                                                />
+                                                                                <img
+                                                                                    alt="Car Image"
+                                                                                    className="rounded-lg object-cover w-full aspect-[4/3]"
+                                                                                    height={150}
+                                                                                    src={image[1]}
+                                                                                    width={200}
+                                                                                />
+                                                                                <img
+                                                                                    alt="Car Image"
+                                                                                    className="rounded-lg object-cover w-full aspect-[4/3]"
+                                                                                    height={150}
+                                                                                    src={image[2]}
+                                                                                    width={200}
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="space-y-6">
+                                                                            <div>
+                                                                                <h1 className="text-2xl font-bold">{year} {make} {model}</h1>
+                                                                                <p className="text-gray-500 dark:text-gray-400">{doors} doors, {seats} seats</p>
+                                                                            </div>
+                                                                            <div className="grid grid-cols-2 gap-4">
+                                                                                <div>
+                                                                                    <h3 className="text-[17px] font-medium">Make</h3>
+                                                                                    <p>{make}</p>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <h3 className="text-[17px] font-medium">Model</h3>
+                                                                                    <p>{model}</p>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <h3 className="text-[17px] font-medium">Year</h3>
+                                                                                    <p>{year}</p>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <h3 className="text-[17px] font-medium">Transmission</h3>
+                                                                                    <p>{transmission}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='max-h-[206px] overflow-hidden overflow-y-scroll '>
+                                                                                <h3 className="text-lg font-medium">Description</h3>
+                                                                                <p className="text-gray-500  dark:text-gray-400 ">
+                                                                                    {description}
+                                                                                </p>
+                                                                            </div>
+                                                                            <div className="flex items-center justify-between">
+                                                                                <h2 className="text-2xl font-bold">{price} Dh/day</h2>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="bg-gray-50 min-h-[100%] dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 w-full lg:w-[400px] flex flex-col">
+                                                                    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+                                                                        <div className="flex items-center gap-4">
+                                                                            <div className="w-10 h-10 ">
+                                                                                <img alt="Host" src={userphoto} className='w-full h-full object-cover rounded-full shadow-md' />
+                                                                            </div>
+                                                                            <div>
+                                                                                <h3 className="font-medium">{firstName} {lastName}</h3>
+                                                                                <p className="text-sm text-gray-500 dark:text-gray-400">Car Host</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        {/* <div className="flex items-center gap-2">
+                                                                            <div className="w-3 h-3 rounded-full bg-green-500" />
+                                                                            <span className="text-sm text-gray-500 dark:text-gray-400">Online</span>
+                                                                        </div> */}
+                                                                    </div>
+                                                                    <div className="flex-1 overflow-y-auto p-6">
+                                                                        <div className="space-y-4">
+                                                                            {/* <div className="flex items-start gap-4">
+                                                                                <Avatar className="w-8 h-8">
+                                                                                    <AvatarImage alt="You" src="/placeholder-user.jpg" />
+                                                                                    <AvatarFallback>JD</AvatarFallback>
+                                                                                </Avatar>
+                                                                                <div className="bg-gray-200 dark:bg-gray-800 rounded-lg p-3 max-w-[70%]">
+                                                                                    <p>
+                                                                                        Hi, I'm interested in renting your car. Can you tell me more about the availability and any additional
+                                                                                        fees?
+                                                                                    </p>
+                                                                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">10:30 AM</p>
+                                                                                </div>
+                                                                            </div> */}
+                                                                            <div className="flex flex-col items-end gap-4 justify-end">
+                                                                                {chat ? (<>
+
+                                                                                    {chat.messages.map((message, index) => (
+                                                                                        <div className="bg-primary flex flex-col bg-gray-200  dark:bg-gray-800 rounded-lg p-3 max-w-[70%]" key={index}>
+                                                                                            <p>
+                                                                                                {message.content}
+                                                                                            </p>
+                                                                                            <p className="text-xs text-gray-500 mt-2">{message.hour}</p>
+                                                                                        </div>
+                                                                                    ))}
+
+                                                                                </>) : (<>
+
+
+                                                                                    <div className="bg-primary bg-gray-200  dark:bg-gray-800 rounded-lg p-3 max-w-[70%]" >
+                                                                                        <p>
+                                                                                            Hi, I'm interested in renting your car. Can you tell me more about the availability and any additional
+                                                                                            fees?
+                                                                                        </p>
+                                                                                        <p className="text-xs text-gray-500 mt-2">10:30 AM</p>
+                                                                                    </div>
+
+
+
+                                                                                </>)}
+
+                                                                                {/* <Avatar className="w-8 h-8">
+                                                                                    <AvatarImage alt="Host" src="/placeholder-user.jpg" />
+                                                                                    <AvatarFallback>JD</AvatarFallback>
+                                                                                </Avatar> */}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="border-t border-gray-200 dark:border-gray-800 p-4">
+                                                                        <form className="flex items-center gap-2">
+                                                                            <Input className="flex-1" placeholder="Type your message..." value={content} onChange={(e) => setcontent(e.target.value)} />
+                                                                            <Button size="icon" variant="ghost" className='flex items-center justify-centerb' onClick={addchatandmessage}>
+                                                                                <SendIcon className=" " />
+                                                                            </Button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </Modal>
+
+
+                                                    </>)}
+
+                                                    <div className='flex items-center gap-1 p-[7px] rounded-full text-[12px] bg-[#5c3cfc] cursor-pointer text-white' id='modal2' onClick={() => setmodal2(true)}>
+                                                        <CallIcon />
+                                                        <p>Call the Host</p>
+                                                    </div>
+                                                    <Modal
+                                                        title="Give'em a Call"
+                                                        visible={modal2}
+                                                        onCancel={closeModal2}
+                                                        footer={null}
+                                                        style={
+                                                            {
+
+                                                            }
+                                                        }
+                                                    >
+                                                        <div className='text-center'>
+                                                            <p>Attention !</p>
+                                                            <p className='mt-5'>
+
+                                                                Il ne faut jamais envoyer de l’argent à l’avance au vendeur par virement bancaire ou à travers une agence de transfert d’argent lors de l’achat des biens disponibles sur le site.
+
+
+                                                            </p>
+                                                            <p className='mt-2'>Appeler <span className='font-semibold'>{firstName}</span></p>
+                                                            <div className='text-center'>
+                                                                {number ? (<>
+                                                                    <a href={`tel:${number}`} className='flex items-center gap-1 p-[7px] rounded-full text-[12px] border justify-center mt-5 cursor-pointer'>
+                                                                        <CallIcon />
+                                                                        <p className='text-center'>{number}</p>
+                                                                    </a>
+
+                                                                </>) : (<>
+                                                                    <a className='flex items-center gap-1 p-[7px] rounded-full text-[12px] border justify-center mt-5 cursor-pointer'>
+                                                                        <CallIcon />
+                                                                        <p className='text-center'>no phone number</p>
+                                                                    </a>
+                                                                </>)}
+
+                                                            </div>
+                                                        </div>
+                                                    </Modal>
                                                 </div>
                                             </div>
                                         </div>
@@ -585,7 +883,7 @@ function CarPage() {
                                                             <div className='flex items-center gap-2'>
                                                                 {/* <input type="date"  min={StartDate} className="mt-1 p-2 border rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" /> */}
                                                                 <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                                                    <DatePicker value={dayjs(StartDate)} minDate={dayjs(MinDate)} maxDate={dayjs(MaxDate)}  onChange={handleStartDateChange} />
+                                                                    <DatePicker value={dayjs(StartDate)} minDate={dayjs(MinDate)} maxDate={dayjs(MaxDate)} onChange={handleStartDateChange} />
                                                                 </LocalizationProvider>
                                                             </div>
                                                         </>
@@ -641,10 +939,10 @@ function CarPage() {
                                                     </button> : userid != currentuser ? <button className='text-center bg-[#5c3cfc] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' onClick={handleReserve}>
                                                         Reserve
                                                     </button> : <>
-                                                    <button className='text-center bg-[#979797d3] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' disabled>
-                                                        Reserve
-                                                    </button>
-                                                    <p className='text-[11px] font-semibold text-center mt-1 text-red-600'>you can reserve your car</p>
+                                                        <button className='text-center bg-[#979797d3] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' disabled>
+                                                            Reserve
+                                                        </button>
+                                                        <p className='text-[11px] font-semibold text-center mt-1 text-red-600'>you can reserve your car</p>
                                                     </>}
 
                                                 </div>
