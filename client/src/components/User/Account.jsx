@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext,createContext } from 'react'
+import React, { useEffect, useState, useContext, createContext } from 'react'
 import StarIcon from '@mui/icons-material/Star';
 import { Link, Outlet } from 'react-router-dom';
 import Loaderaccount from '../../utils/Loaderaccount';
@@ -35,12 +35,14 @@ function Account() {
   const [email, setemail] = useState('');
   const [number, setnumber] = useState('');
   const [about, setabout] = useState('');
-  const [photo, setphoto]= useState('');
+  const [photo, setphoto] = useState('');
   const [googleid, setgoogleid] = useState(false);
-  const [reservation , setreservations] = useState([])
+  const [reservation, setreservations] = useState([])
+  const [loading, setloading] = useState(false);
 
   const fetchuser = async () => {
     try {
+      setloading(true);
       const res = await fetch('http://localhost:5600/api/users/info', {
         method: 'GET',
         headers: {
@@ -50,7 +52,7 @@ function Account() {
       })
       const data = await res.json()
       if (res.ok) {
-        const { firstName, lastName, about, number, email, googleId,reservations} = data;
+        const { firstName, lastName, about, number, email, googleId, reservations } = data;
         setfirsname(firstName);
         setlastname(lastName);
         setabout(about);
@@ -61,11 +63,14 @@ function Account() {
         if (googleId) {
           setgoogleid(true)
         }
+        setloading(false);
       }
       if (data.error) {
+        setloading(false);
         console.log(data.error)
       }
     } catch (err) {
+      setloading(false);
       console.log(err)
     }
   }
@@ -144,7 +149,7 @@ function Account() {
   }
   const [togglestate, settogglestate] = useState("");
   const toggle = (index) => {
-      settogglestate(index);
+    settogglestate(index);
   }
   const fullName = JSON.parse(localStorage.getItem('fullName'));
 
@@ -154,40 +159,88 @@ function Account() {
       {!token ? <Authorisation /> : (
         <div className=' text-black mb-[20px] min-h-[140vh]' >
           <div className='profile-section ml-[80px] mt-[20px]  mr-[80px]'>
-            <div className="asideprofile h-fit border rounded-xl shadow-sm">
-              <div className='aside-content p-4 pt-2'>
-                <div className='image h-[150px] flex justify-center m-auto flex-col items-center '>
-                  <img src={photo} alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' />
-                  <div className='mt-2'>
-                    <StarIcon className='text-[#9e8df1]' />
-                    <StarIcon className='text-[#9e8df1]' />
-                    <StarIcon className='text-[#9e8df1]' />
-                    <StarIcon className='text-[#9e8df1]' />
-                  </div>
-                </div>
-                <div>
-                  <div className='flex flex-col gap-2 justify-between items-center mb-4'>
-                    <button className='border pl-2 pr-2 rounded-lg text-[12px]'>Host</button>
-                    <p className='font-semibold text-[17px] text-gray-800'>{firstName} {lastName}</p>
-                  </div>
-                  <div className='flex flex-col gap-2 '>
-                    <Link to="personal_details" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>Personal Details</Link>
-                    <Link to="my-Favorities" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My Favorities</Link>
-                    <Link to="my-notifications" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>Notifications</Link>
-                    <Link to="my-listing"  className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My cars</Link>
-                    <Link to="my-booking" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My booking</Link>
-                    <Link to="my-reservations" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My reservations</Link>
+            {loading ? (<>
+              <div className="asideprofile h-fit border rounded-xl shadow-sm">
+                <div className='aside-content p-4 pt-2'>
+                  <div className='image h-[150px] flex justify-center m-auto flex-col items-center '>
+                    {/* {loading ? (<>
+                    <div  alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%] bg-gray-300 animate-pulse' />
+
+                  </>) : (<>
+                    <img src={photo} alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' />
+                  </>)} */}
+                    <div alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%] bg-gray-300 animate-pulse' />
+                    <div className='mt-2'>
+                      <StarIcon className='text-[#9e8df1]' />
+                      <StarIcon className='text-[#9e8df1]' />
+                      <StarIcon className='text-[#9e8df1]' />
+                      <StarIcon className='text-[#9e8df1]' />
                     </div>
+                  </div>
+                  <div>
+                    <div className='flex flex-col gap-2 justify-between items-center mb-4'>
+                      <button className='border pl-2 pr-2 rounded-lg text-[12px]'>Host</button>
+                      <div className='font-semibold w-[70%] rounded-lg text-[17px] text-gray-800 bg-gray-300 animate-pulse h-[11px]' />
+                    </div>
+                    <div className='flex flex-col gap-9 mt-10'>
+                      <div className='font-semibold w-[70%] rounded-lg text-[17px] text-gray-800 bg-gray-300 text-left p-1 animate-pulse h-[11px]' />
+                      <div className='font-semibold w-[70%] rounded-lg text-[17px] text-gray-800 bg-gray-300 text-left p-1 animate-pulse h-[11px]' />
+                      <div className='font-semibold w-[70%] rounded-lg text-[17px] text-gray-800 bg-gray-300 text-left p-1 animate-pulse h-[11px]' />
+                      <div className='font-semibold w-[70%] rounded-lg text-[17px] text-gray-800 bg-gray-300 text-left p-1 animate-pulse h-[11px]' />
+                      <div className='font-semibold w-[70%] rounded-lg text-[17px] text-gray-800 bg-gray-300 text-left p-1 animate-pulse h-[11px]' />
+                      <div className='font-semibold w-[70%] rounded-lg text-[17px] text-gray-800 bg-gray-300 text-left p-1 animate-pulse h-[11px]' />
+                    </div>
+                  </div>
                 </div>
+              </div>
+
+            </>) : (<>
+
+              <div className="asideprofile h-fit border rounded-xl shadow-sm">
+                <div className='aside-content p-4 pt-2'>
+                  <div className='image h-[150px] flex justify-center m-auto flex-col items-center '>
+                    {/* {loading ? (<>
+                    <div  alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%] bg-gray-300 animate-pulse' />
+
+                  </>) : (<>
+                    <img src={photo} alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' />
+                  </>)} */}
+                    <img src={photo} alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' />
+
+                    <div className='mt-2'>
+                      <StarIcon className='text-[#9e8df1]' />
+                      <StarIcon className='text-[#9e8df1]' />
+                      <StarIcon className='text-[#9e8df1]' />
+                      <StarIcon className='text-[#9e8df1]' />
+                    </div>
+                  </div>
+                  <div>
+                    <div className='flex flex-col gap-2 justify-between items-center mb-4'>
+                      <button className='border pl-2 pr-2 rounded-lg text-[12px]'>Host</button>
+                      <p className='font-semibold text-[17px] text-gray-800'>{firstName} {lastName}</p>
+                    </div>
+                    <div className='flex flex-col gap-2 '>
+                      <Link to="personal_details" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>Personal Details</Link>
+                      <Link to="my-Favorities" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My Favorities</Link>
+                      <Link to="my-notifications" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>Notifications</Link>
+                      <Link to="my-listing" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My cars</Link>
+                      <Link to="my-booking" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My booking</Link>
+                      <Link to="my-reservations" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My reservations</Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </>)}
+
+            <div className="main h-[100%] ">
+              <div className='main-content h-[100%]' id>
+                <photouser.Provider value={{ photo, firstName, lastName }}>
+                  <Outlet />
+                </photouser.Provider>
               </div>
             </div>
-             <div className="main h-[100%] ">
-              <div className='main-content h-[100%]' id>
-              <photouser.Provider value={{ photo,firstName,lastName }}>
-                            <Outlet />
-                        </photouser.Provider>
-              </div>
-            </div> 
           </div>
         </div >
       )

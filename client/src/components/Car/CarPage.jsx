@@ -25,6 +25,8 @@ import { PiChatCircleBold } from "react-icons/pi";
 import CallIcon from '@mui/icons-material/Call';
 import SendIcon from '@mui/icons-material/Send';
 import WhatsApp from 'react-whatsapp';
+import Lottie from "lottie-react";
+import animationData from "../../../public/verify.json";
 
 
 
@@ -126,6 +128,8 @@ function CarPage() {
     const [chatId, setchatId] = useState(null);
     const [chat, setChat] = useState(null);
     const [hideChatIcon, setHideChatIcon] = useState(false);
+
+    const [showChatInterface, setShowChatInterface] = useState(true);
     useEffect(() => {
         const chatStatus = localStorage.getItem(`chatSent_${carId}`);
         if (chatStatus === 'true') {
@@ -133,27 +137,31 @@ function CarPage() {
         }
     }, [carId]);
 
-    async function fetchChat(chatId) {
-        if (!chatId) return;
-        try {
-            const response = await fetch(`http://localhost:5600/api/chats/${chatId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
-                }
-            });
-            const data = await response.json();
-            if (data) {
-                setChat(data.chat);
-            }
-        } catch (error) {
-            console.error('Error fetching chat:', error);
-        }
-    }
+    // async function fetchChat(chatId) {
+    //     if (!chatId) return;
+    //     try {
+    //         const response = await fetch(`http://localhost:5600/api/chats/${chatId}`, {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+    //             }
+    //         });
+    //         const data = await response.json();
+    //         if (data) {
+    //             setChat(data.chat);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching chat:', error);
+    //     }
+    // }
+    const [loadingsentmessage, setloadingsentmessage] = useState(null);
     const addchatandmessage = async () => {
+
+        setShowChatInterface(false)
         if (!content) return;
         try {
+            setloadingsentmessage(true)
             const response = await fetch(`http://localhost:5600/api/chats/AddandMessage`, {
                 method: 'POST',
                 headers: {
@@ -167,17 +175,18 @@ function CarPage() {
             });
             const result = await response.json();
             if (result) {
-                setchatId(result.chatId);
-                setHideChatIcon(true); // Hide chat icon
+                setloadingsentmessage(false)
+                // setchatId(result.chatId);
+                setHideChatIcon(true);
                 localStorage.setItem(`chatSent_${carId}`, 'true');
-                fetchChat(result.chatId);
+                // fetchChat(result.chatId);
                 message.success("please check your notification to continue your chat")
             }
         } catch (error) {
+            setloadingsentmessage(false)
             console.log(error);
         }
     }
-
     const getCar = async () => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
@@ -458,7 +467,7 @@ function CarPage() {
                                                     <div className='' >
 
                                                         <WhatsApp
-                                                        className='bg-[#d9d9fc63] p-[9px] rounded-full'
+                                                            className='bg-[#d9d9fc63] p-[9px] rounded-full'
                                                             number={String(number)} // Replace with your WhatsApp number
                                                             message="Salam, ila knti m2antirisi b tonobil dyal contactini" // Replace with your default message
                                                         // Optional styling
@@ -477,20 +486,8 @@ function CarPage() {
                                                                 <PiChatCircleBold className='text-[20px] text-blue-500 cursor-pointer transition-all duration-200' />
                                                             </div>
                                                         )}
-                                                        <Modal
-                                                            title="Give'em a message"
-                                                            visible={modal}
-                                                            onCancel={closeModal}
-                                                            footer={null}
-                                                            centered
-                                                            style={
-                                                                {
-                                                                    minWidth: '80%',
-
-                                                                }
-                                                            }
-                                                        >
-                                                            <div className="flex flex-col lg:flex-row w-full max-h-[80vh] overflow-y-scroll">
+                                                        <Modal title="Give'em a message" visible={modal} onCancel={closeModal} footer={null} centered style={{ minWidth: '80%', }}>
+                                                            <div className="flex flex-col lg:flex-row w-full overflow-y-scroll">
                                                                 <div className="flex-1 h-[100%] bg-gray-50 dark:bg-gray-900 p-6 md:p-10 lg:p-5">
                                                                     <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
                                                                         <div className="grid gap-4">
@@ -577,69 +574,53 @@ function CarPage() {
                                                                             <span className="text-sm text-gray-500 dark:text-gray-400">Online</span>
                                                                         </div> */}
                                                                     </div>
-                                                                    <div className="flex-1 overflow-y-auto p-6">
-                                                                        <div className="space-y-4">
-                                                                            {/* <div className="flex items-start gap-4">
-                                                                                <Avatar className="w-8 h-8">
-                                                                                    <AvatarImage alt="You" src="/placeholder-user.jpg" />
-                                                                                    <AvatarFallback>JD</AvatarFallback>
-                                                                                </Avatar>
-                                                                                <div className="bg-gray-200 dark:bg-gray-800 rounded-lg p-3 max-w-[70%]">
-                                                                                    <p>
-                                                                                        Hi, I'm interested in renting your car. Can you tell me more about the availability and any additional
-                                                                                        fees?
-                                                                                    </p>
-                                                                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">10:30 AM</p>
-                                                                                </div>
-                                                                            </div> */}
-                                                                            <div className="flex flex-col items-end gap-4 justify-end">
-                                                                                {chat ? (<>
+                                                                    {loadingsentmessage ? (<>
+                                                                        <div className='h-[100%] w-[100%] flex justify-center items-center'>
+                                                                            <ClipLoader
+                                                                                color="#5c3cfc"
+                                                                                size={35}
+                                                                                speedMultiplier={0.3}
+                                                                            />
+                                                                        </div>
 
-                                                                                    {chat.messages.map((message, index) => (
-                                                                                        <div className="bg-primary flex flex-col bg-gray-200  dark:bg-gray-800 rounded-lg p-3 max-w-[70%]" key={index}>
-                                                                                            <p>
-                                                                                                {message.content}
-                                                                                            </p>
-                                                                                            <p className="text-xs text-gray-500 mt-2">{message.hour}</p>
+                                                                    </>) : (<>
+                                                                        
+                                                                            {!showChatInterface && <div className='h-[100%] w-[100%] flex justify-center items-center'> <Lottie animationData={animationData} loop={false} style={{ width: '70px', height: '70px' }} /></div>
+                                                                            }
+                                                                        
+
+                                                                    </>)}
+                                                                    {showChatInterface && (
+                                                                        <>
+
+                                                                            <div className="flex-1 overflow-y-auto p-6">
+                                                                                <div className="space-y-4">
+
+                                                                                    <div className="flex flex-col items-end gap-4 justify-end">
+                                                                                        <div className="bg-primary bg-gray-200  dark:bg-gray-800 rounded-lg p-3 max-w-[70%]">
+                                                                                            <p>Hi, I'm interested in renting your car. Can you tell me more about the availability and any additional fees?</p>
+                                                                                            <p className="text-xs text-gray-500 mt-2">10:30 AM</p>
                                                                                         </div>
-                                                                                    ))}
 
-                                                                                </>) : (<>
-
-
-                                                                                    <div className="bg-primary bg-gray-200  dark:bg-gray-800 rounded-lg p-3 max-w-[70%]" >
-                                                                                        <p>
-                                                                                            Hi, I'm interested in renting your car. Can you tell me more about the availability and any additional
-                                                                                            fees?
-                                                                                        </p>
-                                                                                        <p className="text-xs text-gray-500 mt-2">10:30 AM</p>
                                                                                     </div>
 
-
-
-                                                                                </>)}
-
-                                                                                {/* <Avatar className="w-8 h-8">
-                                                                                    <AvatarImage alt="Host" src="/placeholder-user.jpg" />
-                                                                                    <AvatarFallback>JD</AvatarFallback>
-                                                                                </Avatar> */}
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="border-t border-gray-200 dark:border-gray-800 p-4">
-                                                                        <form className="flex items-center gap-2">
-                                                                            <Input className="flex-1" placeholder="Type your message..." value={content} onChange={(e) => setcontent(e.target.value)} />
-                                                                            <Button size="icon" variant="ghost" className='flex items-center justify-centerb' onClick={addchatandmessage}>
-                                                                                <SendIcon className=" " />
-                                                                            </Button>
-                                                                        </form>
-                                                                    </div>
+                                                                            <div className="border-t border-gray-200 dark:border-gray-800 p-4">
+                                                                                <form className="flex items-center gap-2">
+                                                                                    <Input className="flex-1" placeholder="Type your message..." value={content} onChange={(e) => setcontent(e.target.value)} />
+                                                                                    <Button size="icon" variant="ghost" className='flex items-center justify-centerb' onClick={addchatandmessage}>
+                                                                                        <SendIcon className=" " />
+                                                                                    </Button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </>
+                                                                    )}
+
                                                                 </div>
                                                             </div>
 
                                                         </Modal>
-
-
                                                     </>)}
 
                                                     <div className='flex items-center gap-1 p-[7px] rounded-full text-[12px] bg-[#5c3cfc] cursor-pointer text-white' id='modal2' onClick={() => setmodal2(true)}>

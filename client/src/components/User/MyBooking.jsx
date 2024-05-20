@@ -386,7 +386,22 @@ function MyBooking() {
                         </div>
                       </div>
                     </>
-                  ) : (<div className='flex h-[440px] justify-center items-center font-semibold text-[18px] text-gray-400'>no Booking</div>)}
+                  ) : (
+
+                    <div className='flex flex-col justify-between items-center h-[390px] m-auto '>
+                      <div>
+                        <img src="/booking.png" alt="" className='w-[400px] h-[full]' />
+                        <p className='text-center text-gray-900 font-semibold'>No upcoming bookings yet</p>
+
+                        <p className='text-center text-[12px] text-gray-500 font-semibold'>Explore the world's largest car sharing marketplace and book your next trip.</p>
+                        <a href="/carhome" className='text-center block mt-2 text-[12px] text-gray-500 underline'>Explore</a>
+                      </div>
+
+
+
+                    </div>
+
+                  )}
 
               </>)}
 

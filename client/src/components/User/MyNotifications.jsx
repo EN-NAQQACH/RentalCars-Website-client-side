@@ -73,7 +73,15 @@ function MyNotifications() {
         setSelectedChat(index);
     };
     useEffect(() => {
-        setsocket(io("http://localhost:4000/"));
+        const newSocket = io("https://rentalcars-website-socket-io.onrender.com/", {
+            transports: ['websocket'],
+            withCredentials: true,
+        });
+        setsocket(newSocket);
+
+        return () => {
+            newSocket.close();
+        };
     }, []);
     return (
         <div className='mynotifications   border-transparent rounded-xl  min-h-[100vh] grid grid-cols-3 '>
