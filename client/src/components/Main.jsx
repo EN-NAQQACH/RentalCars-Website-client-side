@@ -159,7 +159,7 @@ function Main() {
                             </div>
                         </div>
                         <div className=' relative h-[100vh] w-[full] mt-[50px]  m-auto mr-[60px] ml-[60px]  '>
-                            <img src="./src/assets/carmain50.jpg" alt="Description" className=" object-cover w-full h-full rounded-[10px] " />
+                            <img src="src/assets/carmain50.jpg" alt="Description" className=" object-cover w-full h-full rounded-[10px] " />
                             <button className=' border-[2px]  p-2 absolute bottom-[50px] left-[50px] pl-8 pr-8 bg-transparent transition duration-500 hover:bg-white hover:text-black text-white'>
                                 <a href="/carhome">Explore our Cars</a>
                             </button>
@@ -306,7 +306,7 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                             </div>
                         </div>
                         <div className=' '>
-                            <img src="./src/assets/carblog2.jpg" alt="" className='w-full h-full relat' />
+                            <img src="src/assets/carblog2.jpg" alt="" className='w-full h-full relat' />
                         </div>
                     </div>
 
