@@ -7,7 +7,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { StyleContext } from '../Stylecontext'; // Import StyleContext as a named export
-import { GoogleLogin } from 'react-google-login';
+// import { GoogleLogin } from 'react-google-login';
 import GoogleLoginButton from './googles';
 import GoogleLoginButton2 from './googlel';
 import { Helmet } from 'react-helmet';
