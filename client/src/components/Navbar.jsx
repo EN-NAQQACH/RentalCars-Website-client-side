@@ -119,7 +119,7 @@ function Navbar() {
   const handeLogin = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5600/api/account/login', {
+      const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/account/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
