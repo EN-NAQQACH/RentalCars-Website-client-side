@@ -24,7 +24,7 @@ function Myreservations() {
                 sort: sort || '',
                 carName: search || '',
             });
-            const response = await fetch(`http://localhost:5600/api/user/myreservations?${queryParams}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/user/myreservations?${queryParams}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ function Myreservations() {
     }
     const handleRemoveRese = async (id) => {
         try {
-            const response = await fetch(`http://localhost:5600/api/reservation/delete/${id}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/reservation/delete/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

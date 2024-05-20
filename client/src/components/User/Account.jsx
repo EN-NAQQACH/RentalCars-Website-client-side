@@ -43,7 +43,7 @@ function Account() {
   const fetchuser = async () => {
     try {
       setloading(true);
-      const res = await fetch('http://localhost:5600/api/users/info', {
+      const res = await fetch('https://rentalcars-website-server-side.onrender.com/api/users/info', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ function Account() {
   }
   const updateuserinfo = async () => {
     try {
-      const res = await fetch('http://localhost:5600/api/users/update', {
+      const res = await fetch('https://rentalcars-website-server-side.onrender.com/api/users/update', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

@@ -20,7 +20,7 @@ function PersonalDetails() {
     const getuserInfo = async () => {
         try {
             setloading(true);
-            const reponse = await fetch('http://localhost:5600/api/users/info', {
+            const reponse = await fetch('https://rentalcars-website-server-side.onrender.com/api/users/info', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ function PersonalDetails() {
         formData.append('about', about);
         formData.append('photo', photo);
         try {
-            const response = await fetch('http://localhost:5600/api/users/update', {
+            const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/users/update', {
                 method: 'put',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),

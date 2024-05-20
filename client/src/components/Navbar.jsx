@@ -96,7 +96,7 @@ function Navbar() {
   const handleSignup = async () => {
     try {
       setloadingsignup(true);
-      const response = await fetch('http://localhost:5600/api/account/signup', {
+      const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/account/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -183,7 +183,7 @@ function Navbar() {
  useEffect(() => {
   const getuserInfo = async () => {
     try {
-        const reponse = await fetch('http://localhost:5600/api/users/info', {
+        const reponse = await fetch('https://rentalcars-website-server-side.onrender.com/api/users/info', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -19,7 +19,7 @@ function MyNotifications() {
     const [searchinput, setsearchinput] = useState('');
     const fetchChtasWithSearchOption = async (searchinput) => {
         try {
-            const response = await fetch(`http://localhost:5600/api/chats/search/getUsers?searchinput=${searchinput}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/chats/search/getUsers?searchinput=${searchinput}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ function MyNotifications() {
     const fetchChats = async () => {
         try {
 
-            const response = await fetch('http://localhost:5600/api/chats', {
+            const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/chats', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

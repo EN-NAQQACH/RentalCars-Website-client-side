@@ -8,7 +8,7 @@ const GoogleLoginButton = ({setiserrorgoogle,seterrorgoogle}) => {
     console.log(response.googleId);
 
     try {
-      const res = await fetch('http://localhost:5600/api/auth/google', {
+      const res = await fetch('https://rentalcars-website-server-side.onrender.com/api/auth/google', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

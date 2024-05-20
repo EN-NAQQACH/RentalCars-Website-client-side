@@ -34,7 +34,7 @@ function Profile() {
     const [cars, setcars] = useState([]);
     const fetchUserCarInfo = async () => {
         try {
-            const response = await fetch(`http://localhost:5600/api/users/profile/${userid}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/users/profile/${userid}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

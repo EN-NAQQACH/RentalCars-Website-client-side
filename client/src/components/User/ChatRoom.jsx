@@ -43,7 +43,7 @@ function ChatRoom() {
     useEffect(() => {
         async function fetchChat() {
             try {
-                const response = await fetch(`http://localhost:5600/api/chats/${chatId}`, {
+                const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/chats/${chatId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ function ChatRoom() {
         fetchChat();
     }, [chatId]);
     const read = async () => {
-        const response = await fetch(`http://localhost:5600/api/chats/${chatId}`, {
+        const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/chats/${chatId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ function ChatRoom() {
 
         if (!inputValue) return;
         try {
-            const response = await fetch(`http://localhost:5600/api/Messages/${chatId}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/Messages/${chatId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ function ChatRoom() {
     };
     const handleRemoveMessage = async (messageId) => {
         try {
-            const response = await fetch(`http://localhost:5600/api/Messages/${messageId}/${chatId}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/Messages/${messageId}/${chatId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

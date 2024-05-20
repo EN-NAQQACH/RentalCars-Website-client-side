@@ -27,11 +27,11 @@ function Hero() {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper h-[89.5vh]"
       >
-        <SwiperSlide>      <img src="./src/assets/carherocopy.jpg" alt="" className='m-auto h-[100%]  object-top ' />
+        <SwiperSlide>      <img src="./carherocopy.jpg" alt="" className='m-auto h-[100%]  object-top ' />
         </SwiperSlide>
-        <SwiperSlide>      <img src="./src/assets/carhero2copy.jpg" alt="" className='m-auto h-[100%]  object-top ' />
+        <SwiperSlide>      <img src="./carhero2copy.jpg" alt="" className='m-auto h-[100%]  object-top ' />
         </SwiperSlide>
-        <SwiperSlide>      <img src="./src/assets/carhero3copy.jpg" alt="" className='m-auto h-[100%]  object-top ' />
+        <SwiperSlide>      <img src="./carhero3copy.jpg" alt="" className='m-auto h-[100%]  object-top ' />
         </SwiperSlide>
       </Swiper>
       <div className='text-center flex flex-col items-center z-[15]' >

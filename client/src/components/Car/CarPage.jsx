@@ -91,7 +91,7 @@ function CarPage() {
 
     // const getcar = async () => {
     //     try {
-    //         const reponse = await fetch(`http://localhost:5600/api/getusercar/${carId}`, {
+    //         const reponse = await fetch(`https://rentalcars-website-server-side.onrender.com/api/getusercar/${carId}`, {
     //             method: 'GET',
     //             headers: {
     //                 'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ function CarPage() {
     // async function fetchChat(chatId) {
     //     if (!chatId) return;
     //     try {
-    //         const response = await fetch(`http://localhost:5600/api/chats/${chatId}`, {
+    //         const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/chats/${chatId}`, {
     //             method: 'GET',
     //             headers: {
     //                 'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ function CarPage() {
         if (!content) return;
         try {
             setloadingsentmessage(true)
-            const response = await fetch(`http://localhost:5600/api/chats/AddandMessage`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/chats/AddandMessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -190,7 +190,7 @@ function CarPage() {
     const getCar = async () => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(token ? `http://localhost:5600/api/getusercar/${carId}` : `http://localhost:5600/api/getcarunauth/${carId}`, {
+            const response = await fetch(token ? `https://rentalcars-website-server-side.onrender.com/api/getusercar/${carId}` : `https://rentalcars-website-server-side.onrender.com/api/getcarunauth/${carId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -236,7 +236,7 @@ function CarPage() {
     const favoriteCar = async (id) => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(`http://localhost:5600/api/save/${id}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/save/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -270,7 +270,7 @@ function CarPage() {
         try {
             const totalPrice = price * dateDifference;
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(`http://localhost:5600/api/reservation/create/${carId}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/reservation/create/${carId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

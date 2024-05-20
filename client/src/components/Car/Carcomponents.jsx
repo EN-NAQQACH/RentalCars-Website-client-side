@@ -32,7 +32,7 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
                 startDate: startDate || '',
                 endDate: endDate || '',
             });
-            const response = await fetch(token ? `http://localhost:5600/api/getallcars?${queryParams}` : `http://localhost:5600/api/getallcarsunauth?${queryParams}`, {
+            const response = await fetch(token ? `https://rentalcars-website-server-side.onrender.com/api/getallcars?${queryParams}` : `https://rentalcars-website-server-side.onrender.com/api/getallcarsunauth?${queryParams}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
     const favoriteCar = async (id) => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(`http://localhost:5600/api/save/${id}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/save/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

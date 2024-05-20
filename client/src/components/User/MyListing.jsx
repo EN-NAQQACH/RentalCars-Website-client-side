@@ -34,7 +34,7 @@ function MyListing() {
                 car: searchcar || '',
             });
             setloading(true);
-            const reponse = await fetch(`http://localhost:5600/api/getcar?${queryParams}`, {
+            const reponse = await fetch(`https://rentalcars-website-server-side.onrender.com/api/getcar?${queryParams}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ function MyListing() {
     const deleteCar = async (carId) => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(`http://localhost:5600/api/delete/car/${carId}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/delete/car/${carId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

@@ -56,7 +56,7 @@ function CarpageBydestination() {
     const getAllCars = async () => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(token ? `http://localhost:5600/api/getallcarsbydestination?destination=${destination}` : `http://localhost:5600/api/getallcarsbydestinationunauth?destination=${destination}`, {
+            const response = await fetch(token ? `https://rentalcars-website-server-side.onrender.com/api/getallcarsbydestination?destination=${destination}` : `https://rentalcars-website-server-side.onrender.com/api/getallcarsbydestinationunauth?destination=${destination}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ function CarpageBydestination() {
     const favoriteCar = async (id) => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(`http://localhost:5600/api/save/${id}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/save/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -375,7 +375,7 @@ function CarpageBydestination() {
                     </div>
                 </div>
                 : <div className='h-lvh justify-center flex items-center flex-col'>
-                    <img src="/Nocars.png" alt="" />
+                    <img src="./Nocars.png" alt="" />
                     <p className='font-bold text-[30px] text-center '>There is no Cars yet</p>
                 </div>}
         </div>

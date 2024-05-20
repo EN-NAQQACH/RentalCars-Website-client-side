@@ -15,7 +15,7 @@ function MyFavorites() {
     const fetchFavorites = async () => {
         try {
             setloading(true);
-            const response = await fetch("http://localhost:5600/api/getuserfavorites", {
+            const response = await fetch("https://rentalcars-website-server-side.onrender.com/api/getuserfavorites", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ function MyFavorites() {
     async function handleFavoriteClick(id) {
         const token = localStorage.getItem('T_ID_Auth');
         try {
-            const response = await fetch(`http://localhost:5600/api/save/${id}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/save/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

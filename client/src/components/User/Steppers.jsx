@@ -265,7 +265,7 @@ const Steppers = () => {
       formData.append(`photos`, photo);
     });
     try {
-      const response = await fetch('http://localhost:5600/api/addcar', {
+      const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/addcar', {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),

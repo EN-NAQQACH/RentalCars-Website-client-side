@@ -47,7 +47,7 @@ function CarpageBymake() {
     const getAllCars = async () => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(token ? `http://localhost:5600/api/getallcarsbymake?make=${make}` : `http://localhost:5600/api/getallcarsbymakeunauth?make=${make}`, {
+            const response = await fetch(token ? `https://rentalcars-website-server-side.onrender.com/api/getallcarsbymake?make=${make}` : `https://rentalcars-website-server-side.onrender.com/api/getallcarsbymakeunauth?make=${make}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ function CarpageBymake() {
     const favoriteCar = async (id) => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(`http://localhost:5600/api/save/${id}`, {
+            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/save/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -364,7 +364,7 @@ function CarpageBymake() {
                     </div>
                 </div>
                 : <div className='h-lvh justify-center flex items-center flex-col'>
-                    <img src="/Nocars.png" alt="" />
+                    <img src="./Nocars.png" alt="" />
                     <p className='font-bold text-[30px] text-center '>There is no Cars yet</p>
                 </div>}
         </div>

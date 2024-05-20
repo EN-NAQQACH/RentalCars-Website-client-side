@@ -29,7 +29,7 @@ function ContactUs() {
 
         try {
             setloading(true);
-            const response = await fetch('http://localhost:5600/api/contactus', {
+            const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/contactus', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
