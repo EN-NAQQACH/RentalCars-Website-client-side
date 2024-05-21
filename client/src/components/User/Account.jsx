@@ -43,7 +43,7 @@ function Account() {
   const fetchuser = async () => {
     try {
       setloading(true);
-      const res = await fetch('https://rentalcars-website-server-side.onrender.com/api/users/info', {
+      const res = await fetch('https://easlycars-server.vercel.app/api/users/info', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ function Account() {
   }
   const updateuserinfo = async () => {
     try {
-      const res = await fetch('https://rentalcars-website-server-side.onrender.com/api/users/update', {
+      const res = await fetch('https://easlycars-server.vercel.app/api/users/update', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

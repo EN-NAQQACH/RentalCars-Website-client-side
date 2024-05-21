@@ -46,7 +46,7 @@ function MyBooking() {
     setstatus(status);
     const handleStatus = async (id) => {
       try {
-        const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/reservation/update/${id}`, {
+        const response = await fetch(`https://easlycars-server.vercel.app/api/reservation/update/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -83,7 +83,7 @@ function MyBooking() {
   const getAllReservation = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/reservation/getAllReservations?search=${search || ''}`, {
+      const response = await fetch(`https://easlycars-server.vercel.app/api/reservation/getAllReservations?search=${search || ''}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -67,7 +67,7 @@ function EditYourCar() {
     useEffect(() => {
         const getCar = async () => {
             try {
-                const reponse = await fetch(`https://rentalcars-website-server-side.onrender.com/api/getusercar/${carId}`, {
+                const reponse = await fetch(`https://easlycars-server.vercel.app/api/getusercar/${carId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ function EditYourCar() {
         console.log(make);
         console.log(year)
         try {
-            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/updatecar/${carId}`, {
+            const response = await fetch(`https://easlycars-server.vercel.app/api/updatecar/${carId}`, {
                 method: 'put',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),

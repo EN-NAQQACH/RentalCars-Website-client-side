@@ -96,7 +96,7 @@ function Navbar() {
   const handleSignup = async () => {
     try {
       setloadingsignup(true);
-      const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/account/signup', {
+      const response = await fetch('https://easlycars-server.vercel.app/api/account/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -119,7 +119,7 @@ function Navbar() {
   const handeLogin = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/account/login', {
+      const response = await fetch('https://easlycars-server.vercel.app/api/account/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -151,7 +151,7 @@ function Navbar() {
   const resetPassword = async () => {
     try {
       setloadingsendpassword(true);
-      const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/users/resetpassword', {
+      const response = await fetch('https://easlycars-server.vercel.app/api/users/resetpassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -183,7 +183,7 @@ function Navbar() {
  useEffect(() => {
   const getuserInfo = async () => {
     try {
-        const reponse = await fetch('https://rentalcars-website-server-side.onrender.com/api/users/info', {
+        const reponse = await fetch('https://easlycars-server.vercel.app/api/users/info', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -56,7 +56,7 @@ function CarpageBydestination() {
     const getAllCars = async () => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(token ? `https://rentalcars-website-server-side.onrender.com/api/getallcarsbydestination?destination=${destination}` : `https://rentalcars-website-server-side.onrender.com/api/getallcarsbydestinationunauth?destination=${destination}`, {
+            const response = await fetch(token ? `https://easlycars-server.vercel.app/api/getallcarsbydestination?destination=${destination}` : `https://easlycars-server.vercel.app/api/getallcarsbydestinationunauth?destination=${destination}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ function CarpageBydestination() {
     const favoriteCar = async (id) => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/save/${id}`, {
+            const response = await fetch(`https://easlycars-server.vercel.app/api/save/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

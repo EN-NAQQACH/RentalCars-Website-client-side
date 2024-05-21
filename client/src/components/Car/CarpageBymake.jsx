@@ -47,7 +47,7 @@ function CarpageBymake() {
     const getAllCars = async () => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(token ? `https://rentalcars-website-server-side.onrender.com/api/getallcarsbymake?make=${make}` : `https://rentalcars-website-server-side.onrender.com/api/getallcarsbymakeunauth?make=${make}`, {
+            const response = await fetch(token ? `https://easlycars-server.vercel.app/api/getallcarsbymake?make=${make}` : `https://easlycars-server.vercel.app/api/getallcarsbymakeunauth?make=${make}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ function CarpageBymake() {
     const favoriteCar = async (id) => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
-            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/save/${id}`, {
+            const response = await fetch(`https://easlycars-server.vercel.app/api/save/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

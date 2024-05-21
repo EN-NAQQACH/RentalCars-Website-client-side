@@ -7,7 +7,7 @@ const GoogleLoginButton2 = (props) => {
     const responseGooglesu = async (response) => {
         console.log(response);
         try {
-            const res = await fetch('https://rentalcars-website-server-side.onrender.com/api/auth/googlelogin', {
+            const res = await fetch('https://easlycars-server.vercel.app/api/auth/googlelogin', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'

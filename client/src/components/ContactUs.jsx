@@ -29,7 +29,7 @@ function ContactUs() {
 
         try {
             setloading(true);
-            const response = await fetch('https://rentalcars-website-server-side.onrender.com/api/contactus', {
+            const response = await fetch('https://easlycars-server.vercel.app/api/contactus', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

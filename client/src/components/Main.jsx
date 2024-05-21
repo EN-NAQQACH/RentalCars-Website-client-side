@@ -112,7 +112,7 @@ function Main() {
     const handleSubmit = async ()=>{
         try {
             setloading(true);
-            const res = await fetch('https://rentalcars-website-server-side.onrender.com/api/newsletter', {
+            const res = await fetch('https://easlycars-server.vercel.app/api/newsletter', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

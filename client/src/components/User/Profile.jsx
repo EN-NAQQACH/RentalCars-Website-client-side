@@ -34,7 +34,7 @@ function Profile() {
     const [cars, setcars] = useState([]);
     const fetchUserCarInfo = async () => {
         try {
-            const response = await fetch(`https://rentalcars-website-server-side.onrender.com/api/users/profile/${userid}`, {
+            const response = await fetch(`https://easlycars-server.vercel.app/api/users/profile/${userid}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
