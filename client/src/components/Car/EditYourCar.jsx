@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate, Navigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../cardeffect.css'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -13,6 +13,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ClipLoader from "react-spinners/ClipLoader";
+
+
 const featuresList = [
     { name: "Cruise Control", icon: "/steering-wheel.png" },
     { name: "Airbags", icon: "/airbag.png" },
@@ -56,6 +61,8 @@ function EditYourCar() {
     const [deletedPhotos, setDeletedPhotos] = useState([]);
     const [StartDate, setStartDate] = useState('');
     const [EndDate, setEndDate] = useState('');
+    const [doors, setdoors] = useState();
+    const [loading, setloading] = useState(false);
     const onChange = (e) => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
@@ -67,6 +74,7 @@ function EditYourCar() {
     useEffect(() => {
         const getCar = async () => {
             try {
+                setloading(true);
                 const reponse = await fetch(`https://easlycars-server.vercel.app/api/getusercar/${carId}`, {
                     method: 'GET',
                     headers: {
@@ -91,13 +99,16 @@ function EditYourCar() {
                 setmintrip(result.car.minTrip);
                 setSeats(result.car.carSeats);
                 setImage(result.car.imageUrls);
+                setdoors(result.car.doors)
                 const parsedFeatures = result.car.features.map(feature => {
                     const [name, icon] = feature.split(":");
                     return { name, icon };
                 });
                 setSelectedFeatures(parsedFeatures);
                 setType(result.car.Type)
+                setloading(false);
             } catch (e) {
+                setloading(false);
                 console.log(e);
             }
         }
@@ -157,6 +168,7 @@ function EditYourCar() {
         formData.append('mintrip', mintrip);
         formData.append('maxtrip', maxtrip);
         formData.append('carseat', seats);
+        formData.append('doors', doors);
         formData.append('type', type);
         formData.append('startTripDate', StartDate);
         formData.append('endTripDate', EndDate);
@@ -171,9 +183,10 @@ function EditYourCar() {
         newPhotos.forEach((photo, index) => {
             formData.append(`photos`, photo);
         });
-        console.log(location);
-        console.log(make);
-        console.log(year)
+        if (!location || !year || !price || !make || !model || !transmission || !fuel || !distance || !seats || !type || !StartDate || !EndDate || !description || !featuresArray.length) {
+            toast.error('Please fill all the fields');
+            return;
+        }
         try {
             const response = await fetch(`https://easlycars-server.vercel.app/api/updatecar/${carId}`, {
                 method: 'put',
@@ -184,7 +197,8 @@ function EditYourCar() {
             });
             const result = await response.json();
             if (result) {
-                message.success(result.message)
+                // message.success(result.message)
+                toast.success(result.message);
             } else {
                 message.error(result.error);
             }
@@ -215,226 +229,240 @@ function EditYourCar() {
         } else {
             setEndDate(formattedDate);
         }
+
+    };
+    const navigate = useNavigate();
+    const handleToastClose = () => {
+        navigate('/account/my-listing');
     };
     return (
         <div className='edityourcar border rounded-xl p-3 h-[100%]'>
-            <div className='flex flex-col justify-center'>
-                <div className='content-your-car '>
-                    <div className='YourCar mb-4'>
-                        <div className='flex justify-between items-center'>
-                            <p className='font-bold text-black mb-1'>Your Car</p>
-                            <Link to="/account/my-listing" className='flex items-center gap-1  rounded-lg text-[#9c8cfc] hover:text-[#7251ca] font-semibold'><ArrowBackIcon /> Go back</Link>
-                        </div>
-                        <div className='flex flex-col gap-3' >
-                            <div className='flex flex-col'>
-                                <label htmlFor="" className='text-[13px] font-bold mb-2 text-gray-400'> location</label>
-                                <input name='location' type='text' placeholder="Your car location" className=' border p-1 rounded-md' value={location} onChange={(e) => setlocation(e.target.value)} />
-                            </div>
-                            <div className='year-model-make grid grid-cols-3 gap-3'>
-                                <div className='flex flex-col'>
-                                    <label htmlFor="caryear" className='text-[13px] font-bold mb-2 text-gray-400'>Year</label>
-                                    <Select placeholder="select year" value={year} onChange={(value) => setYear(value)}>
-                                        {caryear.map((r, index) => (
-                                            <Option key={index} required value={r}>{r}</Option>
-                                        ))}
-                                    </Select>
-                                </div>
-                                <div className='flex flex-col'>
-                                    <label htmlFor="carmake" className='text-[13px] font-bold mb-2 text-gray-400'> Make</label>
-                                    <Select placeholder="select year" value={make} onChange={(value) => setMake(value)}>
-                                        {carmake.map((r, index) => (
-                                            <Option key={index} required value={r}>{r}</Option>
-                                        ))}
-                                    </Select>
-                                </div>
-                                <div className='flex flex-col'>
-                                    <label htmlFor="carmodel" className='text-[13px] font-bold mb-2 text-gray-400'>Model</label>
-                                    <Input value={model} onChange={(e) => setModel(e.target.value)} />
-                                </div>
-                            </div>
-                            <div className='w-[100%] flex gap-1'>
-                                <div className='flex flex-col w-[100%]'>
-                                    <label htmlFor="distance" className='text-[13px] font-bold mb-2 text-gray-400'>Distance</label>
-                                    <Select placeholder="select year" value={distance} onChange={(value) => setdistance(value)}>
-                                        {distancee.map((r, index) => (
-                                            <Option key={index} required value={r}>{r}</Option>
-                                        ))}
-                                    </Select>
-                                </div>
-                                <div className='flex flex-col w-[100%]'>
-                                    <label htmlFor="distance" className='text-[13px] font-bold mb-2 text-gray-400'>Type</label>
-                                    <Select placeholder="select year" value={type} onChange={(value) => setType(value)}>
-                                        <Option key="2" required value="Cars">Cars</Option>
-                                        <Option key="3" required value="Coupe">Coupe</Option>
-                                        <Option key="4" required value="Suv">Suv</Option>
-                                        <Option key="5" required value="Sedan">Sedan</Option>
-                                    </Select>
-                                </div>
-                                <div className='flex flex-col w-[100%]'>
-                                    <label htmlFor="distance" className='text-[13px] font-bold mb-2 text-gray-400'>Fuel</label>
-                                    <Select placeholder="select year" value={fuel} onChange={(value) => setFuel(value)}>
-                                        <Option key="2" required value="Gasoline">Gasoline</Option>
-                                        <Option key="3" required value="Diesel">Diesel</Option>
-                                        <Option key="4" required value="Electric">Electric</Option>
-                                        <Option key="5" required value="Hybrid">Hybrid</Option>
-                                    </Select>
-                                </div>
-                            </div>
-                            <div className='flex flex-col mt-2'>
-                                <label htmlFor="Transition" className='text-[13px] font-bold mb-2 text-gray-400'>Transition</label>
-                                <Radio.Group onChange={onChange} value={transmission}>
-                                    <Radio value="Manual" >Manual</Radio>
-                                    <Radio value="Automatic" >Automatic</Radio>
-                                </Radio.Group>
-                            </div>
-                        </div>
-                    </div>
+            {loading ? (<>
+                <div className=' flex h-[100%] items-center justify-center m-auto'>
+                    <ClipLoader
+                        color="#5c3cfc"
+                        size={35}
+                        speedMultiplier={0.3}
 
-                    <div className='caravailinility mb-4 w-[500px]'>
-                        <p className='font-bold text-black '>Car availibility</p>
-                        <div className='flex flex-col mt-2'>
-                            <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Price DH /Day</label>
-                            <input type="text" className='border p-1 rounded-md' value={price} onChange={(e) => setPrice(e.target.value)} />
-                        </div>
-                        <div className='flex items-center gap-3 mt-2 w-[100%]' >
-                            <div className='flex flex-col min-w-[50%]'>
-                                <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Start Date</label>
-                                <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                    <DatePicker value={dayjs(StartDate)}  onChange={handleStartDateChange} />
-                                </LocalizationProvider>
-                            </div>
-                            <div className='flex flex-col w-[50%]'>
-                                <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> End Date</label>
-                                <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                    <DatePicker value={dayjs(EndDate)}  onChange={handleEndDateChange} />
-                                </LocalizationProvider>
-                            </div>
-                        </div>
-                    </div>
+                    />
+                </div>
 
-                    <div className='cardetails mb-4'>
-                        <p className='font-bold text-black mb-1'>Car Details</p>
-                        <div className='flex flex-col gap-2' >
-                            <p className='text-[13px] font-bold mb-2 text-gray-400'>Car features</p>
-                            <div className='grid grid-cols-3'>
-                                {/* <div className='flex flex-col gap-1'>
-                                    <Checkbox>Cruise Control</Checkbox>
-                                    <Checkbox>Airbags</Checkbox>
-                                    <Checkbox>Leather Seats</Checkbox>
-                                    <Checkbox>Navigation/GPS System</Checkbox>
-                                    <Checkbox>Air Conditioning</Checkbox>
-                                    <Checkbox>Sunroof</Checkbox>
+            </>) : (<>
+
+                <div className='flex flex-col justify-center'>
+                    <div className='content-your-car '>
+                        <div className='YourCar mb-4'>
+                            <div className='flex justify-between items-center'>
+                                <p className='font-bold text-black mb-1'>Your Car</p>
+                                <Link to="/account/my-listing" className='flex items-center gap-1  rounded-lg text-[#9c8cfc] hover:text-[#7251ca] font-semibold'><ArrowBackIcon /> Go back</Link>
+                            </div>
+                            <div className='flex flex-col gap-3' >
+                                <div className='flex flex-col'>
+                                    <label htmlFor="" className='text-[13px] font-bold mb-2 text-gray-400'> location</label>
+                                    <input name='location' type='text' placeholder="Your car location" className=' border p-1 rounded-md' value={location} onChange={(e) => setlocation(e.target.value)} />
                                 </div>
-                                <div className='flex flex-col gap-1'>
-                                    <Checkbox>Remote Central Locking</Checkbox>
-                                    <Checkbox>Alloy Wheels</Checkbox>
-                                    <Checkbox>(ESP)</Checkbox>
-                                    <Checkbox>Rear Parking Radar</Checkbox>
-                                    <Checkbox>Onboard Computer</Checkbox>
-                                    <Checkbox>Child seat</Checkbox>
-                                </div>
-                                <div className='flex flex-col gap-1'>
-                                    <Checkbox>Rear View Camera</Checkbox>
-                                    <Checkbox>Anti-lock Braking System (ABS)</Checkbox>
-                                    <Checkbox>Speed Limiter</Checkbox>
-                                    <Checkbox>Electric Windows</Checkbox>
-                                    <Checkbox>CD/MP3/Bluetooth</Checkbox>
-                                </div> */}
-                                {featuresList.map((feature) => (
-                                    <div key={feature}>
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                checked={isSelected(feature)}
-                                                onChange={() => handleCheckboxChange(feature)}
-                                            />
-                                            {feature.name}
-                                        </label>
+                                <div className='year-model-make grid grid-cols-3 gap-3'>
+                                    <div className='flex flex-col'>
+                                        <label htmlFor="caryear" className='text-[13px] font-bold mb-2 text-gray-400'>Year</label>
+                                        <Select placeholder="select year" value={year} onChange={(value) => setYear(value)}>
+                                            {caryear.map((r, index) => (
+                                                <Option key={index} required value={r}>{r}</Option>
+                                            ))}
+                                        </Select>
                                     </div>
-                                ))}
-                            </div>
-                            <div className=' flex flex-col w-[500px]'>
-                                <label htmlFor="" className='text-[14px] font-bold mb-1 text-gray-400'> Car seats</label>
-                                <input placeholder="car seats" className=' border p-1 text-[13px] rounded-md' value={seats} />
-                            </div>
-                            <div>
-                                <div className=''>
-                                    <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Description</label>
-                                    <Input.TextArea showCount maxLength={500} className='h-24' value={description} onChange={(e) => setDescription(e.target.value)} />
+                                    <div className='flex flex-col'>
+                                        <label htmlFor="carmake" className='text-[13px] font-bold mb-2 text-gray-400'> Make</label>
+                                        <Select placeholder="select year" value={make} onChange={(value) => setMake(value)}>
+                                            {carmake.map((r, index) => (
+                                                <Option key={index} required value={r}>{r}</Option>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                    <div className='flex flex-col'>
+                                        <label htmlFor="carmodel" className='text-[13px] font-bold mb-2 text-gray-400'>Model</label>
+                                        <Input value={model} onChange={(e) => setModel(e.target.value)} />
+                                    </div>
+                                </div>
+                                <div className='w-[100%] flex gap-1'>
+                                    <div className='flex flex-col w-[100%]'>
+                                        <label htmlFor="distance" className='text-[13px] font-bold mb-2 text-gray-400'>Distance</label>
+                                        <Select placeholder="select year" value={distance} onChange={(value) => setdistance(value)}>
+                                            {distancee.map((r, index) => (
+                                                <Option key={index} required value={r}>{r}</Option>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                    <div className='flex flex-col w-[100%]'>
+                                        <label htmlFor="distance" className='text-[13px] font-bold mb-2 text-gray-400'>Type</label>
+                                        <Select placeholder="select year" value={type} onChange={(value) => setType(value)}>
+                                            <Option key="2" required value="Cars">Cars</Option>
+                                            <Option key="3" required value="Coupe">Coupe</Option>
+                                            <Option key="4" required value="Suv">Suv</Option>
+                                            <Option key="5" required value="Sedan">Sedan</Option>
+                                        </Select>
+                                    </div>
+                                    <div className='flex flex-col w-[100%]'>
+                                        <label htmlFor="distance" className='text-[13px] font-bold mb-2 text-gray-400'>Fuel</label>
+                                        <Select placeholder="select year" value={fuel} onChange={(value) => setFuel(value)}>
+                                            <Option key="2" required value="Gasoline">Gasoline</Option>
+                                            <Option key="3" required value="Diesel">Diesel</Option>
+                                            <Option key="4" required value="Electric">Electric</Option>
+                                            <Option key="5" required value="Hybrid">Hybrid</Option>
+                                        </Select>
+                                    </div>
+                                </div>
+                                <div className='flex flex-col mt-2'>
+                                    <label htmlFor="Transition" className='text-[13px] font-bold mb-2 text-gray-400'>Transition</label>
+                                    <Radio.Group onChange={onChange} value={transmission}>
+                                        <Radio value="Manual" >Manual</Radio>
+                                        <Radio value="Automatic" >Automatic</Radio>
+                                    </Radio.Group>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className='carphotos  mb-2'>
-                        <p className='font-bold text-black mb-1'>Car photos</p>
+                        <div className='caravailinility mb-4 w-[500px]'>
+                            <p className='font-bold text-black '>Car availibility</p>
+                            <div className='flex flex-col mt-2'>
+                                <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Price DH /Day</label>
+                                <input type="text" className='border p-1 rounded-md' value={price} onChange={(e) => setPrice(e.target.value)} />
+                            </div>
+                            <div className='flex items-center gap-3 mt-2 w-[100%]' >
+                                <div className='flex flex-col min-w-[50%]'>
+                                    <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Start Date</label>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                        <DatePicker value={dayjs(StartDate)} onChange={handleStartDateChange} />
+                                    </LocalizationProvider>
+                                </div>
+                                <div className='flex flex-col w-[50%]'>
+                                    <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> End Date</label>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                        <DatePicker value={dayjs(EndDate)} onChange={handleEndDateChange} />
+                                    </LocalizationProvider>
+                                </div>
+                            </div>
+                        </div>
 
-                        <DragDropContext onDragEnd={handleDragPhoto}>
-                            <Droppable droppableId={image} direction="horizontal">
-
-                                {(provided) => (
-                                    <>
-                                        <div className='mb-5'>
-                                            <input type="file" id='image' name='photos' style={{ display: "none" }} accept='image/*' onChange={handleFileChange} multiple />
-                                            <label htmlFor="image" className='alone text-[#5c3cfc] w-[100%] '>
-                                                <div className='flex flex-col justify-center items-center h-[200px]  border-dotted border-2 border-[#a694ffb7] rounded-md '>
-                                                    <div className='icon k'><CollectionsOutlinedIcon /></div>
-                                                    <p>Upload photos</p>
-                                                </div>
+                        <div className='cardetails mb-4'>
+                            <p className='font-bold text-black mb-1'>Car Details</p>
+                            <div className='flex flex-col gap-2' >
+                                <p className='text-[13px] font-bold mb-2 text-gray-400'>Car features</p>
+                                <div className='grid grid-cols-3'>
+                                    {featuresList.map((feature) => (
+                                        <div key={feature}>
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={isSelected(feature)}
+                                                    onChange={() => handleCheckboxChange(feature)}
+                                                />
+                                                {feature.name}
                                             </label>
                                         </div>
-                                        <div
-                                            className="photos"
-                                            id='photos-container'
-                                        >
-                                        </div>
-                                        <div className="photos" id='photos-container' {...provided.droppableProps} ref={provided.innerRef}>
-                                            {newPhotos.map((file, index) => (
-                                                // <div key={`new-${index}`} className="image-wrapper">
-                                                //     <img src={URL.createObjectURL(file)} alt={`New Car ${index}`} className="car-image" />
-                                                // </div>
-                                                <Draggable key={index} draggableId={index.toString()} index={index} id="">
-                                                    {(provided) => (
-                                                        <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
-                                                            <img src={URL.createObjectURL(file)} alt={`Car ${index}`} className='h-full w-full object-cover shadow-md rounded-md' />
-                                                            <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handledeletephoto(index)}><CloseOutlinedIcon /></button>
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            ))}
-                                        </div>
-                                        <div className="photos mt-2" id='photos-container' {...provided.droppableProps} ref={provided.innerRef}>
-                                            {image.length >= 1 && (
-                                                <>
-                                                    {car.imageUrls.map((imageUrl, index) => (
-                                                        // <div key={index} className="image-wrapper">
-                                                        //     <img src={imageUrl} alt={`Car ${index}`} className="car-image" />
-                                                        //     <button onClick={() => handleDeletePhoto(index)}>Delete</button>
-                                                        // </div>
+                                    ))}
+                                </div>
+                                <div className=' flex flex-col w-[500px]'>
+                                    <label htmlFor="" className='text-[14px] font-bold mb-1 text-gray-400'> Car seats</label>
+                                    <input placeholder="car seats" className=' border p-1 text-[13px] rounded-md' value={seats} onChange={(e) => setSeats(e.target.value)} />
+                                </div>
+                                <div className=' flex flex-col w-[500px]'>
+                                    <label htmlFor="" className='text-[14px] font-bold mb-1 text-gray-400'> Car doors</label>
+                                    <input placeholder="car doors" className=' border p-1 text-[13px] rounded-md' value={doors} onChange={(e) => setdoors(e.target.value)} />
+                                </div>
+                                <div>
+                                    <div className=''>
+                                        <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Description</label>
+                                        <Input.TextArea showCount className='h-24' value={description} onChange={(e) => setDescription(e.target.value)} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                                        <Draggable key={index} draggableId={index.toString()} index={index} id="">
-                                                            {(provided) => (
-                                                                <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
-                                                                    <img src={imageUrl} alt={`Car ${index}`} className='h-full w-full object-cover shadow-md rounded-md' />
-                                                                    <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handleDeletePhoto(index)}><CloseOutlinedIcon /></button>
-                                                                </div>
-                                                            )}
-                                                        </Draggable>
+                        <div className='carphotos  mb-2'>
+                            <p className='font-bold text-black mb-1'>Car photos</p>
 
-                                                    ))}
-                                                </>
-                                            )}
-                                        </div>
-                                    </>
-                                )}
-                            </Droppable>
-                        </DragDropContext>
-                    </div>
-                    <div className='flex justify-end'>
-                        <button className='pl-3 pr-3 pt-2 pb-2 bg-[#8d8df8] transition-all duration-75  hover:bg-[#6565ff] text-[12px] text-white font-semibold rounded-md' onClick={handleUpdateCar}>Update Your Car</button>
+                            <DragDropContext onDragEnd={handleDragPhoto}>
+                                <Droppable droppableId={image} direction="horizontal">
+
+                                    {(provided) => (
+                                        <>
+                                            <div className='mb-5'>
+                                                <input type="file" id='image' name='photos' style={{ display: "none" }} accept='image/*' onChange={handleFileChange} multiple />
+                                                <label htmlFor="image" className='alone text-[#5c3cfc] w-[100%] '>
+                                                    <div className='flex flex-col justify-center items-center h-[200px]  border-dotted border-2 border-[#a694ffb7] rounded-md '>
+                                                        <div className='icon k'><CollectionsOutlinedIcon /></div>
+                                                        <p>Upload photos</p>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                            <div
+                                                className="photos"
+                                                id='photos-container'
+                                            >
+                                            </div>
+                                            <div className="photos" id='photos-container' {...provided.droppableProps} ref={provided.innerRef}>
+                                                {newPhotos.map((file, index) => (
+                                                    // <div key={`new-${index}`} className="image-wrapper">
+                                                    //     <img src={URL.createObjectURL(file)} alt={`New Car ${index}`} className="car-image" />
+                                                    // </div>
+                                                    <Draggable key={index} draggableId={index.toString()} index={index} id="">
+                                                        {(provided) => (
+                                                            <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
+                                                                <img src={URL.createObjectURL(file)} alt={`Car ${index}`} className='h-full w-full object-cover shadow-md rounded-md' />
+                                                                <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handledeletephoto(index)}><CloseOutlinedIcon /></button>
+                                                            </div>
+                                                        )}
+                                                    </Draggable>
+                                                ))}
+                                            </div>
+                                            <div className="photos mt-2" id='photos-container' {...provided.droppableProps} ref={provided.innerRef}>
+                                                {image.length >= 1 && (
+                                                    <>
+                                                        {car.imageUrls.map((imageUrl, index) => (
+                                                            // <div key={index} className="image-wrapper">
+                                                            //     <img src={imageUrl} alt={`Car ${index}`} className="car-image" />
+                                                            //     <button onClick={() => handleDeletePhoto(index)}>Delete</button>
+                                                            // </div>
+
+                                                            <Draggable key={index} draggableId={index.toString()} index={index} id="">
+                                                                {(provided) => (
+                                                                    <div className='photo relative' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
+                                                                        <img src={imageUrl} alt={`Car ${index}`} className='h-full w-full object-cover shadow-md rounded-md' />
+                                                                        <button className="absolute top-2 left-2 text-white bg-[#0c0c0c6c] hover:bg-[#0c0c0c94] rounded-[50%] pl-[3px] pr-[3px] pt-[2px] pb-[2px] flex justify-center" onClick={() => handleDeletePhoto(index)}><CloseOutlinedIcon /></button>
+                                                                    </div>
+                                                                )}
+                                                            </Draggable>
+
+                                                        ))}
+                                                    </>
+                                                )}
+                                            </div>
+                                        </>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
+                        </div>
+                        <div className='flex justify-end'>
+                            <button className='pl-3 pr-3 pt-2 pb-2 bg-[#8d8df8] transition-all duration-75  hover:bg-[#6565ff] text-[12px] text-white font-semibold rounded-md' onClick={handleUpdateCar}>Update Your Car</button>
+                        </div>
+                        <ToastContainer
+                            position="top-right"
+                            autoClose={2000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                            onClose={handleToastClose}
+                        />
                     </div>
                 </div>
-            </div>
+
+
+            </>)}
+
         </div>
     )
 }

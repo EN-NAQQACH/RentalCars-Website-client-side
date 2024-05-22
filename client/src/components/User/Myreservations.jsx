@@ -137,7 +137,7 @@ function Myreservations() {
                                             <div className="grid gap-2">
                                                 <div className="flex items-center gap-4">
                                                     <div className="w-12 h-12 mb-2">
-                                                        <img alt="Car" src={photo} className='w-full h-full rounded-full' />
+                                                        <img alt="Car" src={photo} className='w-full h-full rounded-full object-cover' />
 
                                                     </div>
                                                     <div className="grid gap-0.5">

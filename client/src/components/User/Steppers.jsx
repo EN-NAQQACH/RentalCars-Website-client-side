@@ -143,6 +143,13 @@ const Steppers = () => {
           message.error("Start date must be before end date");
           return;
         }
+        if(current == 2){
+          if(!selectedFeatures.length){
+            message.error('Please fill all the fields');
+            return;
+          }
+        }
+       
         storeDataLocalStorage();
         setCurrent((prevCurrent) => prevCurrent + 1);
       })
@@ -264,6 +271,10 @@ const Steppers = () => {
     photos.forEach((photo, index) => {
       formData.append(`photos`, photo);
     });
+    if(! photos.length){
+      message.error('Please Add photos');
+      return;
+    }
     try {
       const response = await fetch('https://easlycars-server.vercel.app/api/addcar', {
         method: 'POST',
@@ -288,9 +299,9 @@ const Steppers = () => {
     setStartDate(dateString);
     
   };
-    if(startDate < endDate){
-      console.log("nice one")
-    }
+    // if(startDate < endDate){
+    //   console.log("nice one")
+    // }
   const datechangeEndDate = (date, dateString) => {
     setEndDate(dateString);
   };

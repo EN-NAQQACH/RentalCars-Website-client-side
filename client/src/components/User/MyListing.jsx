@@ -19,6 +19,8 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import '../cardeffect.css'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const { Option } = Select;
 
@@ -61,9 +63,9 @@ function MyListing() {
             });
             const result = await response.json();
             if (result) {
-                message.success(result.message)
+                toast.success(result.message);
             } else {
-                message.error(result.error);
+                toast.error(result.error);
             }
         } catch (error) {
             console.error(error);
@@ -72,6 +74,9 @@ function MyListing() {
     useEffect(() => {
         Mycarslisting();
     }, [sort, searchcar])
+    const handleToastClose = () => {
+        MyListing();
+    };
     return (
         <div className='mylistinginfo border rounded-xl p-3 h-[100%]'>
             <p className='text-[18px] font-semibold text-gray-700'>My Cars</p>
@@ -156,22 +161,35 @@ function MyListing() {
                                             <Link to={`/car/car-rental/${car.make}/${car.model}/${car.year}/${car.id}`} className='flex items-center gap-1 border rounded-lg pt-1 pb-1 pl-2 pr-2 text-[#4c4cc5]'><RemoveRedEyeIcon /> View</Link>
                                             <Link to={`edit-your-car/${car.id}`} className='flex items-center gap-1 border rounded-lg pt-1 pb-1 pl-2 pr-2 text-[green]'><BorderColorIcon /> Edit</Link>
                                         </div>
+                                        <ToastContainer
+                                            position="top-right"
+                                            autoClose={850}
+                                            hideProgressBar={false}
+                                            newestOnTop={false}
+                                            closeOnClick
+                                            rtl={false}
+                                            pauseOnFocusLoss
+                                            draggable
+                                            pauseOnHover
+                                            onClose={handleToastClose}
+                                        />
                                     </div>
+
                                 ))}
 
 
 
                             </>) : (<>
-                            
-                            <div className='col-start-1 col-end-4 flex h-[390px] m-auto justify-between items-center'>
-                                <div>
-                                    <img src="/Nocars.png" alt="" className='w-full h-full' />
-                                    <p className='text-center text-gray-500 font-semibold'>No cars yet</p>
+
+                                <div className='col-start-1 col-end-4 flex h-[390px] m-auto justify-between items-center'>
+                                    <div>
+                                        <img src="/Nocars.png" alt="" className='w-full h-full' />
+                                        <p className='text-center text-gray-500 font-semibold'>No cars yet</p>
+                                    </div>
+
                                 </div>
-                                
-                            </div>
-                            
-                            
+
+
                             </>)}
 
                         </>

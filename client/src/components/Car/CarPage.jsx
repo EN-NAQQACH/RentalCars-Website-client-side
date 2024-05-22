@@ -300,6 +300,7 @@ function CarPage() {
 
     const [selectedStartDate, setSelecteStartdDate] = useState(null);
     const [selectedEndDate, setSelecteEnddDate] = useState(null);
+    const [isDisabled, setIsDisabled] = useState(true); 
 
     // const handleStartDateChange =  (newDate) => {
     //     setSelecteStartdDate(dayjs(newDate).format("YYYY-MM-DD"))
@@ -337,6 +338,9 @@ function CarPage() {
             setDateDifference(diff);
             console.log("Difference between start date and end date:", diff);
         }
+        const today = dayjs();
+        const isBeforeToday = dayjs(StartDate).isBefore(today) && dayjs(EndDate).isBefore(today);
+        setIsDisabled(isBeforeToday); 
     }, [StartDate, EndDate]);
     const handleStartDateChange = (newDate) => {
         const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
@@ -347,6 +351,7 @@ function CarPage() {
         } else {
             setStartDate(formattedDate);
         }
+        updateButtonState();
     };
 
     const handleEndDateChange = (newDate) => {
@@ -358,7 +363,17 @@ function CarPage() {
         } else {
             setEndDate(formattedDate);
         }
+        updateButtonState();
     };
+    const updateButtonState = () => {
+        if (StartDate && EndDate) {
+          const today = dayjs();
+          const isBeforeToday = dayjs(StartDate).isBefore(today) && dayjs(EndDate).isBefore(today);
+          setIsDisabled(isBeforeToday); // Disable button if past dates
+        } else {
+          setIsDisabled(true); // Disable button if missing dates
+        }
+      };
 
     const currentuserid = localStorage.getItem('T_ID_User')
     const currentcarid = localStorage.getItem('T_ID_Car')
@@ -917,13 +932,28 @@ function CarPage() {
                                                             size={25}
                                                             speedMultiplier={0.4}
                                                         />
-                                                    </button> : userid != currentuser ? <button className='text-center bg-[#5c3cfc] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' onClick={handleReserve}>
+                                                    </button> : userid != currentuser ? 
+                                                    
+                                                    (isDisabled ? (<>
+                                                    <button className='text-center bg-[#979797d3] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' onClick={handleReserve} disabled>
+                                                        date out
+                                                    </button>
+                                                    
+                                                    </>) : (<>
+                                                        <button className='text-center bg-[#5c3cfc] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' onClick={handleReserve} >
                                                         Reserve
-                                                    </button> : <>
+                                                    </button>
+                                                    
+                                                    </>))
+                                                    
+                                                     : 
+                                                    
+                                                    
+                                                    <>
                                                         <button className='text-center bg-[#979797d3] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' disabled>
                                                             Reserve
                                                         </button>
-                                                        <p className='text-[11px] font-semibold text-center mt-1 text-red-600'>you can reserve your car</p>
+                                                        <p className='text-[11px] font-semibold text-center mt-1 text-red-600'>you can't reserve your car</p>
                                                     </>}
 
                                                 </div>

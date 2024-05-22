@@ -39,6 +39,7 @@ function Account() {
   const [googleid, setgoogleid] = useState(false);
   const [reservation, setreservations] = useState([])
   const [loading, setloading] = useState(false);
+  const [cars, setcars] = useState([])
 
   const fetchuser = async () => {
     try {
@@ -52,7 +53,7 @@ function Account() {
       })
       const data = await res.json()
       if (res.ok) {
-        const { firstName, lastName, about, number, email, googleId, reservations } = data;
+        const { firstName, lastName, about, number, email, googleId, reservations, cars } = data;
         setfirsname(firstName);
         setlastname(lastName);
         setabout(about);
@@ -60,6 +61,7 @@ function Account() {
         setemail(email);
         setphoto(data.picture)
         setreservations(reservations)
+        setcars(cars)
         if (googleId) {
           setgoogleid(true)
         }
@@ -152,7 +154,19 @@ function Account() {
     settogglestate(index);
   }
   const fullName = JSON.parse(localStorage.getItem('fullName'));
+  const [activeLink, setActiveLink] = useState('');
 
+  const handleLinkClick = (link) => {
+    setActiveLink(link);
+  };
+  const links = [
+    { to: 'personal_details', label: 'Personal Details' },
+    { to: 'my-Favorities', label: 'My Favorities' },
+    { to: 'my-notifications', label: 'Notifications' },
+    { to: 'my-listing', label: 'My cars' },
+    { to: 'my-booking', label: 'My booking' },
+    { to: 'my-reservations', label: 'My reservations' },
+  ];
 
   return (
     <>
@@ -171,15 +185,17 @@ function Account() {
                   </>)} */}
                     <div alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%] bg-gray-300 animate-pulse' />
                     <div className='mt-2'>
+                      {/* <StarIcon className='text-[#9e8df1]' />
                       <StarIcon className='text-[#9e8df1]' />
                       <StarIcon className='text-[#9e8df1]' />
-                      <StarIcon className='text-[#9e8df1]' />
-                      <StarIcon className='text-[#9e8df1]' />
+                      <StarIcon className='text-[#9e8df1]' /> */}
+                      <div className='flex flex-col gap-2 justify-between items-center mb-4'>
+                        <div className='font-semibold w-[70%] rounded-lg text-[17px] text-gray-800 bg-gray-300 animate-pulse h-[11px]' />
+                      </div>
                     </div>
                   </div>
                   <div>
                     <div className='flex flex-col gap-2 justify-between items-center mb-4'>
-                      <button className='border pl-2 pr-2 rounded-lg text-[12px]'>Host</button>
                       <div className='font-semibold w-[70%] rounded-lg text-[17px] text-gray-800 bg-gray-300 animate-pulse h-[11px]' />
                     </div>
                     <div className='flex flex-col gap-9 mt-10'>
@@ -208,24 +224,30 @@ function Account() {
                     <img src={photo} alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' />
 
                     <div className='mt-2'>
+                      {/* <StarIcon className='text-[#9e8df1]' />
                       <StarIcon className='text-[#9e8df1]' />
                       <StarIcon className='text-[#9e8df1]' />
-                      <StarIcon className='text-[#9e8df1]' />
-                      <StarIcon className='text-[#9e8df1]' />
+                      <StarIcon className='text-[#9e8df1]' /> */}
+                      <p className='text-[12px] text-gray-500 font-semibold'>@{lastName}</p>
                     </div>
                   </div>
                   <div>
                     <div className='flex flex-col gap-2 justify-between items-center mb-4'>
-                      <button className='border pl-2 pr-2 rounded-lg text-[12px]'>Host</button>
+                      {cars.length > 0 ? (<><button className='font-semibold  pl-2 pr-2 rounded-lg text-[12px] bg-orange-100 text-orange-600 dark:bg-orange-900 dark:text-orange-400'>Host</button></>) : (<><button className='font-semibold pl-2 pr-2 rounded-lg text-[12px] bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400'>Guest</button></>)}
                       <p className='font-semibold text-[17px] text-gray-800'>{firstName} {lastName}</p>
                     </div>
-                    <div className='flex flex-col gap-2 '>
-                      <Link to="personal_details" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>Personal Details</Link>
-                      <Link to="my-Favorities" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My Favorities</Link>
-                      <Link to="my-notifications" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>Notifications</Link>
-                      <Link to="my-listing" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My cars</Link>
-                      <Link to="my-booking" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My booking</Link>
-                      <Link to="my-reservations" className='text-gray-500 text-left font-bold text-[14px] border-transparent p-2 rounded-lg bg-transparent'>My reservations</Link>
+                    <div className='flex flex-col gap-2'>
+                      {links.map((link) => (
+                        <Link
+                          key={link.to}
+                          to={link.to}
+                          onClick={() => handleLinkClick(link.to)}
+                          className={`text-left font-bold text-[14px] border-transparent p-2 rounded-md hover:bg-[#f3efffc9] duration-300 transition-all ${activeLink === link.to ? 'text-[#7357ff]  bg-[#e8e2ff3b]' : 'text-gray-500 bg-transparent'
+                            }`}
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 </div>
