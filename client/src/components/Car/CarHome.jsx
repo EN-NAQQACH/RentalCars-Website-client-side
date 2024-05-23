@@ -185,7 +185,7 @@ function CarHome() {
                             </Space>
                         </div>
                     </div>
-                    <div className='flex items-center justify-center  rounded-[50%] h-[40px] w-[40px]  transition-all duration-75 cursor-pointer bg-[#7357ff] hover:bg-[#5c3cfc] m-auto'>
+                    <div className='flex items-center justify-center  rounded-[50%] h-[40px] w-[40px]  transition-all duration-75 cursor-pointer bg-[black] hover:bg-[#4e4848] m-auto'>
                         <button onClick={handleSearch}><SearchIcon className='text-white' /></button>
                     </div>
                 </div>

@@ -10,10 +10,11 @@ import SendIcon from '@mui/icons-material/Send';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { LastMessageContext } from './MyNotifications';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Pusher from 'pusher-js';
 
 function ChatRoom() {
     const { setlastmessage } = useContext(LastMessageContext);
-    const { socket } = useContext(LastMessageContext)
+    // const { socket } = useContext(LastMessageContext)
     const [showPicker, setShowPicker] = useState(false);
     const [chosenEmoji, setChosenEmoji] = useState(null);
     const [inputValue, setInputValue] = useState('');
@@ -28,7 +29,44 @@ function ChatRoom() {
     const [receiver, setreceiver] = useState(null);
     const [sender, setsender] = useState(null);
     const currentuser = localStorage.getItem('T_ID_User')
-    const [msg , setmsg] = useState();
+    const [msg, setmsg] = useState();
+
+    useEffect(() => {
+        console.log('Initializing Pusher...');
+        const pusher = new Pusher('e212b43b22cb99b53a5e', {
+            cluster: 'eu'
+        });
+        console.log(`Subscribing to channel: ${chatId}`);
+        const channel = pusher.subscribe(chatId);
+
+        channel.bind('new-message', async (data) => {
+            console.log('New message received:', data);
+            setlastmessage(data.content);
+            setChat((prev) => {
+                if (!prev.messages.find(msg => msg.id === data.id)) {
+                    return { ...prev, messages: [...prev.messages, data] };
+                }
+                return prev;
+            });
+        });
+
+        channel.bind('message-removed', async ({ messageId, lastMessage }) => {
+            console.log('Message removed:', messageId);
+            setChat((prev) => ({
+                ...prev,
+                messages: prev.messages.filter((m) => m.id !== messageId),
+                lastMessage: lastMessage
+            }));
+            setlastmessage(lastMessage);
+        });
+
+        return () => {
+            // Unsubscribe from Pusher channel
+            console.log(`Unsubscribing from channel: ${chatId}`);
+            channel.unbind_all();
+            channel.unsubscribe(chatId);
+        };
+    }, [chatId]);
 
     useEffect(() => {
         const messageBox = document.getElementById('message-box');
@@ -88,14 +126,14 @@ function ChatRoom() {
             if (!data) {
                 throw new Error('Failed to send message');
             }
-            setChat((prev) => ({ ...prev, messages: [...prev.messages, data] }))
-            socket.emit('sendmessage', {
-                data: data,
-                chatId: chatId,
-                sender: sender,
-                receiver: receiver.id,
-            });
-            setlastmessage(data.content)
+            // setChat((prev) => ({ ...prev, messages: [...prev.messages, data] }))
+            // socket.emit('sendmessage', {
+            //     data: data,
+            //     chatId: chatId,
+            //     sender: sender,
+            //     receiver: receiver.id,
+            // });
+            // setlastmessage(data.content)
             setInputValue('');
         } catch (error) {
             console.error('Error sending message:', error);
@@ -114,14 +152,15 @@ function ChatRoom() {
             if (!data) {
                 throw new Error('Failed to remove message');
             }
-            setlastmessage(data.chat.lastMessage)
-            console.log(data.chat.lastMessage)
+            setlastmessage(data.chat.lastMessage);
+            console.log(data.chat.lastMessage);
             setChat((prev) => ({ ...prev, messages: prev.messages.filter((m) => m.id !== messageId) }));
             setMessage(message.filter((m) => m.id !== messageId));
-            socket.emit('deletemessage', { 
-                messageId:messageId, 
-                receiver: receiver.id,
-                lastMessage: data.chat.lastMessage });
+            // socket.emit('deletemessage', {
+            //     messageId: messageId,
+            //     receiver: receiver.id,
+            //     lastMessage: data.chat.lastMessage
+            // });
         } catch (error) {
             console.error('Error removing message:', error);
         }
@@ -199,31 +238,33 @@ function ChatRoom() {
         const selectedFile = event.target.files[0];
         console.log('Selected file:', selectedFile);
     };
-    useEffect(() => {
-        currentuser && socket?.emit("newuser", currentuser);
-    }, [receiver])
-    useEffect(() => {
 
-        if (chat && socket) {
-            socket.on('getmessage', (data) => {
-                if (chat.id === data.chatId) {
-                    setChat((prev) => ({ ...prev, messages: [...prev.messages, data] }));
-                    read()
-                    setlastmessage(data.content)
-                }
-            });
-            socket.on('removemessage', (messageId,lastMessage) => {
-                setMessage((prevMessages) => prevMessages.filter((m) => m.id !== messageId));
-                setlastmessage(lastMessage)
-                setChat((prev) => ({ ...prev, messages: prev.messages.filter((m) => m.id !== messageId) }));
-            });
-        }
-        return () => {
-            socket?.off('getmessage');
-            socket?.off('removemessage');
-        };
 
-    }, [socket, chat])
+    // useEffect(() => {
+    //     currentuser && socket?.emit("newuser", currentuser);
+    // }, [receiver])
+    // useEffect(() => {
+
+    //     if (chat && socket) {
+    //         socket.on('getmessage', (data) => {
+    //             if (chat.id === data.chatId) {
+    //                 setChat((prev) => ({ ...prev, messages: [...prev.messages, data] }));
+    //                 read()
+    //                 setlastmessage(data.content)
+    //             }
+    //         });
+    //         socket.on('removemessage', (messageId,lastMessage) => {
+    //             setMessage((prevMessages) => prevMessages.filter((m) => m.id !== messageId));
+    //             setlastmessage(lastMessage)
+    //             setChat((prev) => ({ ...prev, messages: prev.messages.filter((m) => m.id !== messageId) }));
+    //         });
+    //     }
+    //     return () => {
+    //         socket?.off('getmessage');
+    //         socket?.off('removemessage');
+    //     };
+
+    // }, [socket, chat])
 
     return (
         <div className='messages-box  bg-[#f7f9fc] h-[100%] col-start-2 col-end-4 relative' >
@@ -264,7 +305,7 @@ function ChatRoom() {
                                                     <div className='flex gap-2'>
                                                         <Tooltip title={
                                                             <>
-                                                                <div className='cursor-pointer' onClick={() =>handleRemoveMessage(message.id)}>
+                                                                <div className='cursor-pointer' onClick={() => handleRemoveMessage(message.id)}>
                                                                     <DeleteIcon className='text-red-400' />
                                                                 </div>
                                                             </>

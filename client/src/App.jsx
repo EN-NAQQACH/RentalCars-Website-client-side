@@ -35,7 +35,7 @@ function App() {
   useEffect(() => {
     gapi.load("client:auth2", () => {
       gapi.client.init({
-        clientId: "*****.apps.googleusercontent.com",
+        clientId:"xxxxx.apps.googleusercontent.com",
         plugin_name: "chat",
       });
     });

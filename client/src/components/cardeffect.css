@@ -740,15 +740,15 @@ nav h6 {
 }
 
 .btnsave3 #btnsave2 svg {
-    color: #3c84f4;
+    color: red;
 }
 
 .btnsave #btnsave2 svg {
-    color: #3c84f4;
+    color: red;
 }
 
 .btnsave3 #btnsave4 svg {
-    color: #3c84f4;
+    color: red;
     font-size: 20px;
 }
 
@@ -829,3 +829,28 @@ nav h6 {
   .css-z3c6am-MuiFormControl-root-MuiTextField-root {
     width: 100% !important;
   }
+
+/* for handle */
+  :where(.css-dev-only-do-not-override-1qfezbu).ant-slider .ant-slider-handle::after{
+    background-color: black !important;
+    box-shadow: 0 0 0 2px #000000;
+  }
+
+/* handle border on hover*/
+  :where(.css-dev-only-do-not-override-1qfezbu).ant-slider .ant-slider-handle::hover::before{
+    border: black;
+  }
+
+  :where(.css-dev-only-do-not-override-1qfezbu).ant-slider .ant-slider-handle:hover::after, 
+  :where(.css-dev-only-do-not-override-1qfezbu).ant-slider .ant-slider-handle:active::after, 
+  :where(.css-dev-only-do-not-override-1qfezbu).ant-slider .ant-slider-handle:focus::after {
+    box-shadow: 0 0 0 4px rgb(128, 128, 128);
+    width: 12px;
+    height: 12px;
+    inset-inline-start: -1px;
+    inset-block-start: -1px;
+}
+/* handle border */
+:where(.css-dev-only-do-not-override-1qfezbu).ant-slider:hover .ant-slider-handle::after {
+    box-shadow: 0 0 0 2px rgb(128, 128, 128);
+}

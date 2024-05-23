@@ -28,6 +28,7 @@ import { useParams } from 'react-router-dom';
 dayjs.extend(customParseFormat);
 import carmake from '../../data/carmake.js';
 
+
 const featuresList = [
     "Cruise Control",
     "Airbags",
@@ -206,7 +207,7 @@ function CarsListing() {
                     <div className='filter-content  pb-[30px]'>
                         <div className='flex justify-between mb-4 items-center border-b-[1px] p-3 rounded-tr-[15px] rounded-tl-[15px] bg-[#f4f4fc]'>
                             <p className='text-[14px] font-bold'>Filter</p>
-                            <button className='text-[12px] text-[#5c3cfc] border border-transparent hover:bg-gray-200 hover:border pl-2 font-semibold pr-2 pt-1 pb-1 rounded-md' onClick={handleClear}>Clear All Filters</button>
+                            <button className='text-[12px] text-[black] border border-transparent hover:bg-gray-200 hover:border pl-2 font-semibold pr-2 pt-1 pb-1 rounded-md' onClick={handleClear}>Clear All Filters</button>
                         </div>
                         <div className="p-5">
                             <div className='filter-price mb-3'>
@@ -217,6 +218,12 @@ function CarsListing() {
                                     }}
                                     defaultValue={[194, 499]}
                                     max={999}
+                                    trackStyle={{ backgroundColor: 'black' }}
+                                    handleStyle={{
+                                      backgroundColor: 'black',
+                                      borderColor: 'black',
+                                    }}
+                                   
                                     onChange={handleSliderChange}
                                 />
                                 <div className='flex gap-3 mt-5'>
@@ -277,8 +284,8 @@ function CarsListing() {
                                         </div>
                                     ))}
                                 </div>
-                                <a className='text-[13px] text-[#5c3cfc] font-semibold cursor-pointer hover:underline' onClick={handleshowmore} id='showbtn'>Show more</a>
-                                <a className='text-[13px] text-[#5c3cfc] font-semibold cursor-pointer hover:underline hidden' onClick={handleshowless} id='lessbtn'>Show less</a>
+                                <a className='text-[13px] text-[black] font-semibold cursor-pointer hover:underline' onClick={handleshowmore} id='showbtn'>Show more</a>
+                                <a className='text-[13px] text-[black] font-semibold cursor-pointer hover:underline hidden' onClick={handleshowless} id='lessbtn'>Show less</a>
                             </div>
                             <div className='filter-capacity mb-2'>
                                 <p className='text-[13px] font-bold text-gray-400 mb-1'>Capacity</p>
@@ -330,10 +337,10 @@ function CarsListing() {
                                 <Option key={4} value='low'>Lowest Price</Option>
                             </Select>
                         </div>
-                        <div className='flex items-center gap-2'>
+                        {/* <div className='flex items-center gap-2'>
                             <button className='pt-1 pb-1 pl-3 pr-3 border hover:bg-[#7357ff] text-[#7357ff] hover:text-white font-bold text-[13px] rounded-[20px]'> <MapOutlinedIcon className='mr-1' />Map View</button>
                             <button className='pt-1 pb-1 pl-3 pr-3  border hover:bg-[#7357ff] text-[13px] font-bold text-[#7357ff] hover:text-white rounded-[20px]'><DashboardOutlinedIcon className='mr-1' />Card View</button>
-                        </div>
+                        </div> */}
                     </div>
                     <div className='header '>
                         <div className='scrollbar-content flex items-center relative max-w-[80%]'>
@@ -343,11 +350,11 @@ function CarsListing() {
                             <div className='flex gap-4 w-[100%] items-center overflow-x-scroll scroll-smooth ' id='scrollbareffect'
 
                             >
-                                <button href="" className={type === "all" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("all")}>All</button>
-                                <button href="" className={type === "Suv" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("Suv")}>Suv</button>
-                                <button href="" className={type === "Sedan" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("Sedan")}>Sedan</button>
-                                <button href="" className={type === "Coupe" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("Coupe")}>Coupe</button>
-                                <button href="" className={type === "Cars" ? 'text-[12px] font-bold border border-[#7357ff] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[#7357ff] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[#7357ff]'} onClick={() => toggle("Cars")}>Cars</button>
+                                <button href="" className={type === "all" ? 'text-[12px] font-bold border border-[black] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[black] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[black]'} onClick={() => toggle("all")}>All</button>
+                                <button href="" className={type === "Suv" ? 'text-[12px] font-bold border border-[black] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[black] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[black]'} onClick={() => toggle("Suv")}>Suv</button>
+                                <button href="" className={type === "Sedan" ? 'text-[12px] font-bold border border-[black] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[black] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[black]'} onClick={() => toggle("Sedan")}>Sedan</button>
+                                <button href="" className={type === "Coupe" ? 'text-[12px] font-bold border border-[black] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[black] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[black]'} onClick={() => toggle("Coupe")}>Coupe</button>
+                                <button href="" className={type === "Cars" ? 'text-[12px] font-bold border border-[black] pl-5 pr-5 pt-1 pb-1 rounded-[20px] bg-[black] text-white' : 'text-[12px] font-bold border border-gray-200 pl-5 pr-5 pt-1 pb-1 rounded-[20px] text-[black]'} onClick={() => toggle("Cars")}>Cars</button>
                             </div>
                             {/* <div className='h-[24px] w-[50px]' id='rightbtnslider'>
                         <KeyboardDoubleArrowRightIcon className='absolute  top-[4px] text-[#7357ff] cursor-pointer right-[0px] felx items-center' onClick={sliderRight} />

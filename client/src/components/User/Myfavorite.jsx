@@ -103,8 +103,9 @@ function MyFavorites() {
                             {favorites.length > 0 ? (<>
 
                                 {favorites.map((car) => (
-                                    <a href={`/car/car-rental/${car.make}/${car.model}/${car.year}/${car.id}`}>
+                                    
                                         <div className='favorites-cards relative w-[100%] h-[47vh] ' key={car.id}>
+                                            <a href={`/car/car-rental/${car.make}/${car.model}/${car.year}/${car.id}`}>
                                             <div className="favorites-card-componentss w-[100%]  h-[fit] border rounded-lg shadow-sm">
                                                 <img src={car.imageUrls[0]} alt="" className='h-[150px] w-[100%] rounded-tr-lg rounded-tl-lg object-cover' />
                                                 <div className='mt-2 p-2'>
@@ -135,13 +136,14 @@ function MyFavorites() {
                                                     <div className='mt-1 text-[12px] text-[#937eff] border-t-[1px] pt-1 font-semibold'><p><LocationOnIcon /> {car.location}, Morocco</p></div>
                                                 </div>
                                             </div>
+                                            </a>
                                             <div className='btnsave'>
                                                 <button id='btnsave2' onClick={() => handleFavoriteClick(car.id)}>
                                                     <FavoriteOutlinedIcon />
                                                 </button>
                                             </div>
                                         </div>
-                                    </a>
+                                    
                                 ))}
 
 

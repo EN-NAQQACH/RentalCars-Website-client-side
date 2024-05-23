@@ -78,17 +78,17 @@ function MyNotifications() {
     const handleChatClick = (index) => {
         setSelectedChat(index);
     };
-    useEffect(() => {
-        const newSocket = io("https://rentalcars-website-socket-io.onrender.com/", {
-            transports: ['websocket'],
-            withCredentials: true,
-        });
-        setsocket(newSocket);
+    // useEffect(() => {
+    //     const newSocket = io("https://rentalcars-website-socket-io.onrender.com/", {
+    //         transports: ['websocket'],
+    //         withCredentials: true,
+    //     });
+    //     setsocket(newSocket);
 
-        return () => {
-            newSocket.close();
-        };
-    }, []);
+    //     return () => {
+    //         newSocket.close();
+    //     };
+    // }, []);
     return (
         <div className='mynotifications   border-transparent rounded-xl  min-h-[100vh] grid grid-cols-3 '>
             {loading2 ? (<>
@@ -102,8 +102,6 @@ function MyNotifications() {
 
                     />
                 </div>
-
-
 
             </>) : (<>
 
@@ -174,7 +172,7 @@ function MyNotifications() {
                                 </div>
                             </div>
 
-                            <LastMessageContext.Provider value={{ lastMessage, setlastmessage, socket, setChats }}>
+                            <LastMessageContext.Provider value={{ lastMessage, setlastmessage, setChats }}>
                                 <Outlet />
                             </LastMessageContext.Provider>
                         </>
