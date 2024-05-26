@@ -9,6 +9,9 @@ import AttachmentIcon from '@mui/icons-material/Attachment';
 import SendIcon from '@mui/icons-material/Send';
 import { io } from 'socket.io-client';
 import ClipLoader from "react-spinners/ClipLoader";
+import ChatBox from './ChatBox';
+import Pusher from 'pusher-js';
+import { message } from 'antd';
 export const LastMessageContext = createContext();
 function MyNotifications() {
     const [socket, setsocket] = useState();
@@ -19,6 +22,7 @@ function MyNotifications() {
     const [selectedChat, setSelectedChat] = useState(null);
     const currentuser = localStorage.getItem('T_ID_User')
     const [searchinput, setsearchinput] = useState('');
+    const [count, setcount] = useState(0)
     const fetchChtasWithSearchOption = async (searchinput) => {
         try {
             const response = await fetch(`https://easlycars-server.vercel.app/api/chats/search/getUsers?searchinput=${searchinput}`, {
@@ -48,7 +52,7 @@ function MyNotifications() {
     const fetchChats = async () => {
         try {
 
-            const response = await fetch('https://easlycars-server.vercel.app/api/chats', {
+            const response = await fetch('http://localhost:4000/api/chats', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,7 +65,6 @@ function MyNotifications() {
                 setChats(data);
                 setLoading(false);
                 setlastmessage(data.lastMessage);
-                console.log(data)
                 setloading2(false)
 
             }
@@ -70,14 +73,38 @@ function MyNotifications() {
         }
     };
     useEffect(() => {
-        fetchChats();
-    }, [lastMessage]);
+        if (currentuser) {
+            fetchChats();
+        }
+    }, [currentuser,lastMessage,count]);
     useEffect(() => {
         setloading2(true);
     }, []);
-    const handleChatClick = (index) => {
-        setSelectedChat(index);
-    };
+
+    useEffect(() => {
+        const pusher = new Pusher('e212b43b22cb99b53a5e', {
+            cluster: 'eu'
+        });
+        console.log(`Subscribing to channel: ${currentuser}`);
+        const channel = pusher.subscribe(currentuser);
+        const  handlechatupdate = (updateddata) => {
+            setChats((allchats) => allchats.map((chat) => {
+                    if (chat.id === updateddata.id) {
+                        return {...chat, messages: updateddata.message
+                        }
+                    }else{
+                        return chat;
+                    }
+                    
+                }))
+            }
+                
+        channel.bind('chatupdate',handlechatupdate)
+        return () => {
+            channel.unsubscribe(currentuser)
+            channel.unbind('chatupdate', handlechatupdate);
+        }
+    }, [currentuser])
     // useEffect(() => {
     //     const newSocket = io("https://rentalcars-website-socket-io.onrender.com/", {
     //         transports: ['websocket'],
@@ -90,10 +117,8 @@ function MyNotifications() {
     //     };
     // }, []);
     return (
-        <div className='mynotifications   border-transparent rounded-xl  min-h-[100vh] grid grid-cols-3 '>
+        <div className='mynotifications   border-transparent rounded-xl  min-h-[100vh] grid grid-cols-3 max-[734px]:flex  max-[734px]:flex-col max-[734px]:min-h-[100%]  max-[734px]:justify-center   '>
             {loading2 ? (<>
-
-
                 <div className='messages-box border rounded-xl bg-[#fcfdff] h-[100%] justify-center items-center flex col-start-1 col-end-4 ' >
                     <ClipLoader
                         color="#5c3cfc"
@@ -105,11 +130,11 @@ function MyNotifications() {
 
             </>) : (<>
 
-                {chats.length > 0 ?
+                {chats ?
                     (
                         <>
                             <div className='list-of-users bg-[#f7f9fc] h-[100%] p-3 '>
-                                <div className=' m-auto border border-transparent rounded-2xl h-[100%] bg-[#ffffff] '>
+                                <div className=' m-auto border border-transparent rounded-2xl h-[100%] bg-[#ffffff] max-[734px]:p-[10px] '>
                                     <div className='bg-[#f4f6fb] flex pt-[5px] pl-3 pr-3 pb-[5px] m-auto w-[90%] rounded-[20px]  justify-center items-center top  border-none mt-5 shadow-sm'>
                                         <SearchIcon className='text-gray-400 mr-2' />
                                         <input type="text" placeholder='Search Chats...' className='bg-transparent outline-none text-[13px]' value={searchinput}
@@ -144,22 +169,7 @@ function MyNotifications() {
                                                     {chats && <>
 
                                                         {chats.map((chat, index) => (
-                                                            <Link to={`chats/${chat.id}`} key={index} onClick={() => handleChatClick(chat.reseivedUser.id)} className={selectedChat == chat.reseivedUser.id ? "bg-[#f4f6fb] rounded-[10px] border-none" : "bg-white rounded-md border-none"}>
-                                                                <div className='center w-[100%]  flex items-center gap-3  cursor-pointer  p-3' >
-                                                                    <div className=''>
-                                                                        <img src={chat.reseivedUser.picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover' />
-                                                                    </div>
-                                                                    <div className='flex flex-col'>
-                                                                        <div className='flex items-center justify-between gap-[90px]'>
-                                                                            <p className='font-semibold text-[14px]'>{chat.reseivedUser.firstName}</p>
-                                                                            <p className='truncate text-[10px] text-gray-700 font-semibold'>{chat.lastMessageHour}</p>
-                                                                        </div>
-                                                                        <div className=''>
-                                                                            <p className='truncate text-[10px] text-gray-500 font-semibold max-w-[140px]'>{chat.lastMessage}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </Link>
+                                                            <ChatBox chat={chat} index={index}  currentuser={currentuser} lastmessage={chat?.messages?.length > 0 && chat?.messages[chat?.messages.length-1]} setcount={setcount} />
                                                         ))}
 
                                                     </>
@@ -200,3 +210,4 @@ function MyNotifications() {
 }
 
 export default MyNotifications;
+

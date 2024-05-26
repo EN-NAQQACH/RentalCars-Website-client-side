@@ -67,16 +67,16 @@ function Myreservations() {
             <div className='myBookinginfo border-gray-100  rounded-xl p-3 h-fit' >
                 <p className='text-[18px] font-semibold text-gray-700'>My Reservations</p>
                 <div>
-                    <div className='flex justify-between items-center mb-3 mt-3'>
+                    <div className='flex justify-between items-center mb-3 mt-3 max-[606px]:flex-col max-[606px]:items-center'>
 
-                        <div className='sort-component  w-[220px]'>
+                        <div className='sort-component  w-[220px] max-[606px]:w-[100%]'>
                             <Select className='w-[100%]' placeholder="Sort by" value={sort} onChange={(value) => setSort(value)}>
                                 <Option key={1} value='Newest'>Newest</Option>
                                 <Option key={2} value='Oldest'>Oldest</Option>
                             </Select>
                         </div>
-                        <div>
-                            <Input type="text" placeholder='Search' className='w-[300px] border outline-none p-1 text-[14px]' value={search} onChange={(e) => setsearch(e.target.value)} />
+                        <div className='max-[606px]:w-[100%] max-[606px]:mt-1'>
+                            <Input type="text" placeholder='Search' className='w-[300px] max-[606px]:w-[100%] border outline-none p-1 text-[14px]' value={search} onChange={(e) => setsearch(e.target.value)} />
                         </div>
                     </div>
                 </div>
@@ -149,8 +149,8 @@ function Myreservations() {
                                                         <div className="grid gap-2">
                                                             <div className="text-gray-500 dark:text-gray-400 text-sm font-medium">Total</div>
                                                             <div className="flex items-center justify-between">
-                                                                <div className="font-medium text-2xl">{res.totalPrice} Dh</div>
-                                                                <div className="text-gray-500 dark:text-gray-400 text-sm">Includes taxes and fees</div>
+                                                                <div className="font-medium text-2xl max-[450px]:text-[15px] max-[450px]:font-bold ">{res.totalPrice} Dh</div>
+                                                                {/* <div className="text-gray-500 dark:text-gray-400 text-sm">Includes taxes and fees</div> */}
                                                             </div>
                                                         </div>
                                                         <div className="grid gap-1">
@@ -189,8 +189,8 @@ function Myreservations() {
                                                         <div className="font-medium">{res.totalPrice} Dh</div>
                                                     </div> */}
                                                 </div>
-                                                <div className='flex justify-end mt-3 '>
-                                                    <button className="w-[20%] border rounded-lg p-2 m-0 hover:text-red-600 hover:border-red-500" variant="primary" onClick={() => handleRemoveRese(res.id)}>
+                                                <div className='flex justify-center mt-3 w-[100%] '>
+                                                    <button className="w-[100%] border rounded-lg p-2 m-0 hover:text-white transition-all duration-600 hover:bg-red-600 hover:border-red-500" variant="primary" onClick={() => handleRemoveRese(res.id)}>
                                                         Cancel Reservation
                                                     </button>
                                                 </div>

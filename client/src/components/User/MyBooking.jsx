@@ -153,15 +153,15 @@ function MyBooking() {
                 {reservations ?
                   (
                     <>
-                      <div className='flex justify-end'>
-                        <Select className='w-[24%]' placeholder="filter by status" value={search} onChange={(value) => setsearch(value)}>
+                      <div className='flex justify-end max-[640px]:justify-start '>
+                        <Select className='w-[24%] max-[640px]:w-[40%]' placeholder="filter by status" value={search} onChange={(value) => setsearch(value)}>
                           <Option key={1} value='pending'>Pending</Option>
                           <Option key={2} value='confirmed'>Confirmed</Option>
                         </Select>
                       </div>
 
-                      <div className='Booking-componentss mt-5 max-w-[100%] felx items-center '>
-                        <div className='Booking-cards   '>
+                      <div className='Booking-componentss mt-5 max-w-[100%] flex flex-wrap items-center '>
+                        <div className='Booking-cards  grow '>
                           <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2 ">
                             <div className='p-2 flex flex-col gap-3'>
                               <div className='flex justify-between items-center'>
@@ -176,7 +176,7 @@ function MyBooking() {
                           <div>
                           </div>
                         </div>
-                        <div className='Booking-cards '>
+                        <div className='Booking-cards grow'>
                           <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2">
                             <div className='p-2 flex flex-col gap-3'>
                               <div className='flex  gap-2 justify-between items-center'>
@@ -191,7 +191,7 @@ function MyBooking() {
                           <div>
                           </div>
                         </div>
-                        <div className='Booking-cards  '>
+                        <div className='Booking-cards grow '>
                           <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2">
                             <div className='p-2 flex flex-col gap-3'>
                               <div className='flex justify-between items-center'>
@@ -206,7 +206,7 @@ function MyBooking() {
                           <div>
                           </div>
                         </div>
-                        <div className='Booking-cards '>
+                        <div className='Booking-cards grow'>
                           <div className="Booking-card-componentss h-fit border shadow-sm rounded-md p-2">
                             <div className='p-2 flex flex-col gap-3'>
                               <div className='flex justify-between items-center'>
@@ -223,7 +223,7 @@ function MyBooking() {
                         </div>
                       </div>
 
-                      <div className='border mt-2 rounded-md' >
+                      <div className='border mt-2 rounded-md max-[680px]:overflow-scroll ' >
                         <div>
                           <Table dataSource={data} className='p-3' pagination={pagination} onChange={handleTableChange} loading={false}>
                             <Table.Column title="Client" dataIndex="client" key="client" sorter={(a, b) => a.client.localeCompare(b.client)} />
@@ -247,7 +247,7 @@ function MyBooking() {
                                 {/* <p>Name: {selectedUser.firstName} {selectedUser.lastName}</p>
                     <p>Email: {selectedUser.email}</p>
                     Display other user information  */}
-                                <div className='grid grid-cols-3 gap-2'>
+                                <div className='grid grid-cols-3 gap-2 max-[1080px]:flex max-[1080px]:flex-col'>
                                   <div className='user-side bg-white  rounded-md mt-5'>
                                     <div className='p-3 mt-3'>
                                       <div className='user-info flex flex-col items-center'>
@@ -301,7 +301,7 @@ function MyBooking() {
                                                             width={200}
                                                           />
                                                           <div className="p-4 md:p-6 flex flex-col justify-between">
-                                                            <div className='flex items-center justify-between'>
+                                                            <div className='flex items-center justify-between max-[388px]:flex-col max-[388px]:justify-center max-[388px]:text-center '>
                                                               <div>
                                                                 <h2 className="text-lg font-semibold">{res.car.make} {res.car.model} {res.car.year}</h2>
                                                                 <div className="text-gray-500 dark:text-gray-400 text-sm">{res.car.Type}</div>
@@ -344,9 +344,9 @@ function MyBooking() {
                                                       <div className="collapse-content">
                                                         <div className='mt-2'>
                                                           {/* value={sort} onChange={(value) => setSort(value)} */}
-                                                          <div className='flex items-center justify-between'>
-                                                            <button className='pl-5 pt-1 pb-1 pr-5 border hover:text-red-600 rounded-md'> <div className='flex justify-between gap-2 mt-[0.5px]'><DeleteOutlineOutlinedIcon /><span>Cancel</span></div></button>
-                                                            <Select className='w-[150px]  ' placeholder="Status" value={status} onChange={(value) => handlestatuschange(value, res.id)}>
+                                                          <div className='flex items-center justify-between max-[388px]:flex-col '>
+                                                            <button className='pl-5 pt-1 max-[388px]:w-[100%] pb-1 pr-5 border hover:text-red-600 rounded-md'> <div className='flex justify-between gap-2 mt-[0.5px]'><DeleteOutlineOutlinedIcon /><span>Cancel</span></div></button>
+                                                            <Select className='w-[150px] max-[388px]:w-[100%]  max-[388px]:mt-1 ' placeholder="Status" value={status} onChange={(value) => handlestatuschange(value, res.id)}>
                                                               <Option key={1} value='pending'>
                                                                 <div className="flex items-center gap-2">
                                                                   <div className="h-2 w-2 rounded-full bg-yellow-500" />
