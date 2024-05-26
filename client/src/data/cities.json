@@ -1,22 +1,22 @@
 [
     {
         "name": "agadir",
-        "url": "/Agadir.jpg"
+        "url": "/Agadir.png"
     },
     {
         "name": "casablanca",
-        "url": "/casablanca.jpg"
+        "url": "/casablanca.png"
     },
     {
         "name": "essaouira",
-        "url": "/essaouira.jpg"
+        "url": "/essaouira.png"
     },
     {
-        "name": "rabat",
-        "url": "/rabat.jpg"
+        "name": "marrakech",
+        "url": "/Marrakech.png"
     },
     {
         "name": "beni mellal",
-        "url": "/beni-mellal.jpg"
+        "url": "/benimellal.png"
     }
 ]

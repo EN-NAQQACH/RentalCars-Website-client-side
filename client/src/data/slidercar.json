@@ -1,15 +1,15 @@
 [
     {
         "name": "bmw",
-        "url": "/Bmw.jpg"
+        "url": "/vb-07-media-hd.jpg"
     },
     {
         "name": "mercedes",
         "url": "/mercedes.jpg"
     },
     {
-        "name": "peugeot",
-        "url": "/peugeot.jpg"
+        "name": "Audi",
+        "url": "/audi.jpg"
     },
     {
         "name": "hyndai",
@@ -17,6 +17,6 @@
     },
     {
         "name": "range rover",
-        "url": "/range rover.jpg"
+        "url": "/rangerover2.jpg"
     }
 ]
