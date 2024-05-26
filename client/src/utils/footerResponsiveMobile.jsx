@@ -4,61 +4,64 @@ import '../components/cardeffect.css';
 function FooterResponsiveMobile() {
     return (
         <>
-            <div className='frequently-content-card flex  flex-col items-start gap-3 border-t-2 pl-[0.5px] pr-[0.5px] w-[100%]'>
+            <div className='frequently-content-card flex  flex-col items-start gap-3  pl-[0.5px] pr-[0.5px] w-[100%]'>
                 <div className='flex flex-col gap-2 mt-3 w-[100%]'>
-                    <div className="collapse collapse-arrow bg-white text-black border-b-[1px] rounded-[0px] w-[100%]">
+                    <div className="collapse collapse-arrow bg-white text-black  rounded-[0px] w-[100%]">
                         <input type="checkbox" />
                         <div className="collapse-title text-[17px] font-medium">
-                            Services
+                            Makes
                         </div>
                         <div className="collapse-content">
-                            <nav  className='flex flex-col gap-2'>
-                                <a className="link link-hover">Branding</a>
-                                <a className="link link-hover">Design</a>
-                                <a className="link link-hover">Marketing</a>
-                                <a className="link link-hover">Advertisement</a>
+                            <nav className='flex flex-col gap-2'>
+
+                               <li><a href={`/carhome/search?make=Audi`} className="link link-hover">Audi car rental</a></li> 
+                                <li><a href={`/carhome/search?make=Bmw`} className="link link-hover">Bmw car rental</a></li>
+                                <li><a href={`/carhome/search?make=Mercedes`} className="link link-hover">Mercedes car rental</a></li>
+                                <li><a href={`/carhome/search?make=Toyota`} className="link link-hover">Toyota car rental</a></li>
+                                <li><a href={`/carhome/search?make=Jeep`} className="link link-hover">Jeep car rental</a></li>
+                                <li><a href={`/carhome/search?make=Ford`} className="link link-hover">Ford car rental</a></li>
+
                             </nav>
                         </div>
                     </div>
 
-                    <div className="collapse collapse-arrow bg-white text-black border-b-[1px] rounded-[0px] w-[100%]">
+                    <div className="collapse collapse-arrow bg-white text-black  rounded-[0px] w-[100%]">
                         <input type="checkbox" />
                         <div className="collapse-title text-[17px] font-medium">
-                            Company
+                        Destination
                         </div>
                         <div className="collapse-content">
                             <nav className='flex flex-col gap-2'>
-                                <a className="link link-hover">About us</a>
-                                <a className="link link-hover">Contact</a>
-                                <a className="link link-hover">Jobs</a>
-                                <a className="link link-hover">Press kit</a>
+                            <a href={`/carhome/search?where=Agadir`} className="link link-hover">Agadir</a>
+                                    <a href={`/carhome/search?where=Casablanca`} className="link link-hover">Casablanca</a>
+                                    <a href={`/carhome/search?where=Essaouira`} className="link link-hover">Essaouira</a>
+                                    <a href={`/carhome/search?where=Rabat`} className="link link-hover">Rabat</a>
                             </nav>
                         </div>
                     </div>
-                    <div className="collapse collapse-arrow bg-white text-black border-b-[1px] rounded-[0px] w-[100%]">
+                    <div className="collapse collapse-arrow bg-white text-black  rounded-[0px] w-[100%]">
                         <input type="checkbox" />
                         <div className="collapse-title text-[17px] font-medium">
-                            Legal
+                        Vehicule
                         </div>
                         <div className="collapse-content">
                             <nav className='flex flex-col gap-2'>
-                                <a className="link link-hover">Terms of use</a>
-                                <a className="link link-hover">Privacy policy</a>
-                                <a className="link link-hover">Cookie policy</a>
+                            <a href={`/carhome/search?type=Suv`} className="link link-hover">Suv car rental</a>
+                                    <a href={`/carhome/search?type=Coupe`} className="link link-hover">Coupe car rental</a>
+                                    <a href={`/carhome/search?type=Cars`} className="link link-hover">Cars car rental</a>
+                                    <a href={`/carhome/search?type=Sedan`} className="link link-hover">Sedan car rental</a>
                             </nav>
                         </div>
                     </div>
-                    <div className="collapse collapse-arrow bg-white text-black border-b-[1px] rounded-[0px] w-[100%]">
+                    <div className="collapse collapse-arrow bg-white text-black  rounded-[0px] w-[100%]">
                         <input type="checkbox" />
                         <div className="collapse-title text-[17px] font-medium">
-                            Social
+                        Legal
                         </div>
                         <div className="collapse-content">
                             <nav className='flex flex-col gap-2'>
-                                <a className="link link-hover">Twitter</a>
-                                <a className="link link-hover">Instagram</a>
-                                <a className="link link-hover">Facebook</a>
-                                <a className="link link-hover">Github</a>
+                            <a href='/termsofService' className="link link-hover">Terms of Services</a>
+                                    <a href="/EaslyCars-Policies" className="link link-hover">Privacy policy</a>
                             </nav>
                         </div>
                     </div>
