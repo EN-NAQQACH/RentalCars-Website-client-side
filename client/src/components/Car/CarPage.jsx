@@ -162,7 +162,7 @@ function CarPage() {
         if (!content) return;
         try {
             setloadingsentmessage(true)
-            const response = await fetch(`https://easlycars-server.vercel.app/api/chats/AddandMessage`, {
+            const response = await fetch(`http://localhost:4000/api/chats/AddandMessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef,useEffect } from 'react'
 import { Checkbox } from 'antd';
 import { Radio, Select, Rate, Flex, message } from 'antd';
 import Slider from '@mui/material/Slider';
@@ -169,9 +169,22 @@ function CarHome() {
         enddate: enddate,
         days: days
     }
+    const [isAsideVisible, setIsAsideVisible] = useState(true);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsAsideVisible(window.innerWidth < 781);
+        };
+        window.addEventListener('resize', handleResize);
+        handleResize();
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
         <div className='min-h-[200vh]' style={{ fontFamily: "Space Grotesk" }}>
-            <div className='location-section w-[100%]  mb-7 ml-2'>
+            {/* <div className='location-section w-[100%]  mb-7'>
                 <div className='location-content-section-carhome gap-2 rounded-[30px]  border-gray-100 border-[0.2px] shadow-sm w-fit pl-3 pr-3 pt-1 pb-1'>
                     <div className='border-r-[1px] pr-5'>
                         <label htmlFor="" className='pl-2 text-[13px] font-bold text-gray-500'>Location</label>
@@ -187,6 +200,29 @@ function CarHome() {
                     </div>
                     <div className='flex items-center justify-center  rounded-[50%] h-[40px] w-[40px]  transition-all duration-75 cursor-pointer bg-[black] hover:bg-[#4e4848] m-auto'>
                         <button onClick={handleSearch}><SearchIcon className='text-white' /></button>
+                    </div>
+                </div>
+            </div> */}
+            <div className='  w-[60%] max-[984px]:w-[80%]  max-[500px]:w-[80%] max-[780px]:bottom-[40%] bottom-[60%] tr z-[15] mb-7  mt-5 m-auto'>
+                <div className='max-[780px]:flex max-[780px]:flex-col max-[780px]:gap-2 max-[780px]:w-[100%] max-[780px]:rounded-[0px] max-[780px]:shadow-none  gap-2 rounded-[30px] shadow-md bg-[white]  w-[auto%] p-[5px] pl-2 pr-2 flex m-auto'>
+                    <div className='border-r-[1px]   w-[100%] bg-white p-1 max-[780px]:border-transparent max-[780px]:border-[1px]  max-[780px]:rounded-[5px] max-[780px]:shadow-md'>
+                        <label htmlFor="" className='min-[780px]:pl-2 text-[13px] font-bold text-gray-500'>Location</label>
+                        <input type="text" className='border-none w-[100%] max-[780px]:mt-1 max-[780px]:mb-2 h-[20px] rounded-[7px] pl-2 text-[13px] bg-transparent text-black outline-none' placeholder='Enter Location' value={location} onChange={(e) => setlocation(e.target.value)} />
+                    </div>
+                    <div className='flex flex-col justify-center border-r-[1px]  w-[100%] max-[780px]:border-transparent max-[780px]:border-[1px] max-[780px]:pl-1 max-[780px]:pt-1 max-[780px]:rounded-[5px] max-[780px]:shadow-md '>
+                        <label htmlFor="" className='text-[13px] font-bold text-gray-500'>Check in-out</label>
+                        <div className='flex items-center justify-between w-[100%] '>
+                            <Space direction="vertical" size={12} className='bg-transparent'>
+                                <RangePicker disabledDate={disabledDate} onChange={onchange} format={dateFormat} className='bg-transparent text-black max-[780px]:mt-1 max-[780px]:mb-2  ' />
+                            </Space>
+                        </div>
+                    </div>
+                    <div className='w-[25%] flex items-center justify-center max-[780px]:w-[100%]'>
+                        <div className='flex items-center justify-center  max-[780px]:w-[100%] rounded-[50%] h-[40px] w-[40px]  transition-all duration-75 cursor-pointer max-[780px]:bg-[black] bg-[black] hover:bg-[#5a5a5a] m-auto  max-[780px]:rounded-[10px]'>
+                            <button onClick={handleSearch} className='text-white font-semibold'>
+                                {isAsideVisible ?  'Search for Cars':<SearchIcon /> }
+                                </button>
+                        </div>
                     </div>
                 </div>
             </div>

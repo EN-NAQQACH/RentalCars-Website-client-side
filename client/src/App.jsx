@@ -40,11 +40,11 @@ function App() {
       });
     });
   }, []);
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [pathname]);
   useEffect(() => {
 
     if (location.pathname === '/carhome/search' && location.search === '') {

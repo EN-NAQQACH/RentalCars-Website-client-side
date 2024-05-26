@@ -679,7 +679,7 @@ getuserInfo()
       {
         isuserauth ? (
 
-          <div className="navbar bg-base-100 sticky z-20  " style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
+          <div className="navbar bg-base-100 sticky z-20 " style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
             <div className="navbar-start">
               <a className="btn btn-ghost text-xl" href='/'>daisyUI</a>
             </div>
@@ -690,7 +690,7 @@ getuserInfo()
                 <li><a href='/contactUs'>Contact us</a></li>
               </ul>
             </div>
-            <div className="navbar-end ">
+            <div className="navbar-end flex justify-end">
               {/* <div className="dropdown dropdown-hover dropdown-end ">
                 <div tabIndex={0} role="button" className="border rounded-[5px] m-1 p-2   text-black transition duration-500    shadow-sm flex items-center gap-3">
                   <MenuIcon />

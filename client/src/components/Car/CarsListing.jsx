@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Checkbox } from 'antd';
-import { Radio, Select, Rate, Flex, Slider } from 'antd';
+import { Radio, Select, Rate, Flex, Slider, Modal } from 'antd';
 import TextField from '@mui/material/TextField';
 import '../cardeffect.css';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -154,7 +154,7 @@ function CarsListing() {
     const [sort, setSort] = useState(null);
     const [pricemin, setpricemin] = useState('');
     const [pricemax, setpricemax] = useState('');
-    
+
     const [seats, setseats] = useState();
     const [transmission, settransmission] = useState('');
     const [fueltype, setfueltype] = useState('');
@@ -196,138 +196,156 @@ function CarsListing() {
         setfueltype('');
         setType('all');
     }
-    const handletypechaneg = (e) =>{
+    const handletypechaneg = (e) => {
         setType(e.target.value);
+    }
+    const [isAsideVisible, setIsAsideVisible] = useState(true);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsAsideVisible(window.innerWidth > 732);
+        };
+        window.addEventListener('resize', handleResize);
+        handleResize();
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    const [modal, setmodal] = useState(false);
+    const closeModal = () => {
+        setmodal(false);
     }
 
     return (
-        <div className='carhome-section  bg-white h-fit m-[80px] mt-0'>
-            <div className='aside border-[0.5px] border-gray-100 h-fit rounded-[15px]'>
-                <div className='filter-components'>
-                    <div className='filter-content  pb-[30px]'>
-                        <div className='flex justify-between mb-4 items-center border-b-[1px] p-3 rounded-tr-[15px] rounded-tl-[15px] bg-[#f4f4fc]'>
-                            <p className='text-[14px] font-bold'>Filter</p>
-                            <button className='text-[12px] text-[black] border border-transparent hover:bg-gray-200 hover:border pl-2 font-semibold pr-2 pt-1 pb-1 rounded-md' onClick={handleClear}>Clear All Filters</button>
-                        </div>
-                        <div className="p-5">
-                            <div className='filter-price mb-3'>
-                                <p className='text-[13px] font-bold text-gray-400'>Price</p>
-                                <Slider
-                                    range={{
-                                        draggableTrack: true,
-                                    }}
-                                    defaultValue={[194, 499]}
-                                    max={999}
-                                    trackStyle={{ backgroundColor: 'black' }}
-                                    handleStyle={{
-                                      backgroundColor: 'black',
-                                      borderColor: 'black',
-                                    }}
-                                   
-                                    onChange={handleSliderChange}
-                                />
-                                <div className='flex gap-3 mt-5'>
-                                    <TextField
-                                        id="outlined-number"
-                                        label="Max (DH)"
-                                        type="text"
-                                        value={sliderValue[0]}
-                                        InputLabelProps={{
-                                            shrink: true,
+        <div className='carhome-section max-[732px]:block max-[732px]:m-[20px]  bg-white h-fit m-[80px] mt-0'>
+            {isAsideVisible &&
+                <div className='aside border-[0.5px] border-gray-100 h-fit rounded-[15px]'>
+                    <div className='filter-components'>
+                        <div className='filter-content  pb-[30px]'>
+                            <div className='flex justify-between mb-4 items-center border-b-[1px] p-3 rounded-tr-[15px] rounded-tl-[15px] bg-[#f4f4fc]'>
+                                <p className='text-[14px] font-bold'>Filter</p>
+                                <button className='text-[12px] text-[black] border border-transparent hover:bg-gray-200 hover:border pl-2 font-semibold pr-2 pt-1 pb-1 rounded-md' onClick={handleClear}>Clear All Filters</button>
+                            </div>
+                            <div className="p-5">
+                                <div className='filter-price mb-3'>
+                                    <p className='text-[13px] font-bold text-gray-400'>Price</p>
+                                    <Slider
+                                        range={{
+                                            draggableTrack: true,
                                         }}
-                                    />
-                                    <TextField
-                                        id="outlined-number"
-                                        label="Max (DH)"
-                                        type="text"
-                                        value={sliderValue[1]}
-                                        InputLabelProps={{
-                                            shrink: true,
+                                        defaultValue={[194, 499]}
+                                        max={999}
+                                        trackStyle={{ backgroundColor: 'black' }}
+                                        handleStyle={{
+                                            backgroundColor: 'black',
+                                            borderColor: 'black',
                                         }}
+
+                                        onChange={handleSliderChange}
                                     />
-                                </div>
+                                    <div className='flex gap-3 mt-5'>
+                                        <TextField
+                                            id="outlined-number"
+                                            label="Max (DH)"
+                                            type="text"
+                                            value={sliderValue[0]}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                        <TextField
+                                            id="outlined-number"
+                                            label="Max (DH)"
+                                            type="text"
+                                            value={sliderValue[1]}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </div>
 
 
-                            </div>
-                            <div className='filter-transmission mb-3'>
-                                <div>
-                                    <p className='text-[13px]  mb-2 font-bold text-gray-400'>Transmission</p>
-                                    <Radio.Group onChange={onChange} className='flex flex-col'>
-                                        <Radio value={"Manual"} className='text-[13px]'>Manule</Radio>
-                                        <Radio value={"Automatic"} className='text-[13px]'>Automatic</Radio>
-                                    </Radio.Group>
                                 </div>
-                            </div>
-                            <div className='filter-make mb-2 w-[100%]' >
-                                <p className='text-[13px] font-bold text-gray-400 mb-1w-[100%]'>Make</p>
-                                <Select placeholder="Make" value={make} onChange={(value) => setmake(String(value))} className='w-[100%]'>
-                                    {carmake.map((r, index) => (
-                                        <Option key={index} required value={r}>{r}</Option>
-                                    ))}
-                                </Select>
-                            </div>
-                            <div className='filter-features mb-3'>
-                                <p className='text-[13px] font-bold text-gray-400 mb-2'>Features</p>
-                                <div className='flex flex-col h-[180px] overflow-hidden p-2 mb-1' id='features'>
-                                    {featuresList.map((feature, index) => (
-                                        <div key={index}>
-                                            <label className='text-[13px]'>
-                                                <Checkbox
-                                                    className='mr-1'
-                                                    type="checkbox"
-                                                    checked={selectedFeatures.includes(feature)}
-                                                    onChange={() => handleCheckboxChange(feature)}
-                                                />
-                                                {feature}
+                                <div className='filter-transmission mb-3'>
+                                    <div>
+                                        <p className='text-[13px]  mb-2 font-bold text-gray-400'>Transmission</p>
+                                        <Radio.Group onChange={onChange} className='flex flex-col'>
+                                            <Radio value={"Manual"} className='text-[13px]'>Manule</Radio>
+                                            <Radio value={"Automatic"} className='text-[13px]'>Automatic</Radio>
+                                        </Radio.Group>
+                                    </div>
+                                </div>
+                                <div className='filter-make mb-2 w-[100%]' >
+                                    <p className='text-[13px] font-bold text-gray-400 mb-1w-[100%]'>Make</p>
+                                    <Select placeholder="Make" value={make} onChange={(value) => setmake(String(value))} className='w-[100%]'>
+                                        {carmake.map((r, index) => (
+                                            <Option key={index} required value={r}>{r}</Option>
+                                        ))}
+                                    </Select>
+                                </div>
+                                <div className='filter-features mb-3'>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-2'>Features</p>
+                                    <div className='flex flex-col h-[180px] overflow-hidden p-2 mb-1' id='features'>
+                                        {featuresList.map((feature, index) => (
+                                            <div key={index}>
+                                                <label className='text-[13px]'>
+                                                    <Checkbox
+                                                        className='mr-1'
+                                                        type="checkbox"
+                                                        checked={selectedFeatures.includes(feature)}
+                                                        onChange={() => handleCheckboxChange(feature)}
+                                                    />
+                                                    {feature}
 
-                                            </label>
-                                        </div>
-                                    ))}
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <a className='text-[13px] text-[black] font-semibold cursor-pointer hover:underline' onClick={handleshowmore} id='showbtn'>Show more</a>
+                                    <a className='text-[13px] text-[black] font-semibold cursor-pointer hover:underline hidden' onClick={handleshowless} id='lessbtn'>Show less</a>
                                 </div>
-                                <a className='text-[13px] text-[black] font-semibold cursor-pointer hover:underline' onClick={handleshowmore} id='showbtn'>Show more</a>
-                                <a className='text-[13px] text-[black] font-semibold cursor-pointer hover:underline hidden' onClick={handleshowless} id='lessbtn'>Show less</a>
-                            </div>
-                            <div className='filter-capacity mb-2'>
-                                <p className='text-[13px] font-bold text-gray-400 mb-1'>Capacity</p>
-                                <Select className='w-[100%]' value={seats} onChange={(value) => setseats(value)}>
-                                    <Option key={1} value={2}>2</Option>
-                                    <Option key={2} value={4}>4</Option>
-                                    <Option key={3} value={5}>5</Option>
-                                    <Option key={4} value={'more'}>more</Option>
-                                </Select>
-                            </div>
-                            <div className='filter-fuel mb-3'>
-                                <p className='text-[13px] font-bold text-gray-400 mb-1'>Fuel Type</p>
-                                <Select className='w-[100%]' value={fueltype} onChange={(value) => setfueltype(value)}>
-                                    <Option key={55} value={'Petrol'}>Petrol</Option>
-                                    <Option key={56} value={'Diesel'}>Diesel</Option>
-                                    <Option key={57} value={'Hybrid'}>Hybrid</Option>
-                                    <Option key={58} value={'Electric'}>Electric</Option>
-                                </Select>
-                            </div>
-                            <div className='filter-Vehicletype mb-3'>
-                                <p className='text-[13px] font-bold text-gray-400 mb-1'>Vehicle type</p>
-                                <div>
-                                <Radio.Group onChange={handletypechaneg} className='flex flex-col'>
-                                        <Radio value={"Cars"} className='text-[13px]'>Cars</Radio>
-                                        <Radio value={"Suv"} className='text-[13px]'>Suv</Radio>
-                                        <Radio value={"Sedan"} className='text-[13px]'>Sedan</Radio>
-                                        <Radio value={"Coupe"} className='text-[13px]'>Coupe</Radio>
-                                    </Radio.Group>
+                                <div className='filter-capacity mb-2'>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Capacity</p>
+                                    <Select className='w-[100%]' value={seats} onChange={(value) => setseats(value)}>
+                                        <Option key={1} value={2}>2</Option>
+                                        <Option key={2} value={4}>4</Option>
+                                        <Option key={3} value={5}>5</Option>
+                                        <Option key={4} value={'more'}>more</Option>
+                                    </Select>
                                 </div>
-                            </div>
-                            <div className='filter-reviews'>
-                                <p className='text-[13px] font-bold text-gray-400 mb-1'>Reviews</p>
-                                <Flex gap="middle" vertical>
-                                    <Rate tooltips={desc} onChange={setRate} value={rat} />
-                                </Flex>
+                                <div className='filter-fuel mb-3'>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Fuel Type</p>
+                                    <Select className='w-[100%]' value={fueltype} onChange={(value) => setfueltype(value)}>
+                                        <Option key={55} value={'Petrol'}>Petrol</Option>
+                                        <Option key={56} value={'Diesel'}>Diesel</Option>
+                                        <Option key={57} value={'Hybrid'}>Hybrid</Option>
+                                        <Option key={58} value={'Electric'}>Electric</Option>
+                                    </Select>
+                                </div>
+                                <div className='filter-Vehicletype mb-3'>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Vehicle type</p>
+                                    <div>
+                                        <Radio.Group onChange={handletypechaneg} className='flex flex-col'>
+                                            <Radio value={"Cars"} className='text-[13px]'>Cars</Radio>
+                                            <Radio value={"Suv"} className='text-[13px]'>Suv</Radio>
+                                            <Radio value={"Sedan"} className='text-[13px]'>Sedan</Radio>
+                                            <Radio value={"Coupe"} className='text-[13px]'>Coupe</Radio>
+                                        </Radio.Group>
+                                    </div>
+                                </div>
+                                <div className='filter-reviews'>
+                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Reviews</p>
+                                    <Flex gap="middle" vertical>
+                                        <Rate tooltips={desc} onChange={setRate} value={rat} />
+                                    </Flex>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className='main-section ml-3 '>
-                <div className='main-content p-3'>
+            }
+            <div className='main-section ml-3  max-[732px]:ml-0'>
+                <div className='main-content p-3 '>
                     <div className='flex justify-between items-center gap-3 mb-5'>
                         <div className='sort-component  w-[220px]' >
                             <Select className='w-[100%]' placeholder="Sort by" value={sort} onChange={(value) => setSort(value)}>
@@ -337,6 +355,146 @@ function CarsListing() {
                                 <Option key={4} value='low'>Lowest Price</Option>
                             </Select>
                         </div>
+                        {!isAsideVisible &&
+                            <>
+                                <div>
+                                    <div className='w-[100px] flex items-center justify-center '>
+                                        <div className='flex items-center justify-center  h-[30px] w-[100%] rounded-[5px]  transition-all duration-75 cursor-pointer max-[780px]:bg-[black] bg-[black] hover:bg-[#5a5a5a] m-auto '>
+                                            <button className='text-white font-semibold' onClick={() => setmodal(true)}>Filter</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Modal
+                                    title="Filter"
+                                    visible={modal}
+                                    onCancel={closeModal}
+                                    footer={null}
+                                    style={
+                                        {
+                                            minWidth: "80%",
+                                        }
+                                    }
+                                >
+                                    <div className='filter-components'>
+                                        <div className='filter-content  pb-[30px]'>
+                                            <div className='flex justify-between mb-4 items-center border-b-[1px] p-3 rounded-tr-[15px] rounded-tl-[15px] bg-[#f4f4fc]'>
+                                                <p className='text-[14px] font-bold'>Filter</p>
+                                                <button className='text-[12px] text-[black] border border-transparent hover:bg-gray-200 hover:border pl-2 font-semibold pr-2 pt-1 pb-1 rounded-md' onClick={handleClear}>Clear All Filters</button>
+                                            </div>
+                                            <div className="p-5">
+                                                <div className='filter-price mb-3'>
+                                                    <p className='text-[13px] font-bold text-gray-400'>Price</p>
+                                                    <Slider
+                                                        range={{
+                                                            draggableTrack: true,
+                                                        }}
+                                                        defaultValue={[194, 499]}
+                                                        max={999}
+                                                        trackStyle={{ backgroundColor: 'black' }}
+                                                        handleStyle={{
+                                                            backgroundColor: 'black',
+                                                            borderColor: 'black',
+                                                        }}
+
+                                                        onChange={handleSliderChange}
+                                                    />
+                                                    <div className='flex gap-3 mt-5'>
+                                                        <TextField
+                                                            id="outlined-number"
+                                                            label="Max (DH)"
+                                                            type="text"
+                                                            value={sliderValue[0]}
+                                                            InputLabelProps={{
+                                                                shrink: true,
+                                                            }}
+                                                        />
+                                                        <TextField
+                                                            id="outlined-number"
+                                                            label="Max (DH)"
+                                                            type="text"
+                                                            value={sliderValue[1]}
+                                                            InputLabelProps={{
+                                                                shrink: true,
+                                                            }}
+                                                        />
+                                                    </div>
+
+
+                                                </div>
+                                                <div className='filter-transmission mb-3'>
+                                                    <div>
+                                                        <p className='text-[13px]  mb-2 font-bold text-gray-400'>Transmission</p>
+                                                        <Radio.Group onChange={onChange} className='flex flex-col'>
+                                                            <Radio value={"Manual"} className='text-[13px]'>Manule</Radio>
+                                                            <Radio value={"Automatic"} className='text-[13px]'>Automatic</Radio>
+                                                        </Radio.Group>
+                                                    </div>
+                                                </div>
+                                                <div className='filter-make mb-2 w-[100%]' >
+                                                    <p className='text-[13px] font-bold text-gray-400 mb-1w-[100%]'>Make</p>
+                                                    <Select placeholder="Make" value={make} onChange={(value) => setmake(String(value))} className='w-[100%]'>
+                                                        {carmake.map((r, index) => (
+                                                            <Option key={index} required value={r}>{r}</Option>
+                                                        ))}
+                                                    </Select>
+                                                </div>
+                                                <div className='filter-features mb-3'>
+                                                    <p className='text-[13px] font-bold text-gray-400 mb-2'>Features</p>
+                                                    <div className='flex flex-col h-[180px] overflow-hidden p-2 mb-1' id='features'>
+                                                        {featuresList.map((feature, index) => (
+                                                            <div key={index}>
+                                                                <label className='text-[13px]'>
+                                                                    <Checkbox
+                                                                        className='mr-1'
+                                                                        type="checkbox"
+                                                                        checked={selectedFeatures.includes(feature)}
+                                                                        onChange={() => handleCheckboxChange(feature)}
+                                                                    />
+                                                                    {feature}
+
+                                                                </label>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <a className='text-[13px] text-[black] font-semibold cursor-pointer hover:underline' onClick={handleshowmore} id='showbtn'>Show more</a>
+                                                    <a className='text-[13px] text-[black] font-semibold cursor-pointer hover:underline hidden' onClick={handleshowless} id='lessbtn'>Show less</a>
+                                                </div>
+                                                <div className='filter-capacity mb-2'>
+                                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Capacity</p>
+                                                    <Select className='w-[100%]' value={seats} onChange={(value) => setseats(value)}>
+                                                        <Option key={1} value={2}>2</Option>
+                                                        <Option key={2} value={4}>4</Option>
+                                                        <Option key={3} value={5}>5</Option>
+                                                        <Option key={4} value={'more'}>more</Option>
+                                                    </Select>
+                                                </div>
+                                                <div className='filter-fuel mb-3'>
+                                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Fuel Type</p>
+                                                    <Select className='w-[100%]' value={fueltype} onChange={(value) => setfueltype(value)}>
+                                                        <Option key={55} value={'Petrol'}>Petrol</Option>
+                                                        <Option key={56} value={'Diesel'}>Diesel</Option>
+                                                        <Option key={57} value={'Hybrid'}>Hybrid</Option>
+                                                        <Option key={58} value={'Electric'}>Electric</Option>
+                                                    </Select>
+                                                </div>
+                                                <div className='filter-Vehicletype mb-3'>
+                                                    <p className='text-[13px] font-bold text-gray-400 mb-1'>Vehicle type</p>
+                                                    <div>
+                                                        <Radio.Group onChange={handletypechaneg} className='flex flex-col'>
+                                                            <Radio value={"Cars"} className='text-[13px]'>Cars</Radio>
+                                                            <Radio value={"Suv"} className='text-[13px]'>Suv</Radio>
+                                                            <Radio value={"Sedan"} className='text-[13px]'>Sedan</Radio>
+                                                            <Radio value={"Coupe"} className='text-[13px]'>Coupe</Radio>
+                                                        </Radio.Group>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Modal>
+                            </>
+                        }
                         {/* <div className='flex items-center gap-2'>
                             <button className='pt-1 pb-1 pl-3 pr-3 border hover:bg-[#7357ff] text-[#7357ff] hover:text-white font-bold text-[13px] rounded-[20px]'> <MapOutlinedIcon className='mr-1' />Map View</button>
                             <button className='pt-1 pb-1 pl-3 pr-3  border hover:bg-[#7357ff] text-[13px] font-bold text-[#7357ff] hover:text-white rounded-[20px]'><DashboardOutlinedIcon className='mr-1' />Card View</button>
@@ -371,10 +529,10 @@ function CarsListing() {
                                 transmission={transmission}
                                 make={make}
                                 features={selectedFeatures}
-                                seats = {seats}
-                                fueltype = {fueltype}
-                                startDate = {startdate}
-                                endDate = {enddate}
+                                seats={seats}
+                                fueltype={fueltype}
+                                startDate={startdate}
+                                endDate={enddate}
 
 
 

@@ -125,7 +125,7 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
                                                         <p className='text-[13px] tracking-[0.6px] font-bold text-gray-400 mb-1'>{car.Type}</p>
                                                     </div>
                                                     <div>
-                                                        <p className='text-gray-400 text-[12px] font-bold'><span className='font-bold  text-[15px] text-[#937eff]'>{car.price}{' '}DH  </span>/ Day</p>
+                                                        <p className='text-gray-400 text-[12px] font-bold'><span className='font-bold text-[15px] text-[#937eff]'>{car.price}{' '}DH  </span>/ Day</p>
                                                     </div>
                                                 </div>
                                                 <div className='overflow-hidden max-w-[90%]'>

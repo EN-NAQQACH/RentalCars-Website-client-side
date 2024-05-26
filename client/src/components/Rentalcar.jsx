@@ -10,7 +10,7 @@ import Footer from './Footer'
 function Rentalcar() {
     return (
         <StyleContextProvider>
-            <div className='scroll-smooth'>
+            <div className='scroll-smooth bg-[#ffffff]'>
                 <Hero />
                 <Main />
             </div>

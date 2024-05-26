@@ -6,6 +6,7 @@ export default {
   ],
   theme: {
     extend: {
+
       },
   },
   plugins: [require("daisyui")],
@@ -17,7 +18,10 @@ export default {
     extend: {
       colors: {
         primary: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a","950":"#172554"}
-      }
+      },
+      boxShadow: {
+        custom: '0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05)',
+      },
     },
     fontFamily: {
       'body': [

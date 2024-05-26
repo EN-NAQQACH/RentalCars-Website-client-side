@@ -87,10 +87,10 @@ nav h6 {
         width: 500px;
         padding: 3px 20px;
     }
-
+/* 
     .find-your-car-section {
         margin-bottom: 400px;
-    }
+    } */
 
     .find-your-car-section .divider-find {
         width: 55%;
@@ -113,11 +113,10 @@ nav h6 {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 0px 25px 0 25px;
     }
 
     .cars-list .cars-list-contents {
-        max-width: 500px;
+        max-width: 100%;
     }
 
     .cars-list .cars-list-contents .place-of-cars {
@@ -432,6 +431,7 @@ nav h6 {
 .carhome-section {
     display: grid;
     grid-template-columns: 270px 290px calc(100% - 560px);
+    flex-wrap: wrap;
 }
 
 .carhome-section .aside {
@@ -459,9 +459,9 @@ nav h6 {
 
 .main-content .cars-components {
     display: grid;
-    grid-template-columns: repeat(3, minmax(auto, 1fr));
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(278px, 1fr));
 }
 
 .location-content-section-carhome {
@@ -565,7 +565,10 @@ nav h6 {
 
 .profile-section {
     display: grid;
-    grid-template-columns: 130px 100px auto auto auto auto auto;
+    flex-wrap: wrap;
+    /* grid-template-columns: 130px 100px auto auto auto auto auto; */
+    grid-template-columns: repeat(7, minmax(auto, 1fr));
+    grid-template-rows: 2;
     gap: 15px;
 }
 
@@ -579,15 +582,15 @@ nav h6 {
 
 .profile-section #Myprofile {
     display: grid;
-    grid-template-columns: auto auto;
+    /* grid-template-columns: auto auto; */
     gap: 15px;
 }
 
 .cars-componentss {
     display: grid;
-    grid-template-columns: repeat(3, minmax(auto, 1fr));
-    flex-wrap: wrap;
-    gap: 15px;
+    /* grid-template-columns: repeat(3, minmax(auto, 1fr)); */
+    grid-template-columns: repeat(auto-fill, minmax(250px, auto));
+    gap: 10px;
 }
 
 .car-cards {
@@ -595,8 +598,9 @@ nav h6 {
 }
 
 .car-cards .car-card-componentss {
-    position: absolute;
+    /* position: absolute; */
     transition: all 0.5s;
+    
 }
 
 .car-cards:hover .contentdiv {
@@ -634,7 +638,9 @@ nav h6 {
 
 .favorites-componentss {
     display: grid;
-    grid-template-columns: repeat(3, minmax(300px, 1fr));
+    /* grid-template-columns: repeat(3, minmax(300px, 1fr)); */
+    /* grid-template-columns: repeat(3, minmax(auto, 1fr)); */
+    grid-template-columns: repeat(auto-fill, minmax(250px, auto));
     gap: 10px;
 }
 
@@ -719,6 +725,15 @@ nav h6 {
     width: 100%;
     background-color: #3c84f4;
     border-color: #3c84f4;
+    color: white;
+    font-weight: 600;
+    padding: 7px 0;
+    height: 100%;
+}
+#newsletterbtn{
+    width: 100%;
+    background-color: #000000;
+    border-color: #000000;
     color: white;
     font-weight: 600;
     padding: 7px 0;
@@ -853,4 +868,22 @@ nav h6 {
 /* handle border */
 :where(.css-dev-only-do-not-override-1qfezbu).ant-slider:hover .ant-slider-handle::after {
     box-shadow: 0 0 0 2px rgb(128, 128, 128);
+}
+.ant-picker.ant-picker-range.ant-picker-outlined.css-dev-only-do-not-override-1qfezbu{
+    width: 100% !important;
+}
+.location-content-section-carhome div:first-chil{
+    width: 100% !important;
+}
+:where(.css-dev-only-do-not-override-1qfezbu).ant-space-vertical{
+    width: 100% !important;
+   
+}
+
+:where(.css-dev-only-do-not-override-1qfezbu).ant-space-vertical .ant-space-item{
+    display: flex;
+    justify-content: end;
+}
+.collapse-title, :where(.collapse > input[type="checkbox"]), :where(.collapse > input[type="radio"]){
+    padding-inline-end: 1rem !important;
 }

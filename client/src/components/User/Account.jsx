@@ -172,7 +172,7 @@ function Account() {
     <>
       {!token ? <Authorisation /> : (
         <div className=' text-black mb-[20px] min-h-[140vh]' >
-          <div className='profile-section ml-[80px] mt-[20px]  mr-[80px]'>
+          <div className='profile-section ml-[80px] mt-[20px]  mr-[80px] max-[1102px]:m-[20px] max-[980px]:block  '>
             {loading ? (<>
               <div className="asideprofile h-fit border rounded-xl shadow-sm">
                 <div className='aside-content p-4 pt-2'>
@@ -212,7 +212,7 @@ function Account() {
 
             </>) : (<>
 
-              <div className="asideprofile h-fit border rounded-xl shadow-sm">
+              <div className="asideprofile h-fit border rounded-xl shadow-sm max-[980px]:mb-[10px]">
                 <div className='aside-content p-4 pt-2'>
                   <div className='image h-[150px] flex justify-center m-auto flex-col items-center '>
                     {/* {loading ? (<>
@@ -234,7 +234,7 @@ function Account() {
                   <div>
                     <div className='flex flex-col gap-2 justify-between items-center mb-4'>
                       {cars.length > 0 ? (<><button className='font-semibold  pl-2 pr-2 rounded-lg text-[12px] bg-orange-100 text-orange-600 dark:bg-orange-900 dark:text-orange-400'>Host</button></>) : (<><button className='font-semibold pl-2 pr-2 rounded-lg text-[12px] bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400'>Guest</button></>)}
-                      <p className='font-semibold text-[17px] text-gray-800'>{firstName} {lastName}</p>
+                      <p className='font-semibold text-center text-[15px] text-gray-800'>{firstName} {lastName}</p>
                     </div>
                     <div className='flex flex-col gap-2'>
                       {links.map((link) => (

@@ -2,7 +2,7 @@ import React from 'react';
 
 function TermsofService() {
     return (
-        <div style={{ fontFamily: 'Arial, sans-serif', lineHeight: '1.6', margin: '100px' }}>
+        <div  className='max-[756px]:m-[40px] min-[756px]:m-[70px]'>
             <div className='mb-5 text-center'>
                 <h1 style={{ fontSize: '24px' }}>EaslyCars Terms and Conditions of Use</h1>
             </div>
