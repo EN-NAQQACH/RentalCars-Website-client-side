@@ -81,17 +81,17 @@ function Navbar() {
   const [errorgoogle, seterrorgoogle] = useState('');
   const [iserrorgoogle, setiserrorgoogle] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [photo , setphoto] = useState('');
+  const [photo, setphoto] = useState('');
 
   const [errorsignup, seterrorsignup] = useState('');
   const [iserrorsignup, setiserrorsignup] = useState(false);
   const [loadingsignup, setloadingsignup] = useState(false)
 
-  const [errorsendpassword, seterrorsentpassword]=useState('');
-  const [iserrorsendpassword, setiserrorsendpassword]=useState(false);
-  const [loadingsendpassword, setloadingsendpassword]=useState(false)
-  const [messageok,setmessageok]=useState('');
-  const [messagesent,setmessagesent] = useState(false);
+  const [errorsendpassword, seterrorsentpassword] = useState('');
+  const [iserrorsendpassword, setiserrorsendpassword] = useState(false);
+  const [loadingsendpassword, setloadingsendpassword] = useState(false)
+  const [messageok, setmessageok] = useState('');
+  const [messagesent, setmessagesent] = useState(false);
 
   const handleSignup = async () => {
     try {
@@ -137,7 +137,7 @@ function Navbar() {
         setIsLoggedIn(true);
         window.location.href = "/"
         localStorage.setItem('photo', data.photo);
-        localStorage.setItem('lastName', data.lastName); 
+        localStorage.setItem('lastName', data.lastName);
       } else {
         setIsLoggedIn(false);
         setiserror(true);
@@ -180,31 +180,31 @@ function Navbar() {
       setUserauth(true)
     }
   }, [])
- useEffect(() => {
-  const getuserInfo = async () => {
-    try {
+  useEffect(() => {
+    const getuserInfo = async () => {
+      try {
         const reponse = await fetch('https://easlycars-server.vercel.app/api/users/info', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
-            }
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
+          }
         })
         const data = await reponse.json();
-        if(data){
+        if (data) {
           const fullName = {
             firstName: data.firstName,
             lastName: data.lastName
+          }
+          localStorage.setItem('fullName', JSON.stringify(fullName))
+          setphoto(data.picture)
         }
-        localStorage.setItem('fullName', JSON.stringify(fullName))
-        setphoto(data.picture)
-        }
-    } catch (e) {
+      } catch (e) {
         console.log(e)
+      }
     }
-}
-getuserInfo()
-}, [token])
+    getuserInfo()
+  }, [token])
   const [showPassword, setShowPassword] = React.useState(false);
   const style = useContext(StyleContext);
   const handleSignUpClick = (e) => {
@@ -330,6 +330,18 @@ getuserInfo()
       </Menu.Item>
     </Menu>
   );
+  const [isAsideVisible, setIsAsideVisible] = useState(true);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsAsideVisible(window.innerWidth < 500);
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   return (
     <>
       {/* <Helmet>
@@ -489,16 +501,16 @@ getuserInfo()
                         },
                       ]}
                     >
-                      <Input type='email' placeholder="Email" className='rounded-[5px] p-2' value={emailreset} onChange={(e) => {setemailreset(e.target.value);setiserrorsendpassword(false)}} />
+                      <Input type='email' placeholder="Email" className='rounded-[5px] p-2' value={emailreset} onChange={(e) => { setemailreset(e.target.value); setiserrorsendpassword(false) }} />
                     </Form.Item>
-                    {loadingsendpassword ? (<Button id="signupbtn" className='mt-2' onClick={() => nexttt()} loading={true} >Continue</Button>) : (<Button id="signupbtn" className='mt-2' onClick={() => { nexttt()}}  >Continue</Button>)}
+                    {loadingsendpassword ? (<Button id="signupbtn" className='mt-2' onClick={() => nexttt()} loading={true} >Continue</Button>) : (<Button id="signupbtn" className='mt-2' onClick={() => { nexttt() }}  >Continue</Button>)}
                   </Form>
                 </div>              </form>
               <div className="text-center mt-6">
-                <p  className="text-sm text-gray-400 hover:underline">We'll send the password to your email .</p>
+                <p className="text-sm text-gray-400 hover:underline">We'll send the password to your email .</p>
               </div>
               <div className="flex items-center justify-center mt-4">
-                <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close(); form3.resetFields();setiserrorsendpassword(false);setmessagesent(false) }}>Back</a>
+                <a href="#" className="text-sm text-blue-500 hover:underline" onClick={() => { document.getElementById('my_modal_3').showModal(); document.getElementById('my_modal_5').close(); form3.resetFields(); setiserrorsendpassword(false); setmessagesent(false) }}>Back</a>
               </div>
 
             </div>
@@ -691,26 +703,7 @@ getuserInfo()
               </ul>
             </div>
             <div className="navbar-end flex justify-end">
-              {/* <div className="dropdown dropdown-hover dropdown-end ">
-                <div tabIndex={0} role="button" className="border rounded-[5px] m-1 p-2   text-black transition duration-500    shadow-sm flex items-center gap-3">
-                  <MenuIcon />
-                  <img src={localStorage.getItem('image')} alt="" className='w-[30px] h-[30px] rounded-[50%]' />
-                </div>
-                <ul tabIndex={0} className="dropdown-content z-[1] menu p-2  bg-white rounded-box min-w-80 mt-[10px] shadow-md">
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px] ' > <Link to="account/my-Favorities"> <FavoriteBorderOutlinedIcon /> Favorites</Link></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to=""><AllInboxIcon />Inbox</Link></li>
-                  <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to="/become_a_host/list-your-car"> <CarRentalOutlinedIcon /> Become a host</Link></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to="/Account"> <AccountCircleOutlinedIcon /> Account</Link></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link to="/Profile"> <PersonOutlineOutlinedIcon /> Profile</Link></li>
-                  <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><PolicyIcon />Policies</a></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><EmailIcon />Contact</a></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><DirectionsCarIcon />Our cars</a></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a><LocationOnIcon />Our locations</a></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><Link onClick={handleLogout}><LoginIcon /> Log out</Link></li>
-                </ul>
-              </div> */}
+
               <Space direction="vertical">
                 <Space wrap>
                   <Dropdown overlay={menu} placement="bottomRight" arrow >
@@ -725,15 +718,16 @@ getuserInfo()
                         aria-expanded={open ? 'true' : undefined}
                       >
                         {photo ? (
-                        <Avatar sx={{ width: 39, height: 39, }} className='shadow-lg'><img src={photo} alt="" className='w-full h-full object-cover ' />
-                        </Avatar>
-                        ):<Avatar src="/broken-image.jpg" />}
+                          <Avatar sx={{ width: 39, height: 39, }} className='shadow-lg'><img src={photo} alt="" className='w-full h-full object-cover ' />
+                          </Avatar>
+                        ) : <Avatar src="/broken-image.jpg" />}
                       </IconButton>
                     </Tooltip>
                   </Dropdown>
                 </Space>
               </Space>
             </div>
+
           </div>
 
         ) : (
@@ -749,22 +743,38 @@ getuserInfo()
               </ul>
             </div>
             <div className="navbar-end ">
-              <div className="dropdown dropdown-hover dropdown-end ">
-                <div tabIndex={0} role="button" className="= border  m-1 p-1  bg-gray-900 text-white transition duration-500 hover:text-black hover:bg-white hover:border border-black shadow-md">
-                  <MenuIcon />
-                  <AccountCircleIcon />
-                </div>
-                <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box min-w-80 mt-1">
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px] ' > <button onClick={() => document.getElementById('my_modal_3').showModal()} >Log in</button></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><button onClick={() => document.getElementById('my_modal_4').showModal()} >Sign up</button></li>
-                  <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
+              {isAsideVisible ? (<>
+                <div className="dropdown dropdown-hover dropdown-end ">
+                  <div tabIndex={0} role="button" className="= border  m-1 p-1  bg-gray-900 text-white transition duration-500 hover:text-black hover:bg-white hover:border border-black shadow-md">
+                    <MenuIcon />
+                    <AccountCircleIcon />
+                  </div>
+                  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box min-w-80 mt-1">
+                    <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px] ' > <button onClick={() => document.getElementById('my_modal_3').showModal()} >Log in</button></li>
+                    <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><button onClick={() => document.getElementById('my_modal_4').showModal()} >Sign up</button></li>
+                    <div className="divider p-0 m-0 mr-1 ml-1 mt-3 mb-3 bg-gray-200 h-[1px]"></div>
 
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='/EaslyCars-Policies'><PolicyIcon />Policies</a></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='/contactUs'><EmailIcon />Contact</a></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='/carhome'><DirectionsCarIcon />Our cars</a></li>
-                  <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='#destinations'><LocationOnIcon />Our destinations</a></li>
-                </ul>
-              </div>
+                    <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='/EaslyCars-Policies'><PolicyIcon />Policies</a></li>
+                    <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='/contactUs'><EmailIcon />Contact</a></li>
+                    <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='/carhome'><DirectionsCarIcon />Our cars</a></li>
+                    <li className='transition duration-300 hover:bg-gray-100 hover:rounded-[6px]'><a href='#destinations'><LocationOnIcon />Our destinations</a></li>
+                  </ul>
+                </div>
+
+
+              </>) : (
+
+                <>
+                  <div className='flex gap-2'>
+                    <button className='pl-5 pr-5 pt-[6px] pb-[6px] border rounded-2xl text-[13px] bg-white text-[black]' onClick={() => document.getElementById('my_modal_3').showModal()}>Log In</button>
+                    <button className='pl-5 pr-5 pt-[6px] pb-[6px] border rounded-2xl text-[13px] bg-black text-[white]' onClick={() => document.getElementById('my_modal_4').showModal()}>Sign Up</button>
+                  </div>
+                </>
+              )}
+
+
+
+
             </div>
           </div>
 

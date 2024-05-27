@@ -64,6 +64,7 @@ function MyListing() {
             const result = await response.json();
             if (result) {
                 toast.success(result.message);
+                Mycarslisting();
             } else {
                 toast.error(result.error);
             }

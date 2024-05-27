@@ -83,7 +83,7 @@ function ChatRoom() {
     useEffect(() => {
         async function fetchChat() {
             try {
-                const response = await fetch(`http://localhost:4000/api/chats/${chatId}`, {
+                const response = await fetch(`https://easlycars-server.vercel.app/api/chats/${chatId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ function ChatRoom() {
         fetchChat();
     }, [chatId]);
     const read = async () => {
-        const response = await fetch(`http://localhost:4000/api/chats/${chatId}`, {
+        const response = await fetch(`https://easlycars-server.vercel.app/api/chats/${chatId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ function ChatRoom() {
 
         if (!inputValue) return;
         try {
-            const response = await fetch(`http://localhost:4000/api/Messages/${chatId}`, {
+            const response = await fetch(`https://easlycars-server.vercel.app/api/Messages/${chatId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ function ChatRoom() {
     };
     const handleRemoveMessage = async (messageId) => {
         try {
-            const response = await fetch(`http://localhost:4000/api/Messages/${messageId}/${chatId}`, {
+            const response = await fetch(`https://easlycars-server.vercel.app/api/Messages/${messageId}/${chatId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -255,7 +255,7 @@ function ChatRoom() {
                 console.log('Failed to send message');
             } else {
                 try {
-                    const respons = await fetch(`http://localhost:4000/api/Messages/${chatId}`, {
+                    const respons = await fetch(`https://easlycars-server.vercel.app/api/Messages/${chatId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -281,7 +281,7 @@ function ChatRoom() {
 
     const updateSeenBy = async () => {
         try {
-            const res = await fetch(`http://localhost:4000/api/Messages/seenby/${chatId}`, {
+            const res = await fetch(`https://easlycars-server.vercel.app/api/Messages/seenby/${chatId}`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',

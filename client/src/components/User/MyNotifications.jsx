@@ -52,7 +52,7 @@ function MyNotifications() {
     const fetchChats = async () => {
         try {
 
-            const response = await fetch('http://localhost:4000/api/chats', {
+            const response = await fetch('https://easlycars-server.vercel.app/api/chats', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

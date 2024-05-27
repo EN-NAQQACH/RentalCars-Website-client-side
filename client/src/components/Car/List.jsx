@@ -4,7 +4,7 @@ import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 function List() {
   return (
-    <div id='list'  className='min-h-[80vh] mt-[15px] w-[850px] m-auto text-gray-900'>
+    <div id='list'  className='min-h-[100vh] mt-[15px] w-[75%] m-auto text-gray-900'>
         <div className='p-3 mb-6 text-black flex gap-3 items-center'>
             <p className='text-[25px] font-bold'>List your car</p>
             <div className='flex'>

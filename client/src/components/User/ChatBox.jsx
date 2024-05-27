@@ -67,7 +67,7 @@ function ChatBox({ chat, index, currentuser, lastmessage, setcount }) {
     const [chatt, setChatt] = useState(null);
 
     const handleChatClick = async (chatId, reseivedUser) => {
-        const response = await fetch(`http://localhost:4000/api/chats/${chatId}`, {
+        const response = await fetch(`https://easlycars-server.vercel.app/api/chats/${chatId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

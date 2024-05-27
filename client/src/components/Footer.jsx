@@ -25,7 +25,7 @@ function Footer() {
             {
                 isWideScreen ? (
                     <>
-                        <footer className='footer1 pl-[150px] pr-[150px] pt-[50px] h-lvh pb-[20px] bg-[black] text-[white] ' style={{
+                        <footer className='footer1 pl-[150px] pr-[150px] pt-[50px] h-lvh pb-[20px] bg-[#f4f4f4] text-[black] ' style={{
                             fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing
                         }} id='footer1' >
                             <footer className="footer p-10 bg-base-200 text-base-content">
@@ -34,7 +34,7 @@ function Footer() {
                                     <p>EaslyCars.<br />Providing reliable tech since 1992</p>
                                 </aside>
                                 <nav>
-                                    <h6 className="footer-title text-[white]">Makes</h6>
+                                    <h6 className="footer-title text-[black]">Makes</h6>
                                     <a href={`/carhome/search?make=Audi`} className="link link-hover font-semibold">Audi car rental</a>
                                     <a href={`/carhome/search?make=Bmw`} className="link link-hover font-semibold">Bmw car rental</a>
                                     <a href={`/carhome/search?make=Mercedes`} className="link link-hover font-semibold">Mercedes car rental</a>
@@ -44,21 +44,21 @@ function Footer() {
 
                                 </nav>
                                 <nav>
-                                    <h6 className="footer-title text-[white]">Destination</h6>
+                                    <h6 className="footer-title text-[black]">Destination</h6>
                                     <a href={`/carhome/search?where=Agadir`} className="link link-hover font-semibold">Agadir</a>
                                     <a href={`/carhome/search?where=Casablanca`} className="link link-hover font-semibold">Casablanca</a>
                                     <a href={`/carhome/search?where=Essaouira`} className="link link-hover font-semibold">Essaouira</a>
                                     <a href={`/carhome/search?where=Rabat`} className="link link-hover font-semibold">Rabat</a>
                                 </nav>
                                 <nav>
-                                    <h6 className="footer-title text-[white]">Vehicule</h6>
+                                    <h6 className="footer-title text-[black]">Vehicule</h6>
                                     <a href={`/carhome/search?type=Suv`} className="link link-hover font-semibold">Suv car rental</a>
                                     <a href={`/carhome/search?type=Coupe`} className="link link-hover font-semibold">Coupe car rental</a>
                                     <a href={`/carhome/search?type=Cars`} className="link link-hover font-semibold">Cars car rental</a>
                                     <a href={`/carhome/search?type=Sedan`} className="link link-hover font-semibold">Sedan car rental</a>
                                 </nav>
                                 <nav>
-                                    <h6 className="footer-title text-[white]">Legal</h6>
+                                    <h6 className="footer-title text-[black]">Legal</h6>
                                     <a href='/termsofService' className="link link-hover font-semibold">Terms of Services</a>
                                     <a href="/EaslyCars-Policies" className="link link-hover font-semibold">Privacy policy</a>
                                 </nav>
