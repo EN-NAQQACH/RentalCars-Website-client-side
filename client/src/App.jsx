@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import './App.css'

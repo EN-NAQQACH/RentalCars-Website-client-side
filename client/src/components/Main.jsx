@@ -11,7 +11,6 @@ import { Autoplay, Navigation, Pagination, FreeMode, Scrollbar, Mousewheel } fro
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import './cardeffect.css';
-import * as Accordion from '@radix-ui/react-accordion';
 
 import { GiCarSeat } from "react-icons/gi";
 import { BsFuelPumpFill } from "react-icons/bs";
@@ -536,49 +535,6 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                     </div>
                 </section>
 
-                <section className='brand-slider mb-[50px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
-                    <div className='flex justify-center flex-col  m-auto mb-[10px]'>
-                        <h1 className='text-center mb-[50px] z-[1] max-[980px]:text-[25px] text-3xl font-bold tracking-tighter sm:text-4xl md:text-4xl text-[black]'>Our Partners</h1>
-                        <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
-                    </div>
-                    <AppContainer>
-                        <Wrapper>
-                            <Marquee>
-                                <MarqueeGroup>
-                                    {row1.map((el) => (
-                                        <ImageGroup>
-                                            <Image src={el} />
-                                        </ImageGroup>
-                                    ))}
-                                </MarqueeGroup>
-                                <MarqueeGroup>
-                                    {row1.map((el) => (
-                                        <ImageGroup>
-                                            <Image src={el} />
-                                        </ImageGroup>
-                                    ))}
-                                </MarqueeGroup>
-                            </Marquee>
-                            {/* <Marquee>
-                                <MarqueeGroup2>
-                                    {row2.map((el) => (
-                                        <ImageGroup>
-                                            <Image src={el} />
-                                        </ImageGroup>
-                                    ))}
-                                </MarqueeGroup2>
-                                <MarqueeGroup2>
-                                    {row2.map((el) => (
-                                        <ImageGroup>
-                                            <Image src={el} />
-                                        </ImageGroup>
-                                    ))}
-                                </MarqueeGroup2>
-                            </Marquee> */}
-                        </Wrapper>
-                    </AppContainer>
-
-                </section>
 
                 <section className='frequently-questions-section m-auto w-[80%] '>
                     <div className='frequently-content  p-3  w-[100%] ' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
@@ -674,6 +630,53 @@ absolute z-[15] bottom-[100px] left-[36%] */}
                         </div>
                     </div>
                 </section>
+
+                
+                <section className='brand-slider mb-[50px]' style={{ fontFamily: style.fontFamily, letterSpacing: style.LetterSpacing, }}>
+                    <div className='flex justify-center flex-col  m-auto mb-[10px]'>
+                        <h1 className='text-center mb-[50px] z-[1] max-[980px]:text-[25px] text-3xl font-bold tracking-tighter sm:text-4xl md:text-4xl text-[black]'>Our Partners</h1>
+                        <div className='bg-gray-100 h-6 mt-[-70px] mb-6 w-[65%] m-auto'></div>
+                    </div>
+                    <AppContainer>
+                        <Wrapper>
+                            <Marquee>
+                                <MarqueeGroup>
+                                    {row1.map((el) => (
+                                        <ImageGroup>
+                                            <Image src={el} />
+                                        </ImageGroup>
+                                    ))}
+                                </MarqueeGroup>
+                                <MarqueeGroup>
+                                    {row1.map((el) => (
+                                        <ImageGroup>
+                                            <Image src={el} />
+                                        </ImageGroup>
+                                    ))}
+                                </MarqueeGroup>
+                            </Marquee>
+                            {/* <Marquee>
+                                <MarqueeGroup2>
+                                    {row2.map((el) => (
+                                        <ImageGroup>
+                                            <Image src={el} />
+                                        </ImageGroup>
+                                    ))}
+                                </MarqueeGroup2>
+                                <MarqueeGroup2>
+                                    {row2.map((el) => (
+                                        <ImageGroup>
+                                            <Image src={el} />
+                                        </ImageGroup>
+                                    ))}
+                                </MarqueeGroup2>
+                            </Marquee> */}
+                        </Wrapper>
+                    </AppContainer>
+
+                </section>
+
+                
 
                 <section class="bg-[#f7f7f7bd]  mt-5">
                     <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">

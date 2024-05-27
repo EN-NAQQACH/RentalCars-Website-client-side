@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import HelpIcon from '@mui/icons-material/Help';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import '../cardeffect.css'
 import { Button, message, Steps, theme, Radio, Input, Select, Checkbox, Modal } from 'antd';
 const longText = `
 Tell hosts and guests about yourself and why you’re a responsible, trustworthy person. Share your favorite travel experiences, your hobbies, your dream car, or your driving experience. Feel free to include links to your LinkedIn, Twitter, or Facebook profiles so they get to know you even better.
@@ -172,7 +173,7 @@ function PersonalDetails() {
                         <div className='border p-3 rounded-md'>
 
 
-                            <div id='Myprofile' >
+                            <div id='Myprofile'  >
                                 <div className='flex flex-col'>
                                     <label htmlFor="" className='text-[13px] font-semibold mb-2 text-gray-400'> First Name</label>
                                     <input type="text" className='border-none p-1 pl-2 rounded-[3px] font-semibold text-[14px] text-gray-800' disabled value={firstName} onChange={(e) => setFirstname(e.target.value)} id='Firstname' />

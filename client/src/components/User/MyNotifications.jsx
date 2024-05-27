@@ -73,9 +73,9 @@ function MyNotifications() {
         }
     };
     useEffect(() => {
-        if (currentuser) {
+        
             fetchChats();
-        }
+        
     }, [currentuser,lastMessage,count]);
     useEffect(() => {
         setloading2(true);
@@ -117,9 +117,9 @@ function MyNotifications() {
     //     };
     // }, []);
     return (
-        <div className='mynotifications   border-transparent rounded-xl  min-h-[100vh] grid grid-cols-3 max-[734px]:flex  max-[734px]:flex-col max-[734px]:min-h-[100%]  max-[734px]:justify-center   '>
+        <div className='mynotifications  border-transparent   min-h-[100vh] grid grid-cols-3 max-[734px]:flex  max-[734px]:flex-col max-[734px]:min-h-[100%]  max-[734px]:justify-center   '>
             {loading2 ? (<>
-                <div className='messages-box border rounded-xl bg-[#fcfdff] h-[100%] justify-center items-center flex col-start-1 col-end-4 ' >
+                <div className='messages-box border rounded-[6px] bg-[#fcfdff] h-[100%] justify-center items-center flex col-start-1 col-end-4 ' >
                     <ClipLoader
                         color="#5c3cfc"
                         size={35}
@@ -133,14 +133,14 @@ function MyNotifications() {
                 {chats ?
                     (
                         <>
-                            <div className='list-of-users bg-[#f7f9fc] h-[100%] p-3 '>
-                                <div className=' m-auto border border-transparent rounded-2xl h-[100%] bg-[#ffffff] max-[734px]:p-[10px] '>
-                                    <div className='bg-[#f4f6fb] flex pt-[5px] pl-3 pr-3 pb-[5px] m-auto w-[90%] rounded-[20px]  justify-center items-center top  border-none mt-5 shadow-sm'>
+                            <div className='list-of-users bg-[#f7f9fc] h-[100%] p-[7px] rounded-tl-[6px] rounded-bl-[6px] '>
+                                <div className=' m-auto border border-transparent rounded-[5px] h-[100%] bg-[#ffffff] max-[734px]:p-[10px] '>
+                                    <div className='bg-[#f4f6fb] flex p-[5px] m-auto w-[90%] rounded-[2px]  justify-center items-center top  border-none mt-5 shadow-sm'>
                                         <SearchIcon className='text-gray-400 mr-2' />
                                         <input type="text" placeholder='Search Chats...' className='bg-transparent outline-none text-[13px]' value={searchinput}
                                             onChange={handleSearchInputChange} />
                                     </div>
-                                    <div className='flex flex-col gap-1 items-center mt-5'>
+                                    <div className='flex flex-col gap-2 items-center mt-5 p-1'>
                                         {loading ?
                                             (
                                                 <>
@@ -189,7 +189,7 @@ function MyNotifications() {
                     ) :
                     (
                         <>
-                            <div className='messages-box border rounded-xl bg-[#fcfdff] h-[100%] justify-center items-center flex col-start-1 col-end-4 ' >
+                            <div className='messages-box border rounded-[6px] bg-[#fcfdff] h-[100%] justify-center items-center flex col-start-1 col-end-4 ' >
                                 <p className='font-semibold text-[18px] text-gray-400'>there is no conversations yet</p>
                             </div>
 

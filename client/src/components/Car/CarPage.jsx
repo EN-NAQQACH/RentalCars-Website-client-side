@@ -300,7 +300,7 @@ function CarPage() {
 
     const [selectedStartDate, setSelecteStartdDate] = useState(null);
     const [selectedEndDate, setSelecteEnddDate] = useState(null);
-    const [isDisabled, setIsDisabled] = useState(true); 
+    const [isDisabled, setIsDisabled] = useState(true);
 
     // const handleStartDateChange =  (newDate) => {
     //     setSelecteStartdDate(dayjs(newDate).format("YYYY-MM-DD"))
@@ -340,7 +340,7 @@ function CarPage() {
         }
         const today = dayjs();
         const isBeforeToday = dayjs(StartDate).isBefore(today) && dayjs(EndDate).isBefore(today);
-        setIsDisabled(isBeforeToday); 
+        setIsDisabled(isBeforeToday);
     }, [StartDate, EndDate]);
     const handleStartDateChange = (newDate) => {
         const formattedDate = dayjs(newDate).format("YYYY-MM-DD");
@@ -367,25 +367,37 @@ function CarPage() {
     };
     const updateButtonState = () => {
         if (StartDate && EndDate) {
-          const today = dayjs();
-          const isBeforeToday = dayjs(StartDate).isBefore(today) && dayjs(EndDate).isBefore(today);
-          setIsDisabled(isBeforeToday); // Disable button if past dates
+            const today = dayjs();
+            const isBeforeToday = dayjs(StartDate).isBefore(today) && dayjs(EndDate).isBefore(today);
+            setIsDisabled(isBeforeToday); // Disable button if past dates
         } else {
-          setIsDisabled(true); // Disable button if missing dates
+            setIsDisabled(true); // Disable button if missing dates
         }
-      };
+    };
 
     const currentuserid = localStorage.getItem('T_ID_User')
     const currentcarid = localStorage.getItem('T_ID_Car')
+    const [isAsideVisible, setIsAsideVisible] = useState(true);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsAsideVisible(window.innerWidth <= 929);
+        };
+        window.addEventListener('resize', handleResize);
+        handleResize();
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
     return (
         <div className='carpage p-0 m-0 ' >
             <div className='ml-5 rounded-[15px] bg-transparent  border-black w-fit text-black p-1 hover:bg-gray-100 hover:text-black transition-all duration-[0.3s] cursor-pointer' onClick={() => history(-1)} >
                 <ArrowBackIcon />
             </div>
-            <div className='carpagecontents'>
-                <div className='carpagecontents1 text-white w-[70%] m-auto'>
-                    <div className='save-morephotos text-black border-b-[1px] border-gray-100 pb-2'>
-                        <div>
+            <div className='carpagecontents flex justify-center'>
+                <div className={isAsideVisible ? 'w-[100%]' : 'carpagecontents1 text-white  w-[70%] max-[1192px]:w-[80%] max-[1044px]:w-[90%] ' }>
+                    <div className={isAsideVisible ? 'save-morephotos  ml-[20px] mr-[20px] text-[15px]':'save-morephotos text-black border-b-[1px] border-gray-100 pb-2'}>
+                        <div className='carnamemodelyear'>
                             <p className='text-[25px] font-bold'>{make} {model} {year}</p>
                         </div>
                         <div>
@@ -397,48 +409,101 @@ function CarPage() {
                                     </button>
                                 </div>
                             ))}
-                            {image.length > 3 &&
-                                <>
-                                    <div>
-                                        <button className='border p-1 border-gray-500 rounded-[5px]' onClick={showModal}><CollectionsOutlinedIcon /> {image.length - 3} more photos</button>
-                                    </div>
-                                    <Modal width={800} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} style={{
-                                        top: 50,
-                                    }}>
-                                        <div className='text-center mb-3'>
-                                            <p className='text-[15px] text-center font-bold'>{make} {model} {year}</p>
-                                            <p className='font-semibold text-gray-400 text-[12px]'>by {lastName}</p>
-                                        </div>
+                            {isAsideVisible ? (
 
-                                        <Swiper navigation={true} modules={[Navigation]} className="mySwiper rounded-lg">
-                                            {image.slice(3).map((image, index) => (
-                                                <SwiperSlide className='rounded-lg'><img src={image} alt="" className='rounded-lg ' /></SwiperSlide>
-                                            ))}
-                                        </Swiper>
-                                    </Modal>
+                                <>
+                                    {image.length > 1 &&
+                                        <>
+                                            <div>
+                                                <button className='border p-1 border-gray-500 rounded-[5px]' onClick={showModal}><CollectionsOutlinedIcon />
+
+                                                    {isAsideVisible ? (<>
+
+                                                        {image.length - 1} more photos
+
+                                                    </>) : (<>
+                                                        {image.length - 3} more photos
+                                                    </>)}
+
+                                                </button>
+                                            </div>
+                                            <Modal width={800} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} style={{
+                                                top: 50,
+                                            }}>
+                                                <div className='text-center mb-3'>
+                                                    <p className='text-[15px] text-center font-bold'>{make} {model} {year}</p>
+                                                    <p className='font-semibold text-gray-400 text-[12px]'>by {lastName}</p>
+                                                </div>
+
+                                                <Swiper navigation={true} modules={[Navigation]} className="mySwiper rounded-lg">
+                                                    {image.slice(1).map((image, index) => (
+                                                        <SwiperSlide className='rounded-lg'><img src={image} alt="" className='rounded-lg ' /></SwiperSlide>
+                                                    ))}
+                                                </Swiper>
+                                            </Modal>
+                                        </>
+                                    }
                                 </>
-                            }
+                            ) :
+                                (
+                                    <>
+                                        {image.length > 3 &&
+                                            <>
+                                                <div>
+                                                    <button className='border p-1 border-gray-500 rounded-[5px]' onClick={showModal}><CollectionsOutlinedIcon /> {image.length - 3} more photos</button>
+                                                </div>
+                                                <Modal width={800} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} style={{
+                                                    top: 50,
+                                                }}>
+                                                    <div className='text-center mb-3'>
+                                                        <p className='text-[15px] text-center font-bold'>{make} {model} {year}</p>
+                                                        <p className='font-semibold text-gray-400 text-[12px]'>by {lastName}</p>
+                                                    </div>
+
+                                                    <Swiper navigation={true} modules={[Navigation]} className="mySwiper rounded-lg">
+                                                        {image.slice(3).map((image, index) => (
+                                                            <SwiperSlide className='rounded-lg'><img src={image} alt="" className='rounded-lg ' /></SwiperSlide>
+                                                        ))}
+                                                    </Swiper>
+                                                </Modal>
+                                            </>
+                                        }
+
+                                    </>
+                                )}
+
                         </div>
                     </div>
-                    <div className='containerr mt-4'>
-                        <div className='img  h-full w-full bg-transparent' >
-                            <img src={image[0]} alt="" className='h-full w-full object-cover' />
-                        </div>
-                        <div className='img2  h-full w-full bg-transparent' >
-                            <img src={image[1]} alt="" className='h-full w-full object-cover' />
-                        </div>
-                        <div className='img3  h-full w-full bg-transparent' >
-                            <img src={image[2]} alt="" className='h-full w-full object-cover' />
-                        </div>
+                    <div className={isAsideVisible ? 'containerr mt-4 flex' : 'containerr mt-4  '}>
+                        {isAsideVisible ? (<>
+                            <div className='img  h-full  bg-transparent w-[100%]' >
+                                <img src={image[0]} alt="" className='h-[100%] !rounded-none w-[100%] object-cover' />
+                            </div>
+                        </>) : (
+
+                            <>
+                                <div className='img  h-full w-full bg-transparent' >
+                                    <img src={image[0]} alt="" className='h-full w-full object-cover' />
+                                </div>
+                                <div className='img2  h-full w-full bg-transparent' >
+                                    <img src={image[1]} alt="" className='h-full w-full object-cover' />
+                                </div>
+                                <div className='img3  h-full w-full bg-transparent ' >
+                                    <img src={image[2]} alt="" className='h-full w-full object-cover' />
+                                </div>
+                            </>
+                        )}
+
+
                     </div>
                     <div className='seo-carinfo text-black'>
-                        <div className='seo-carinfo-content '>
+                        <div className='seo-carinfo-content  grid auto-cols-auto grid-cols-[repeat(auto-fill,_minmax(320px,auto))]'>
                             <div className='seo-aside-left mt-7'>
                                 <div className='text-black'>
                                     <div className='titlecar mb-5'>
                                         <p className='text-[14px]'><LocationOnIcon /> {location}, Moroco</p>
                                     </div>
-                                    <div className='flex items-center gap-28 mt-3 rounded-lg border p-2'>
+                                    <div className='flex items-center gap-28 mt-3 rounded-lg border p-2' >
                                         <div className='flex flex-col gap-4'>
                                             <div className='flex items-center gap-3'>
                                                 <svg className="opacity-[0.7]" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" fill="none" viewBox="0 0 24 24" class="seo-pages-0" role="img" version="1.1"><path fill="#121214" d="M19.67 21.45H7.27c-1.33 0-2.5-.85-2.91-2.1l-2.2-6.68c-.38-1.14-.05-2.4.83-3.21l6.08-5.63c.8-.75 2.28-1.33 3.38-1.33h8.92c.35 0 .62.28.62.62 0 .34-.28.62-.62.62h-8.92c-.78 0-1.96.46-2.53.99l-6.09 5.64c-.52.48-.71 1.23-.49 1.9l2.2 6.68c.25.75.94 1.25 1.72 1.25h12.4c.59 0 1.07-.48 1.07-1.07V5.51c0-.34.28-.62.62-.62.34 0 .62.28.62.62v13.61a2.3 2.3 0 0 1-2.3 2.33Z"></path><path fill="#121214" fill-rule="evenodd" d="M18.15 11.33H6.92c-.7 0-.93-.39-1-.56-.06-.17-.16-.62.35-1.1l4.27-4.03c.46-.43 1.27-.76 1.9-.76h5.71c.81 0 1.47.66 1.47 1.47v3.51c0 .81-.66 1.47-1.47 1.47Zm-10.5-1.25h10.5c.13 0 .22-.1.22-.22v-3.5c0-.12-.1-.22-.22-.22h-5.71c-.31 0-.82.2-1.04.42l-3.75 3.52Z" clip-rule="evenodd"></path><path fill="#121214" d="M17.04 13.72h1.95c.35 0 .62-.28.62-.62 0-.34-.27-.62-.62-.62h-1.95c-.34 0-.62.28-.62.62 0 .34.27.62.62.62Z"></path></svg>
@@ -464,10 +529,10 @@ function CarPage() {
                                 <div className='seo-host-info mt-7'>
                                     <div className='seo-host-content'>
                                         <p className='text-[13px] font-bold uppercase mb-2 mt-2'>Hosted By</p>
-                                        <div className='flex items-center justify-between border-[1px] p-2 rounded-lg border-gray-200'>
+                                        <div class='flex items-center justify-between border-[1px] p-2 rounded-lg border-gray-200' id='hostedBy'>
 
                                             <Link to={`/profile/${firstName}/${lastName}/${userid}`}>
-                                                <div className='flex items-center gap-3'>
+                                                <div className='userinfo flex items-center gap-3'>
                                                     <div className='seo-host-photo w-[60px] h-[60px]'>
                                                         <img src={userphoto} alt="" className='h-full w-full object-cover rounded-[50%]' />
                                                     </div>
@@ -599,10 +664,10 @@ function CarPage() {
                                                                         </div>
 
                                                                     </>) : (<>
-                                                                        
-                                                                            {!showChatInterface && <div className='h-[100%] w-[100%] flex justify-center items-center'> <Lottie animationData={animationData} loop={false} style={{ width: '70px', height: '70px' }} /></div>
-                                                                            }
-                                                                        
+
+                                                                        {!showChatInterface && <div className='h-[100%] w-[100%] flex justify-center items-center'> <Lottie animationData={animationData} loop={false} style={{ width: '70px', height: '70px' }} /></div>
+                                                                        }
+
 
                                                                     </>)}
                                                                     {showChatInterface && (
@@ -699,7 +764,7 @@ function CarPage() {
                                 <div className='seo-car-info mt-4'>
                                     <div className='seo-car-content'>
                                         <p className='text-[13px] font-bold uppercase mb-5'>Features</p>
-                                        <div className='flex flex-wrap gap-5 items-center'>
+                                        <div className='flex flex-wrap gap-5 items-center' id='featuresId'>
 
                                             {features.map((feature, index) => (
                                                 <div className='seo-features flex items-center gap-3 text-[14px] rounded-md border p-2' key={index}>
@@ -932,29 +997,29 @@ function CarPage() {
                                                             size={25}
                                                             speedMultiplier={0.4}
                                                         />
-                                                    </button> : userid != currentuser ? 
-                                                    
-                                                    (isDisabled ? (<>
-                                                    <button className='text-center bg-[#979797d3] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' onClick={handleReserve} disabled>
-                                                        date out
-                                                    </button>
-                                                    
-                                                    </>) : (<>
-                                                        <button className='text-center bg-[#5c3cfc] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' onClick={handleReserve} >
-                                                        Reserve
-                                                    </button>
-                                                    
-                                                    </>))
-                                                    
-                                                     : 
-                                                    
-                                                    
-                                                    <>
-                                                        <button className='text-center bg-[#979797d3] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' disabled>
-                                                            Reserve
-                                                        </button>
-                                                        <p className='text-[11px] font-semibold text-center mt-1 text-red-600'>you can't reserve your car</p>
-                                                    </>}
+                                                    </button> : userid != currentuser ?
+
+                                                        (isDisabled ? (<>
+                                                            <button className='text-center bg-[#979797d3] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' onClick={handleReserve} disabled>
+                                                                date out
+                                                            </button>
+
+                                                        </>) : (<>
+                                                            <button className='text-center bg-[#5c3cfc] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' onClick={handleReserve} >
+                                                                Reserve
+                                                            </button>
+
+                                                        </>))
+
+                                                        :
+
+
+                                                        <>
+                                                            <button className='text-center bg-[#979797d3] p-2 w-[100%] text-white rounded-md text-[13px]' id='btnreserve' disabled>
+                                                                Reserve
+                                                            </button>
+                                                            <p className='text-[11px] font-semibold text-center mt-1 text-red-600'>you can't reserve your car</p>
+                                                        </>}
 
                                                 </div>
                                             </div>
