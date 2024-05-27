@@ -16,6 +16,11 @@ import dayjs from 'dayjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ClipLoader from "react-spinners/ClipLoader";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import sanitizeHtml from 'sanitize-html';
+import MapIcon from '@mui/icons-material/Map';
+import Map3 from '../User/Map3.jsx';
 
 
 const featuresList = [
@@ -63,6 +68,8 @@ function EditYourCar() {
     const [EndDate, setEndDate] = useState('');
     const [doors, setdoors] = useState();
     const [loading, setloading] = useState(false);
+    const [positionlat, setpositionlat] = useState();
+    const [positionlang, setpositionlng] = useState();
     const onChange = (e) => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
@@ -100,6 +107,8 @@ function EditYourCar() {
                 setSeats(result.car.carSeats);
                 setImage(result.car.imageUrls);
                 setdoors(result.car.doors)
+                setpositionlat(result.car.positionlat);
+                setpositionlng(result.car.positionlang)
                 const parsedFeatures = result.car.features.map(feature => {
                     const [name, icon] = feature.split(":");
                     return { name, icon };
@@ -107,6 +116,7 @@ function EditYourCar() {
                 setSelectedFeatures(parsedFeatures);
                 setType(result.car.Type)
                 setloading(false);
+                
             } catch (e) {
                 setloading(false);
                 console.log(e);
@@ -169,6 +179,8 @@ function EditYourCar() {
         formData.append('maxtrip', maxtrip);
         formData.append('carseat', seats);
         formData.append('doors', doors);
+        formData.append('positionlat',positionlat)
+        formData.append('positionlng',positionlang)
         formData.append('type', type);
         formData.append('startTripDate', StartDate);
         formData.append('endTripDate', EndDate);
@@ -235,6 +247,16 @@ function EditYourCar() {
     const handleToastClose = () => {
         navigate('/account/my-listing');
     };
+    const [isModalOpenn, setIsModalOpenn] = useState(false);
+    const showModall = () => {
+        setIsModalOpenn(true);
+    };
+    const handleOkk = () => {
+        setIsModalOpenn(false);
+    };
+    const handleCancell = () => {
+        setIsModalOpenn(false);
+    };
     return (
         <div className='edityourcar border rounded-xl p-3 h-[100%]'>
             {loading ? (<>
@@ -257,10 +279,32 @@ function EditYourCar() {
                                 <Link to="/account/my-listing" className='flex items-center gap-1  rounded-lg text-[#9c8cfc] hover:text-[#7251ca] font-semibold'><ArrowBackIcon /> Go back</Link>
                             </div>
                             <div className='flex flex-col gap-3' >
-                                <div className='flex flex-col'>
+                                <div className='flex items-end justify-between gap-2'>
+                                    <div className='grow'>
                                     <label htmlFor="" className='text-[13px] font-bold mb-2 text-gray-400'> location</label>
-                                    <input name='location' type='text' placeholder="Your car location" className=' border p-1 rounded-md' value={location} onChange={(e) => setlocation(e.target.value)} />
+
+                                        <div className='flex flex-col'>
+                                            <input name='location' type='text' placeholder="Your car location" className=' border p-1 rounded-md' value={location} onChange={(e) => setlocation(e.target.value)} />
+                                        </div>
+                                    </div>
+
+                                    <div name='map' className='p-1 cursor-pointer rounded-md  bg-black text-white' onClick={showModall}><MapIcon /> Map</div>
+                                    <Modal
+                                        title='please choose your location'
+                                        className='text-center'
+
+                                        style={{
+                                            top: 20,
+                                            padding: '0 !importent',
+
+                                        }}
+                                        open={isModalOpenn} onOk={handleOkk} onCancel={handleCancell} footer={null} width={900}
+                                    >
+                                        <Map3 setpositionlat={setpositionlat} positionlat={positionlat} positionlang={positionlang} setpositionlng={setpositionlng} />
+
+                                    </Modal>
                                 </div>
+
                                 <div className='year-model-make grid grid-cols-3 gap-3'>
                                     <div className='flex flex-col'>
                                         <label htmlFor="caryear" className='text-[13px] font-bold mb-2 text-gray-400'>Year</label>
@@ -372,7 +416,8 @@ function EditYourCar() {
                                 <div>
                                     <div className=''>
                                         <label htmlFor="" className='text-[13px] font-bold mb-1 text-gray-400'> Description</label>
-                                        <Input.TextArea showCount className='h-24' value={description} onChange={(e) => setDescription(e.target.value)} />
+                                        <ReactQuill theme="snow" className='mt-2 min-h-[100%]' value={description} onChange={setDescription} />
+
                                     </div>
                                 </div>
                             </div>

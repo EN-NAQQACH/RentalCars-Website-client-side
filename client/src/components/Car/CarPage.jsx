@@ -27,6 +27,8 @@ import SendIcon from '@mui/icons-material/Send';
 import WhatsApp from 'react-whatsapp';
 import Lottie from "lottie-react";
 import animationData from "../../../public/verify.json";
+import sanitizeHtml from 'sanitize-html';
+import Map2 from '../User/Map2';
 
 
 
@@ -85,6 +87,8 @@ function CarPage() {
     const [isreserved, setisreserved] = useState(false)
     const [joined, setjoined] = useState(null);
     const [number, setnumber] = useState('');
+    const [lat, setlat] = useState();
+    const [lng, setlng] = useState();
     // const onChange = (date, dateString) => {
     //     console.log(dateString);
     // };
@@ -130,6 +134,7 @@ function CarPage() {
     const [hideChatIcon, setHideChatIcon] = useState(false);
 
     const [showChatInterface, setShowChatInterface] = useState(true);
+
     useEffect(() => {
         const chatStatus = localStorage.getItem(`chatSent_${carId}`);
         if (chatStatus === 'true') {
@@ -137,24 +142,6 @@ function CarPage() {
         }
     }, [carId]);
 
-    // async function fetchChat(chatId) {
-    //     if (!chatId) return;
-    //     try {
-    //         const response = await fetch(`https://easlycars-server.vercel.app/api/chats/${chatId}`, {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': 'Bearer ' + localStorage.getItem('T_ID_Auth'),
-    //             }
-    //         });
-    //         const data = await response.json();
-    //         if (data) {
-    //             setChat(data.chat);
-    //         }
-    //     } catch (error) {
-    //         console.error('Error fetching chat:', error);
-    //     }
-    // }
     const [loadingsentmessage, setloadingsentmessage] = useState(null);
     const addchatandmessage = async () => {
 
@@ -162,7 +149,7 @@ function CarPage() {
         if (!content) return;
         try {
             setloadingsentmessage(true)
-            const response = await fetch(`http://localhost:4000/api/chats/AddandMessage`, {
+            const response = await fetch(`https://easlycars-server.vercel.app/api/chats/AddandMessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -214,6 +201,8 @@ function CarPage() {
             setMindate(result.car.startTripDate)
             setEndDate(result.car.endTripDate)
             setMaxdate(result.car.endTripDate)
+            setlat(parseFloat(result.car.positionlat));
+            setlng(parseFloat(result.car.positionlang))
 
             const parsedFeatures = result.car.features.map(feature => {
                 const [name, icon] = feature.split(":");
@@ -233,6 +222,7 @@ function CarPage() {
             setloading(false)
         }
     };
+    
     const favoriteCar = async (id) => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
@@ -389,14 +379,84 @@ function CarPage() {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+    const sanitizeConfig = {
+        allowedTags: [
+            "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
+            "h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
+            "dl", "dt", "figcaption", "figure", "hr", "li", "main", "ol", "p", "pre",
+            "ul", "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
+            "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
+            "small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
+            "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr"
+        ],
+        nonBooleanAttributes: [
+            'abbr', 'accept', 'accept-charset', 'accesskey', 'action',
+            'allow', 'alt', 'as', 'autocapitalize', 'autocomplete',
+            'blocking', 'charset', 'cite', 'class', 'color', 'cols',
+            'colspan', 'content', 'contenteditable', 'coords', 'crossorigin',
+            'data', 'datetime', 'decoding', 'dir', 'dirname', 'download',
+            'draggable', 'enctype', 'enterkeyhint', 'fetchpriority', 'for',
+            'form', 'formaction', 'formenctype', 'formmethod', 'formtarget',
+            'headers', 'height', 'hidden', 'high', 'href', 'hreflang',
+            'http-equiv', 'id', 'imagesizes', 'imagesrcset', 'inputmode',
+            'integrity', 'is', 'itemid', 'itemprop', 'itemref', 'itemtype',
+            'kind', 'label', 'lang', 'list', 'loading', 'low', 'max',
+            'maxlength', 'media', 'method', 'min', 'minlength', 'name',
+            'nonce', 'optimum', 'pattern', 'ping', 'placeholder', 'popover',
+            'popovertarget', 'popovertargetaction', 'poster', 'preload',
+            'referrerpolicy', 'rel', 'rows', 'rowspan', 'sandbox', 'scope',
+            'shape', 'size', 'sizes', 'slot', 'span', 'spellcheck', 'src',
+            'srcdoc', 'srclang', 'srcset', 'start', 'step', 'style',
+            'tabindex', 'target', 'title', 'translate', 'type', 'usemap',
+            'value', 'width', 'wrap',
+            // Event handlers
+            'onauxclick', 'onafterprint', 'onbeforematch', 'onbeforeprint',
+            'onbeforeunload', 'onbeforetoggle', 'onblur', 'oncancel',
+            'oncanplay', 'oncanplaythrough', 'onchange', 'onclick', 'onclose',
+            'oncontextlost', 'oncontextmenu', 'oncontextrestored', 'oncopy',
+            'oncuechange', 'oncut', 'ondblclick', 'ondrag', 'ondragend',
+            'ondragenter', 'ondragleave', 'ondragover', 'ondragstart',
+            'ondrop', 'ondurationchange', 'onemptied', 'onended',
+            'onerror', 'onfocus', 'onformdata', 'onhashchange', 'oninput',
+            'oninvalid', 'onkeydown', 'onkeypress', 'onkeyup',
+            'onlanguagechange', 'onload', 'onloadeddata', 'onloadedmetadata',
+            'onloadstart', 'onmessage', 'onmessageerror', 'onmousedown',
+            'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout',
+            'onmouseover', 'onmouseup', 'onoffline', 'ononline', 'onpagehide',
+            'onpageshow', 'onpaste', 'onpause', 'onplay', 'onplaying',
+            'onpopstate', 'onprogress', 'onratechange', 'onreset', 'onresize',
+            'onrejectionhandled', 'onscroll', 'onscrollend',
+            'onsecuritypolicyviolation', 'onseeked', 'onseeking', 'onselect',
+            'onslotchange', 'onstalled', 'onstorage', 'onsubmit', 'onsuspend',
+            'ontimeupdate', 'ontoggle', 'onunhandledrejection', 'onunload',
+            'onvolumechange', 'onwaiting', 'onwheel'
+        ],
+        disallowedTagsMode: 'discard',
+        allowedAttributes: {
+            a: ['href', 'name', 'target'],
+            // We don't currently allow img itself by default, but
+            // these attributes would make sense if we did.
+            img: ['src', 'srcset', 'alt', 'title', 'width', 'height', 'loading']
+        },
+        // Lots of these won't come up by default because we don't allow them
+        selfClosing: ['img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta'],
+        // URL schemes we permit
+        allowedSchemes: ['http', 'https', 'ftp', 'mailto', 'tel'],
+        allowedSchemesByTag: {},
+        allowedSchemesAppliedToAttributes: ['href', 'src', 'cite'],
+        allowProtocolRelative: true,
+        enforceHtmlBoundary: false,
+        parseStyleAttributes: true
+    };
+    const sanitizedDescription = sanitizeHtml(description, sanitizeConfig);
     return (
         <div className='carpage p-0 m-0 ' >
             <div className='ml-5 rounded-[15px] bg-transparent  border-black w-fit text-black p-1 hover:bg-gray-100 hover:text-black transition-all duration-[0.3s] cursor-pointer' onClick={() => history(-1)} >
                 <ArrowBackIcon />
             </div>
             <div className='carpagecontents flex justify-center'>
-                <div className={isAsideVisible ? 'w-[100%]' : 'carpagecontents1 text-white  w-[70%] max-[1192px]:w-[80%] max-[1044px]:w-[90%] ' }>
-                    <div className={isAsideVisible ? 'save-morephotos  ml-[20px] mr-[20px] text-[15px]':'save-morephotos text-black border-b-[1px] border-gray-100 pb-2'}>
+                <div className={isAsideVisible ? 'w-[100%]' : 'carpagecontents1 text-white  w-[70%] max-[1192px]:w-[80%] max-[1044px]:w-[90%] '}>
+                    <div className={isAsideVisible ? 'save-morephotos  ml-[20px] mr-[20px] text-[15px]' : 'save-morephotos text-black border-b-[1px] border-gray-100 pb-2'}>
                         <div className='carnamemodelyear'>
                             <p className='text-[25px] font-bold'>{make} {model} {year}</p>
                         </div>
@@ -626,10 +686,10 @@ function CarPage() {
                                                                                 </div>
                                                                             </div>
                                                                             <div className='max-h-[206px] overflow-hidden overflow-y-scroll '>
-                                                                                <h3 className="text-lg font-medium">Description</h3>
-                                                                                <p className="text-gray-500  dark:text-gray-400 ">
-                                                                                    {description}
-                                                                                </p>
+                                                                                {/* <h3 className="text-lg font-medium">Description</h3>
+                                                                                <p className="text-gray-500  dark:text-gray-400 " >
+                                                                                    
+                                                                                </p> */}
                                                                             </div>
                                                                             <div className="flex items-center justify-between">
                                                                                 <h2 className="text-2xl font-bold">{price} Dh/day</h2>
@@ -754,8 +814,8 @@ function CarPage() {
                                         <p className='text-[13px] font-bold uppercase mb-2'>Description</p>
                                         <div className='flex items-center gap-3'>
                                             <div className='seo-description text-[13px] p-2'>
-                                                <p className='description text-justify text-gray-600'>
-                                                    {description}
+                                                <p className='description text-justify text-gray-600  ' dangerouslySetInnerHTML={{ __html: sanitizedDescription }}>
+
                                                 </p>
                                             </div>
                                         </div>
@@ -777,7 +837,7 @@ function CarPage() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='reviews mt-5'>
+                                {/* <div className='reviews mt-5'>
                                     <div className="reviews-content">
                                         <div className='mb-2'>
                                             <p className='text-[12px] font-semibold uppercase mb-2'>Ratings</p>
@@ -914,7 +974,8 @@ function CarPage() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
+
                             </div>
                             <div className='seo-aside-right ml-5 mt-7'>
                                 <div className='seo-aside-content'>
@@ -1053,6 +1114,10 @@ function CarPage() {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className='maplocation w-[100%] mt-10 mb-10'>
+{cars?.length > 0 && lat && lng  && <Map2 lat={lat} lng={lng} /> }
+                
             </div>
         </div>
     )

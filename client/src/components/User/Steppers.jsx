@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Button, message, Steps, theme, Radio, Input, Select, Checkbox, Modal } from 'antd';
 import '../cardeffect.css'
 import generateYears from '../../data/caryear.js'
@@ -30,6 +30,12 @@ import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { DatePicker, Space } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import sanitizeHtml from 'sanitize-html';
+import Map from './Map.jsx';
+import MapIcon from '@mui/icons-material/Map';
+
 
 
 const steps = [
@@ -84,7 +90,7 @@ const Steppers = () => {
   const [mintrip, setmintrip] = useState();
   const [maxtrip, setmaxtrip] = useState();
   const [carseat, setcarseat] = useState();
-  const [cardoors , setcardoors] = useState();
+  const [cardoors, setcardoors] = useState();
   const [description, setdescription] = useState('');
   const [features, setfeatures] = useState([]);
   const [photos, setphotos] = useState([]);
@@ -94,8 +100,12 @@ const Steppers = () => {
   const { token } = theme.useToken();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
-  const [startDate , setStartDate] = useState('');
-  const [endDate , setEndDate] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [positionlat , setpositionlat] = useState();
+  const [positionlang, setpositionlng] = useState(); 
+
+
   const isSelected = (feature) => {
     return selectedFeatures.some((selectedFeature) => selectedFeature.name === feature.name);
   };
@@ -139,17 +149,21 @@ const Steppers = () => {
     form
       .validateFields()
       .then(() => {
-        if(startDate > endDate){
+        if (startDate > endDate) {
           message.error("Start date must be before end date");
           return;
         }
-        if(current == 2){
-          if(!selectedFeatures.length){
+        if (current == 2) {
+          if (!selectedFeatures.length) {
             message.error('Please fill all the fields');
             return;
           }
         }
-       
+        if(!positionlat || !positionlang){
+          message.error('Please select your location on map');
+          return
+        }
+
         storeDataLocalStorage();
         setCurrent((prevCurrent) => prevCurrent + 1);
       })
@@ -231,6 +245,7 @@ const Steppers = () => {
     border: `1px dashed ${token.colorBorder}`,
     marginTop: 16,
     padding: 20,
+    width: '100%',
   };
   const showModal = () => {
     setIsModalOpen(true);
@@ -257,10 +272,12 @@ const Steppers = () => {
     // formData.append('mintrip', mintrip);
     // formData.append('maxtrip', maxtrip);
     formData.append('cardoors', cardoors);
-    formData.append('startdate',startDate);
+    formData.append('startdate', startDate);
     formData.append('enddate', endDate);
     formData.append('carseat', carseat);
     formData.append('type', type);
+    formData.append('positionlat',positionlat)
+    formData.append('positionlng',positionlang)
     formData.append('description', description);
     featuresArray.forEach((feature, index) => {
       // Concatenate the feature name and icon URL into a single string
@@ -271,8 +288,12 @@ const Steppers = () => {
     photos.forEach((photo, index) => {
       formData.append(`photos`, photo);
     });
-    if(! photos.length){
+    if (!photos.length ) {
       message.error('Please Add photos');
+      return;
+    }
+    if(photos.length < 3){
+      message.error('3 photos at least')
       return;
     }
     try {
@@ -297,39 +318,148 @@ const Steppers = () => {
   }
   const datechangeStartDate = (date, dateString) => {
     setStartDate(dateString);
-    
+
   };
-    // if(startDate < endDate){
-    //   console.log("nice one")
-    // }
+  // if(startDate < endDate){
+  //   console.log("nice one")
+  // }
   const datechangeEndDate = (date, dateString) => {
     setEndDate(dateString);
   };
+  const sanitizeConfig = {
+    allowedTags: [
+      "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
+      "h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
+      "dl", "dt", "figcaption", "figure", "hr", "li", "main", "ol", "p", "pre",
+      "ul", "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
+      "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
+      "small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
+      "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr"
+    ],
+    nonBooleanAttributes: [
+      'abbr', 'accept', 'accept-charset', 'accesskey', 'action',
+      'allow', 'alt', 'as', 'autocapitalize', 'autocomplete',
+      'blocking', 'charset', 'cite', 'class', 'color', 'cols',
+      'colspan', 'content', 'contenteditable', 'coords', 'crossorigin',
+      'data', 'datetime', 'decoding', 'dir', 'dirname', 'download',
+      'draggable', 'enctype', 'enterkeyhint', 'fetchpriority', 'for',
+      'form', 'formaction', 'formenctype', 'formmethod', 'formtarget',
+      'headers', 'height', 'hidden', 'high', 'href', 'hreflang',
+      'http-equiv', 'id', 'imagesizes', 'imagesrcset', 'inputmode',
+      'integrity', 'is', 'itemid', 'itemprop', 'itemref', 'itemtype',
+      'kind', 'label', 'lang', 'list', 'loading', 'low', 'max',
+      'maxlength', 'media', 'method', 'min', 'minlength', 'name',
+      'nonce', 'optimum', 'pattern', 'ping', 'placeholder', 'popover',
+      'popovertarget', 'popovertargetaction', 'poster', 'preload',
+      'referrerpolicy', 'rel', 'rows', 'rowspan', 'sandbox', 'scope',
+      'shape', 'size', 'sizes', 'slot', 'span', 'spellcheck', 'src',
+      'srcdoc', 'srclang', 'srcset', 'start', 'step', 'style',
+      'tabindex', 'target', 'title', 'translate', 'type', 'usemap',
+      'value', 'width', 'wrap',
+      // Event handlers
+      'onauxclick', 'onafterprint', 'onbeforematch', 'onbeforeprint',
+      'onbeforeunload', 'onbeforetoggle', 'onblur', 'oncancel',
+      'oncanplay', 'oncanplaythrough', 'onchange', 'onclick', 'onclose',
+      'oncontextlost', 'oncontextmenu', 'oncontextrestored', 'oncopy',
+      'oncuechange', 'oncut', 'ondblclick', 'ondrag', 'ondragend',
+      'ondragenter', 'ondragleave', 'ondragover', 'ondragstart',
+      'ondrop', 'ondurationchange', 'onemptied', 'onended',
+      'onerror', 'onfocus', 'onformdata', 'onhashchange', 'oninput',
+      'oninvalid', 'onkeydown', 'onkeypress', 'onkeyup',
+      'onlanguagechange', 'onload', 'onloadeddata', 'onloadedmetadata',
+      'onloadstart', 'onmessage', 'onmessageerror', 'onmousedown',
+      'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout',
+      'onmouseover', 'onmouseup', 'onoffline', 'ononline', 'onpagehide',
+      'onpageshow', 'onpaste', 'onpause', 'onplay', 'onplaying',
+      'onpopstate', 'onprogress', 'onratechange', 'onreset', 'onresize',
+      'onrejectionhandled', 'onscroll', 'onscrollend',
+      'onsecuritypolicyviolation', 'onseeked', 'onseeking', 'onselect',
+      'onslotchange', 'onstalled', 'onstorage', 'onsubmit', 'onsuspend',
+      'ontimeupdate', 'ontoggle', 'onunhandledrejection', 'onunload',
+      'onvolumechange', 'onwaiting', 'onwheel'
+    ],
+    disallowedTagsMode: 'discard',
+    allowedAttributes: {
+      a: ['href', 'name', 'target'],
+      // We don't currently allow img itself by default, but
+      // these attributes would make sense if we did.
+      img: ['src', 'srcset', 'alt', 'title', 'width', 'height', 'loading']
+    },
+    // Lots of these won't come up by default because we don't allow them
+    selfClosing: ['img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta'],
+    // URL schemes we permit
+    allowedSchemes: ['http', 'https', 'ftp', 'mailto', 'tel'],
+    allowedSchemesByTag: {},
+    allowedSchemesAppliedToAttributes: ['href', 'src', 'cite'],
+    allowProtocolRelative: true,
+    enforceHtmlBoundary: false,
+    parseStyleAttributes: true
+  };
+  const sanitizedDescription = sanitizeHtml(description, sanitizeConfig);
+
+  const [isModalOpenn, setIsModalOpenn] = useState(false);
+    const showModall = () => {
+        setIsModalOpenn(true);
+    };
+    const handleOkk = () => {
+        setIsModalOpenn(false);
+    };
+    const handleCancell = () => {
+        setIsModalOpenn(false);
+    };
   return (
     <>
       <Steps current={current} items={items} />
       <Form form={form} name="horizontal_login" layout="inline" onFinish={onFinish} className='mb-16'>
         {(current === 0 &&
-          <div style={contentStyle} className='flex flex-col justify-center w-[95%]'>
+          <div style={contentStyle} className='flex flex-col justify-center '>
             <div className='content-your-car '>
               <p className='font-bold text-black mb-3'>Your car</p>
-              <div className='flex flex-col gap-3' >
+              <div className='flex flex-col gap-3 ' >
                 <div>
-                  <label htmlFor=""> location</label>
-                  <Form.Item
-                    className='w-[400px]'
-                    name="location"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'your car location!',
-                      },
-                    ]}
-                  >
-                    <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px] ' value={location} onChange={(e) => setLocation(e.target.value)} />
-                  </Form.Item>
+                <label htmlFor="">Location</label>
+                  <div className='flex gap-2'>
+                    <div>
+                      
+                      <Form.Item
+                        className='w-[400px]'
+                        name="location"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'your car location!',
+                          },
+                        ]}
+                      >
+                        <Input name='location' type='text' placeholder="Your car location" className='rounded-[0px] ' value={location} onChange={(e) => setLocation(e.target.value)} />
+                      </Form.Item>
+
+                    </div>
+                    <div>
+
+                      <div name='map' className='p-1 cursor-pointer rounded-md bg-black text-white' onClick={showModall}><MapIcon/> Map</div>
+                      <Modal
+                      title='please choose your location'
+                      className='text-center'
+                      
+                      style={{
+                        top: 20,
+                        padding: '0 !importent',
+                      
+                      }}
+                      open={isModalOpenn} onOk={handleOkk} onCancel={handleCancell} footer={null} width={900}
+                      >
+                        <Map setpositionlat={setpositionlat} setpositionlng={setpositionlng} />
+
+                      </Modal>
+
+                    </div>
+
+
+
+                  </div>
                 </div>
-                <div className='year-model-make grid grid-cols-3'>
+                <div className='year-model-make grid grid-cols-3 gap-2'>
                   <div>
                     <label htmlFor="caryear">Year</label>
                     <Form.Item
@@ -359,7 +489,7 @@ const Steppers = () => {
                         },
                       ]}
                     >
-                      <Select  placeholder="Make" value={make} onChange={(value) => setMake(String(value))}>
+                      <Select placeholder="Make" value={make} onChange={(value) => setMake(String(value))}>
                         {carmake.map((r, index) => (
                           <Option key={index} required value={r}>{r}</Option>
                         ))}
@@ -382,7 +512,7 @@ const Steppers = () => {
                   </div>
                 </div>
                 <div className='w-[100%]'>
-                  <div className='flex'>
+                  <div className='flex gap-2'>
                     <div className='w-[100%]'>
                       <label htmlFor="distance">Distance</label>
                       <Form.Item
@@ -502,9 +632,9 @@ const Steppers = () => {
                         <Option value="3" key={3} >3</Option>
                       </Select>
                     </Form.Item> */}
-                     <label htmlFor="">Trip Start Date</label>
+                    <label htmlFor="">Trip Start Date</label>
                     <Form.Item
-                      
+
                       name="startdate"
                       rules={[
                         {
@@ -514,7 +644,7 @@ const Steppers = () => {
                       ]}
                     >
                       <DatePicker onChange={datechangeStartDate} className='w-[400px]' />
-                      </Form.Item>
+                    </Form.Item>
                   </div>
                   <div className='min-w-[500px]'>
                     {/* <label htmlFor=""> Maximum trip duration (days)</label>
@@ -532,7 +662,7 @@ const Steppers = () => {
                     </Form.Item> */}
                     <label htmlFor="">Trip End Date</label>
                     <Form.Item
-                      
+
                       name="enddate"
                       rules={[
                         {
@@ -542,7 +672,7 @@ const Steppers = () => {
                       ]}
                     >
                       <DatePicker onChange={datechangeEndDate} className='w-[400px]' />
-                      </Form.Item>
+                    </Form.Item>
                   </div>
                 </div>
               </div>
@@ -555,29 +685,7 @@ const Steppers = () => {
                 <div className='flex flex-col gap-2' >
                   <p>Car features</p>
                   <div className='grid grid-cols-3'>
-                    {/* <div className='flex flex-col gap-1'>
-                      <Checkbox value={"Cruise Control"} onChange={(e) => handlechangecheckbox(e)}>Cruise Control</Checkbox>
-                      <Checkbox value={"Airbags"} onChange={(e) => handlechangecheckbox(e)}>Airbags</Checkbox>
-                      <Checkbox value={"Leather Seats"} onChange={(e) => handlechangecheckbox(e)}>Leather Seats</Checkbox>
-                      <Checkbox value={"Navigation/GPS System"} onChange={(e) => handlechangecheckbox(e)}>Navigation/GPS System</Checkbox>
-                      <Checkbox value={"Air Conditioning"} onChange={(e) => handlechangecheckbox(e)}>Air Conditioning</Checkbox>
-                      <Checkbox value={"Sunroof"} onChange={(e) => handlechangecheckbox(e)}>Sunroof</Checkbox>
-                    </div>
-                    <div className='flex flex-col gap-1'>
-                      <Checkbox value={"Remote Central Locking"} onChange={(e) => handlechangecheckbox(e)}>Remote Central Locking</Checkbox>
-                      <Checkbox value={"Alloy Wheels"} onChange={(e) => handlechangecheckbox(e)}>Alloy Wheels</Checkbox>
-                      <Checkbox value={"ESP"} onChange={(e) => handlechangecheckbox(e)}>(ESP)</Checkbox>
-                      <Checkbox value={"Rear Parking Radar"} onChange={(e) => handlechangecheckbox(e)}>Rear Parking Radar</Checkbox>
-                      <Checkbox value={"Onboard Computer"} onChange={(e) => handlechangecheckbox(e)}>Onboard Computer</Checkbox>
-                      <Checkbox value={"Child seat"} onChange={(e) => handlechangecheckbox(e)}>Child seat</Checkbox>
-                    </div>
-                    <div className='flex flex-col gap-1'>
-                      <Checkbox value={"Rear View Camera"} onChange={(e) => handlechangecheckbox(e)}>Rear View Camera</Checkbox>
-                      <Checkbox value={"ABS"} onChange={(e) => handlechangecheckbox(e)}>Anti-lock Braking System (ABS)</Checkbox>
-                      <Checkbox value={"Speed Limiter"} onChange={(e) => handlechangecheckbox(e)}>Speed Limiter</Checkbox>
-                      <Checkbox value={"Electric Windows"} onChange={(e) => handlechangecheckbox(e)}>Electric Windows</Checkbox>
-                      <Checkbox value={"CD/MP3/Bluetooth"} onChange={(e) => handlechangecheckbox(e)}>CD/MP3/Bluetooth</Checkbox>
-                    </div> */}
+
                     {featuresList.map((feature, index) => (
                       <div key={index}>
                         <label>
@@ -591,36 +699,39 @@ const Steppers = () => {
                       </div>
                     ))}
                   </div>
-                  <div className=''>
-                    <label htmlFor="" className='text-[14px]'> car seats</label>
-                    <Form.Item
-                      className='w-[400px] mt-2'
-                      name="car seats"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'car seats!',
-                        },
-                      ]}
-                    >
-                      <Input placeholder="car seats" className='rounded-[0px]' value={carseat} onChange={(e) => setcarseat(parseInt(e.target.value))} />
-                    </Form.Item>
+                  <div className='flex items-center'>
+                    <div className='mr-5'>
+                      <label htmlFor="" className='text-[14px]'> car seats</label>
+                      <Form.Item
+                        className='w-[400px] mt-2'
+                        name="car seats"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'car seats!',
+                          },
+                        ]}
+                      >
+                        <Input placeholder="car seats" className='rounded-[0px]' value={carseat} onChange={(e) => setcarseat(parseInt(e.target.value))} />
+                      </Form.Item>
+                    </div>
+                    <div className=''>
+                      <label htmlFor="" className='text-[14px]'> car doors</label>
+                      <Form.Item
+                        className='w-[400px] mt-2'
+                        name="car doors"
+                        rules={[
+                          {
+                            required: true,
+                            message: 'car doors!',
+                          },
+                        ]}
+                      >
+                        <Input placeholder="car doors" className='rounded-[0px]' value={cardoors} onChange={(e) => setcardoors(parseInt(e.target.value))} />
+                      </Form.Item>
+                    </div>
                   </div>
-                  <div className='mb-2'>
-                    <label htmlFor="" className='text-[14px]'> car doors</label>
-                    <Form.Item
-                      className='w-[400px] mt-2'
-                      name="car doors"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'car doors!',
-                        },
-                      ]}
-                    >
-                      <Input placeholder="car doors" className='rounded-[0px]' value={cardoors} onChange={(e) => setcardoors(parseInt(e.target.value))} />
-                    </Form.Item>
-                  </div>
+
                   <div>
                     <label htmlFor="" className='font-bold text-black'>Description</label>
                     <div className='mt-2'>
@@ -691,8 +802,9 @@ const Steppers = () => {
                         </div>
                       </div>
                     </div>
-                    <div className='mt-2'>
+                    <div >
                       <Form.Item
+                        className='mt-2 h-[250px]'
                         name="description"
                         rules={[
                           {
@@ -701,7 +813,9 @@ const Steppers = () => {
                           },
                         ]}
                       >
-                        <Input.TextArea showCount maxLength={1000} className='h-24' value={description} onChange={(e) => setdescription(e.target.value)} />
+                        <ReactQuill theme="snow" className='mt-2 min-h-[100%]' value={description} onChange={setdescription} />
+                        
+                        {/* <Input.TextArea showCount maxLength={1000} className='h-24' value={description} onChange={(e) => setdescription(e.target.value)} /> */}
                       </Form.Item>
                     </div>
                   </div>
