@@ -7,20 +7,20 @@
     }
   ],
   "routes": [
-    { "src": "/", "dest": "/index.html" },
-    { "src": "/termsofService", "dest": "/index.html" },
-    { "src": "/EaslyCars-Policies", "dest": "/index.html" },
-    { "src": "/contactUs", "dest": "/index.html" },
-    { "src": "/profile/(.*)", "dest": "/index.html" },
-    { "src": "/account", "dest": "/index.html" },
-    { "src": "/car-rental/cars/search/bymake/(.*)", "dest": "/index.html" },
-    { "src": "/car-rental/cars/search/bydestination/(.*)", "dest": "/index.html" },
-    { "src": "/accounttoUser", "dest": "/index.html" },
-    { "src": "/my_listing", "dest": "/index.html" },
-    { "src": "/become_a_host/(.*)", "dest": "/index.html" },
-    { "src": "/car/car-rental/(.*)", "dest": "/index.html" },
-    { "src": "/carhome", "dest": "/index.html" },
-    { "src": "/carhome/search", "dest": "/index.html" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/", "dest": "/" },
+    { "src": "/termsofService", "dest": "/" },
+    { "src": "/EaslyCars-Policies", "dest": "/" },
+    { "src": "/contactUs", "dest": "/" },
+    { "src": "/profile/(.*)", "dest": "/" },
+    { "src": "/account", "dest": "/" },
+    { "src": "/car-rental/cars/search/bymake/(.*)", "dest": "/" },
+    { "src": "/car-rental/cars/search/bydestination/(.*)", "dest": "/" },
+    { "src": "/accounttoUser", "dest": "/" },
+    { "src": "/my_listing", "dest": "/" },
+    { "src": "/become_a_host/(.*)", "dest": "/" },
+    { "src": "/car/car-rental/(.*)", "dest": "/" },
+    { "src": "/carhome", "dest": "/" },
+    { "src": "/carhome/search", "dest": "/" },
+    { "src": "/(.*)", "dest": "/" }
   ]
 }
