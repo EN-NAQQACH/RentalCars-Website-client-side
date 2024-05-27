@@ -13,7 +13,7 @@ import { LastMessageContext } from './MyNotifications';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Pusher from 'pusher-js';
 import MessageBox from './MessageBox';
-
+import AddIcon from '@mui/icons-material/Add';
 function ChatRoom() {
     const { setlastmessage } = useContext(LastMessageContext);
     // const { socket } = useContext(LastMessageContext)
@@ -327,9 +327,9 @@ function ChatRoom() {
     // }, [socket, chat])
 
     return (
-        <div className='messages-box  bg-[#f7f9fc] h-[100%] col-start-2 col-end-4 relative' >
+        <div className='messages-box  bg-[#f7f9fc] h-[100%] col-start-2 col-end-4 relative rounded-tr-[6px] rounded-br-[6px]' >
             <div className='pr-2 pt-2 max-[734px]:pr-0 max-[734px]:m-5 '>
-                <div className='top max-h-[60px]  flex items-center justify-between pt-[30px] pb-[30px] pl-[10px] pr-[10px] border rounded-xl bg-[#f0f2f6] border-transparent shadow-sm'>
+                <div className='top max-h-[60px]  flex items-center justify-between pt-[30px] pb-[30px] pl-[10px] pr-[10px] border rounded-[5px] bg-[white] border-transparent shadow-sm'>
                     <div className='flex items-center gap-3'>
                         {chat && (
                             <>
@@ -346,13 +346,13 @@ function ChatRoom() {
                     </div>
                     {chat && (
                         <div className='border-none pl-1 pr-1 pt-[1px] pb-[1px] rounded-[50%] bg-[#e9eef7] text-[blue]'>
-
+                            
                         </div>
                     )}
 
                 </div>
             </div>
-            <div className='center-box-messages max-[734px]:pr-0 max-[734px]:m-5  max-h-[76vh] overflow-y-scroll bg-[#f7f9fc] mt-2 mr-3 ' id='message-box'>
+            <div className='center-box-messages max-[734px]:pr-0 max-[734px]:m-5  max-h-[75vh] overflow-y-scroll bg-[#f7f9fc] mt-2 ' id='message-box'>
                 <div className='flex flex-col '>
                     {chat && (
                         <>
@@ -368,11 +368,11 @@ function ChatRoom() {
                 <div ref={messageEndRef}></div>
             </div>
 
-            <div className='bottom h-[50px]  bottom-3 w-[100%]  max-[734px]:mr-5 max-[734px]:ml-1 '>
+            <div className='bottom h-[47px] absolute  bottom-3 w-[100%]  max-[734px]:mr-5 max-[734px]:ml-1 '>
                 <div className='pr-3'>
                     <div className='flex gap-3 w-[100%] items-center justify-between border-none rounded-3xl pt-2 pl-3 pr-3 pb-2 h-[100%] bg-white shadow-md'>
                         <div className='flex items-center gap-4 grow'>
-                            <AttachmentIcon onClick={handleAttachmentClick} className='cursor-pointer ' />
+                            <AddIcon onClick={handleAttachmentClick} className='cursor-pointer ' />
                             <div className=' grow '>
                                 <input
                                     type="text"
@@ -399,7 +399,7 @@ function ChatRoom() {
                                     <EmojiPicker onEmojiClick={handleEmojiSelect} emojiStyle={{ width: '10px', height: '10px' }} />
                                 </div>
                             )}
-                            <div className='pl-[6px] flex justify-center pt-[6px] pb-[6px] pr-[6px] cursor-pointer bg-[#2681ea] text-white rounded-[50%]' onClick={handleSubmitMessage}>
+                            <div className='pl-[6px] flex justify-center pt-[6px] pb-[6px] pr-[6px] cursor-pointer border bg-[#2681ea] hover:bg-white hover:text-[#2681ea] hover:border text-white rounded-[50%]' onClick={handleSubmitMessage}>
                                 <SendIcon />
                             </div>
                         </div>
