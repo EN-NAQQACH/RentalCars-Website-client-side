@@ -24,7 +24,6 @@
           "dest": "/client/index.html"
         }
       ],
-      
         "rewrites": [
           {
             "source": "/((?!api/.*).*)",
