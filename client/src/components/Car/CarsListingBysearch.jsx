@@ -122,7 +122,7 @@ function CarsListingBysearch() {
     const [features, setfeatures] = useState([]);
     const [location, setlocation] = useState();
     return (
-        <div className='carhome-section  bg-white h-fit m-[80px] mt-0'>
+        <div className='scroll-smooth carhome-section  bg-white h-fit m-[80px] mt-0'>
             <div className='aside border-[0.5px] border-gray-100 h-fit rounded-[15px]'>
                 <div className='filter-components'>
                     <div className='filter-content  pb-[30px]'>

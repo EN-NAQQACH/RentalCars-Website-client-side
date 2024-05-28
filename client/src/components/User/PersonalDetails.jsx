@@ -140,7 +140,7 @@ function PersonalDetails() {
         getuserInfo();
     }, [])
     return (
-        <div className='myprofileinfo  p-3 h-[100%]'>
+        <div className='scroll-smooth myprofileinfo  p-3 h-[100%]'>
 
             <div className='flex justify-between items-center mb-3'>
                 <p className='text-[18px] font-semibold text-gray-700'>My Profile</p>

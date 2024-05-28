@@ -433,6 +433,10 @@ nav h6 {
     display: flex;
     flex-direction: column-reverse;
    }
+   .ant-steps .ant-steps-horizontal .css-dev-only-do-not-override-1qfezbu .ant-steps-label-horizontal{
+    display: flex;
+    flex-wrap: wrap;
+   }
 }
 @media only screen and (max-width: 505px) {
     .userinfo{
@@ -948,4 +952,76 @@ nav h6 {
 :where(.css-dev-only-do-not-override-1qfezbu).ant-modal .ant-modal-content{
     padding: 0;
     padding-top: 20px;
+}
+
+@media only screen and (max-width: 800px) {
+
+    :where(.css-dev-only-do-not-override-1qfezbu).ant-steps {
+     display: grid !important;
+     gap: 10px;
+     justify-content: space-between;
+     grid-template-columns: repeat(auto-fill,minmax(200px,auto));
+    }
+    :where(.css-dev-only-do-not-override-1qfezbu).ant-steps.ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item{
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    #stage1{
+        display: flex;
+    }
+    #stage1 div:first-child{
+        width: 100%;
+    }
+    #stage1 div:not(first-child) div{
+        display: flex;
+    }
+ }
+
+ 
+@media only screen and (max-width: 600px) {
+    #stage2{
+        display: grid;
+        grid-template-columns: repeat(auto-fill,minmax(100%,auto));
+    }
+    #stage3{
+        display: grid;
+        grid-template-columns: repeat(auto-fill,minmax(100%,auto));
+    }
+    #stage4 div{
+        width: 100%;
+    }
+    #stage4 div:last-child{
+        width: 100%;
+        min-width: 0px;
+    }
+ }
+ @media only screen and (max-width: 700px) {
+    #featuresstage{
+        display: grid;
+        font-size: 12px;
+        grid-template-columns: repeat(2,minmax(50%,auto));
+        gap: 5px;
+    }
+ }
+ @media only screen and (max-width:861px) {
+    #featuresstage{
+        display: grid;
+        font-size: 12px;
+        grid-template-columns: repeat(2,minmax(50%,auto));
+        gap: 5px;
+    }
+ }
+ #icon svg {
+    font-size: 40px;
+    color: gray;
+ }
+ .css-1x5jdmq{
+    padding: 7px;
+ }
+ :where(.css-1qfezbu).ant-slider .ant-slider-handle::after {
+    background-color: #ffffff;
+    box-shadow: 0 0 0 2px #000000;
+}
+:where(.css-1qfezbu).ant-slider .ant-slider-handle:hover::after, :where(.css-1qfezbu).ant-slider .ant-slider-handle:active::after, :where(.css-1qfezbu).ant-slider .ant-slider-handle:focus::after {
+    box-shadow: 0 0 0 4px #000000;
 }

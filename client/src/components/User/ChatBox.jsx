@@ -103,7 +103,7 @@ function ChatBox({ chat, index, currentuser, lastmessage, setcount }) {
             //         : "#fecd514e",
             //   }}
             >
-                <div className='flex items-center justify-between w-[100%]'>
+                <div className='scroll-smooth flex items-center justify-between w-[100%]'>
                     <div className='  flex items-center gap-3' >
                         <div className=''>
                             <img src={chat.reseivedUser.picture} alt="" className='w-[40px] h-[40px] rounded-[50%] object-cover' />

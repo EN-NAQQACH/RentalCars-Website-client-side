@@ -79,7 +79,7 @@ function MyListing() {
         MyListing();
     };
     return (
-        <div className='mylistinginfo border rounded-xl p-3 h-[100%]'>
+        <div className='scroll-smooth mylistinginfo border rounded-xl p-3 h-[100%]'>
             <p className='text-[18px] font-semibold text-gray-700'>My Cars</p>
             <div className='flex justify-between items-center mb-3 mt-3 max-[606px]:flex-col max-[606px]:items-center '>
 

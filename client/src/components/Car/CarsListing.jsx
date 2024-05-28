@@ -217,7 +217,7 @@ function CarsListing() {
     }
 
     return (
-        <div className='carhome-section max-[732px]:block max-[732px]:m-[20px]  bg-white h-fit m-[80px] mt-0'>
+        <div className='scroll-smooth carhome-section max-[732px]:block max-[732px]:m-[20px]  bg-white h-fit m-[80px] mt-0'>
             {isAsideVisible &&
                 <div className='aside border-[0.5px] border-gray-100 h-fit rounded-[15px]'>
                     <div className='filter-components'>
@@ -333,12 +333,12 @@ function CarsListing() {
                                         </Radio.Group>
                                     </div>
                                 </div>
-                                <div className='filter-reviews'>
+                                {/* <div className='filter-reviews'>
                                     <p className='text-[13px] font-bold text-gray-400 mb-1'>Reviews</p>
                                     <Flex gap="middle" vertical>
                                         <Rate tooltips={desc} onChange={setRate} value={rat} />
                                     </Flex>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

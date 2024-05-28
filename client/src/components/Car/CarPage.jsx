@@ -222,7 +222,7 @@ function CarPage() {
             setloading(false)
         }
     };
-    
+
     const favoriteCar = async (id) => {
         try {
             const token = localStorage.getItem('T_ID_Auth');
@@ -450,7 +450,7 @@ function CarPage() {
     };
     const sanitizedDescription = sanitizeHtml(description, sanitizeConfig);
     return (
-        <div className='carpage p-0 m-0 ' >
+        <div className='scroll-smooth carpage p-0 m-0 ' >
             <div className='ml-5 rounded-[15px] bg-transparent  border-black w-fit text-black p-1 hover:bg-gray-100 hover:text-black transition-all duration-[0.3s] cursor-pointer' onClick={() => history(-1)} >
                 <ArrowBackIcon />
             </div>
@@ -535,24 +535,41 @@ function CarPage() {
                         </div>
                     </div>
                     <div className={isAsideVisible ? 'containerr mt-4 flex' : 'containerr mt-4  '}>
-                        {isAsideVisible ? (<>
-                            <div className='img  h-full  bg-transparent w-[100%]' >
-                                <img src={image[0]} alt="" className='h-[100%] !rounded-none w-[100%] object-cover' />
-                            </div>
-                        </>) : (
 
-                            <>
-                                <div className='img  h-full w-full bg-transparent' >
-                                    <img src={image[0]} alt="" className='h-full w-full object-cover' />
+                        {loading ? (<>
+                            <div className='flex justify-center h-[370px] items-center '>
+                                <ClipLoader
+                                    color="#5c3cfc"
+                                    size={35}
+                                    speedMultiplier={0.3}
+
+                                />
+                            </div>
+
+                        </>) : (<>
+
+                            {isAsideVisible ? (<>
+                                <div className='img  h-full  bg-transparent w-[100%]' >
+                                    <img src={image[0]} alt="" className='h-[100%] !rounded-none w-[100%] object-cover' />
                                 </div>
-                                <div className='img2  h-full w-full bg-transparent' >
-                                    <img src={image[1]} alt="" className='h-full w-full object-cover' />
-                                </div>
-                                <div className='img3  h-full w-full bg-transparent ' >
-                                    <img src={image[2]} alt="" className='h-full w-full object-cover' />
-                                </div>
-                            </>
-                        )}
+                            </>) : (
+
+                                <>
+                                    <div className='img  h-full w-full bg-transparent' >
+                                        <img src={image[0]} alt="" className='h-full w-full object-cover' />
+                                    </div>
+                                    <div className='img2  h-full w-full bg-transparent' >
+                                        <img src={image[1]} alt="" className='h-full w-full object-cover' />
+                                    </div>
+                                    <div className='img3  h-full w-full bg-transparent ' >
+                                        <img src={image[2]} alt="" className='h-full w-full object-cover' />
+                                    </div>
+                                </>
+                            )}
+
+
+                        </>)}
+
 
 
                     </div>
@@ -1116,8 +1133,8 @@ function CarPage() {
                 </div>
             </div>
             <div className='maplocation w-[100%] mt-10 mb-10'>
-{cars?.length > 0 && lat && lng  && <Map2 lat={lat} lng={lng} /> }
-                
+                {cars?.length > 0 && lat && lng && <Map2 lat={lat} lng={lng} />}
+
             </div>
         </div>
     )

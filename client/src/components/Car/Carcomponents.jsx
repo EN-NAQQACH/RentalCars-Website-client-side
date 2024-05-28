@@ -8,10 +8,10 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { message } from 'antd';
 
-function Carcomponents({ days, location, sort, type, minprice, maxprice, transmission, make, features, seats, fueltype,startDate,endDate }) {
+function Carcomponents({ days, location, sort, type, minprice, maxprice, transmission, make, features, seats, fueltype, startDate, endDate }) {
     const [loading, setLoading] = useState(false);
     const [cars, setCars] = useState([]);
-    const [index,setindex] = useState([])
+    const [index, setindex] = useState([])
 
     const getAllCars = async () => {
         try {
@@ -85,29 +85,29 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
     useEffect(() => {
         getAllCars();
         setLoading(true)
-    }, [days, location, sort, type, minprice, maxprice, transmission, make, features, seats, fueltype,startDate,endDate]);
+    }, [days, location, sort, type, minprice, maxprice, transmission, make, features, seats, fueltype, startDate, endDate]);
 
     return (
         <>
             {loading ? ( // Display loading indicator if loading is true
                 <>
-                
-                {[1,2,3,4,5,6].map((index) => (
-                    <div className="car-card ">
-                    <div className='car-card-components  cursor-pointer relative w-[100%] h-fit rounded-lg skeleton' key={index}>
-                        <div className="skeleton-image h-[150px] w-[100%] rounded-tr-lg rounded-tl-lg bg-gray-200 animate-pulse" />
-                        <div className="skeleton-details p-2">
-                            <div className="skeleton-line w-[70%] h-[14px] mb-1 bg-gray-300 animate-pulse rounded-md" />
-                            <div className="skeleton-line w-[40%] h-[12px] mb-1 bg-gray-300 animate-pulse rounded-md" />
-                            <div className="skeleton-line w-[90%] h-[12px] mb-1 bg-gray-300 animate-pulse rounded-md" />
-                            <div className="skeleton-line w-[80%] h-[12px] mb-1 bg-gray-300 animate-pulse rounded-md" />
-                            <div className="skeleton-line w-[60%] h-[12px] mb-1 bg-gray-300 animate-pulse rounded-md" />
-                            
+
+                    {[1, 2, 3, 4, 5, 6].map((index) => (
+                        <div className="car-card ">
+                            <div className='car-card-components  cursor-pointer relative w-[100%] h-fit rounded-lg skeleton' key={index}>
+                                <div className="skeleton-image h-[150px] w-[100%] rounded-tr-lg rounded-tl-lg bg-gray-200 animate-pulse" />
+                                <div className="skeleton-details p-2">
+                                    <div className="skeleton-line w-[70%] h-[14px] mb-1 bg-gray-300 animate-pulse rounded-md" />
+                                    <div className="skeleton-line w-[40%] h-[12px] mb-1 bg-gray-300 animate-pulse rounded-md" />
+                                    <div className="skeleton-line w-[90%] h-[12px] mb-1 bg-gray-300 animate-pulse rounded-md" />
+                                    <div className="skeleton-line w-[80%] h-[12px] mb-1 bg-gray-300 animate-pulse rounded-md" />
+                                    <div className="skeleton-line w-[60%] h-[12px] mb-1 bg-gray-300 animate-pulse rounded-md" />
+
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    </div>
-                    
-                ))}
+
+                    ))}
                 </>
 
             ) :
@@ -115,7 +115,7 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
                     <>
                         {cars.length > 0 ? (
                             cars.map((car) => (
-                                <div className='car-card cursor-pointer relative w-[100%] h-fit rounded-lg  ' key={car.id}>
+                                <div className='scroll-smooth car-card cursor-pointer relative w-[100%] h-fit rounded-lg  ' key={car.id}>
                                     <a href={`/car/car-rental/${car.make}/${car.model}/${car.year}/${car.id}`}>
                                         <div className="car-card-components w-[100%]  h-[fit] border rounded-lg shadow-sm">
                                             <img src={car.imageUrls[0]} alt="" className='h-[150px] w-[100%]  rounded-tr-lg rounded-tl-lg object-cover transition-all duration-300 hover:transition-all hover:duration-300 hover:brightness-[90%]' />
@@ -130,7 +130,8 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
                                                 </div>
                                                 <div className='overflow-hidden max-w-[90%]'>
                                                     <p className='text-[14px] font-bold text-gray-500 truncate '>{car.make}{' '}{car.model}{' '}{car.year}</p>
-                                                </div>                                <div className='flex gap-3 mt-2  '>
+                                                </div>                                
+                                                <div className='flex gap-[5px] mt-[5px]  '>
                                                     <p className='flex gap-2 items-center'>
                                                         <AirlineSeatReclineNormalIcon /><span className='text-[11px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md truncate'>{car.carSeats} seats
                                                         </span></p>
@@ -142,7 +143,7 @@ function Carcomponents({ days, location, sort, type, minprice, maxprice, transmi
                                                         <p className='text-[11px] text-gray-600 font-bold bg-gray-200 pl-1 pr-1 rounded-md'>{car.fuel}</p>
                                                     </div>
                                                 </div>
-                                                <p className='mt-1 flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon className="text-green-500" /></p>
+                                                <p className='mt-[2px] flex justify-end items-center gap-1 text-[12px]'>Free cancellation <HelpIcon className="text-green-500" /></p>
                                                 <div className='mt-1 text-[12px] text-[#937eff] border-t-[1px] pt-1 font-semibold truncate'><p><LocationOnIcon /> {car.location}, Morocco</p></div>
                                             </div>
                                         </div>

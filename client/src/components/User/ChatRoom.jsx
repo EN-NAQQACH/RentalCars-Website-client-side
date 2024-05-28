@@ -327,7 +327,7 @@ function ChatRoom() {
     // }, [socket, chat])
 
     return (
-        <div className='messages-box  bg-[#f7f9fc] h-[100%] col-start-2 col-end-4 relative rounded-tr-[6px] rounded-br-[6px]' >
+        <div className='scroll-smooth messages-box  bg-[#f7f9fc] h-[100%] col-start-2 col-end-4 relative rounded-tr-[6px] rounded-br-[6px]' >
             <div className='pr-2 pt-2 max-[734px]:pr-0 max-[734px]:m-5 '>
                 <div className='top max-h-[60px]  flex items-center justify-between pt-[30px] pb-[30px] pl-[10px] pr-[10px] border rounded-[5px] bg-[white] border-transparent shadow-sm'>
                     <div className='flex items-center gap-3'>

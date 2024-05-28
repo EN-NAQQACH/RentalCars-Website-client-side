@@ -117,7 +117,7 @@ function MyNotifications() {
     //     };
     // }, []);
     return (
-        <div className='mynotifications  border-transparent   min-h-[100vh] grid grid-cols-3 max-[734px]:flex  max-[734px]:flex-col max-[734px]:min-h-[100%]  max-[734px]:justify-center   '>
+        <div className='scroll-smooth mynotifications  border-transparent   min-h-[100vh] grid grid-cols-3 max-[734px]:flex  max-[734px]:flex-col max-[734px]:min-h-[100%]  max-[734px]:justify-center   '>
             {loading2 ? (<>
                 <div className='messages-box border rounded-[6px] bg-[#fcfdff] h-[100%] justify-center items-center flex col-start-1 col-end-4 ' >
                     <ClipLoader

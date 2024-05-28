@@ -127,7 +127,7 @@ function MyBooking() {
   return (
     <>
 
-      <div className='myBookinginfo border-gray-100 border rounded-xl p-3 h-[100%]' >
+      <div className='scroll-smooth myBookinginfo border-gray-100 border rounded-xl p-3 h-[100%]' >
         <div>
           <div className='flex justify-between items-center mb-3'>
             <p className='text-[18px] font-semibold text-gray-700'>Mohssine’s Booking</p>

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, message, Steps, theme, Radio, Input, Select, Checkbox, Modal } from 'antd';
 import '../cardeffect.css'
 import generateYears from '../../data/caryear.js'
@@ -35,6 +35,8 @@ import 'react-quill/dist/quill.snow.css';
 import sanitizeHtml from 'sanitize-html';
 import Map from './Map.jsx';
 import MapIcon from '@mui/icons-material/Map';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -102,8 +104,8 @@ const Steppers = () => {
   const [selectedFeatures, setSelectedFeatures] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [positionlat , setpositionlat] = useState();
-  const [positionlang, setpositionlng] = useState(); 
+  const [positionlat, setpositionlat] = useState();
+  const [positionlang, setpositionlng] = useState();
 
 
   const isSelected = (feature) => {
@@ -159,7 +161,7 @@ const Steppers = () => {
             return;
           }
         }
-        if(!positionlat || !positionlang){
+        if (!positionlat || !positionlang) {
           message.error('Please select your location on map');
           return
         }
@@ -276,8 +278,8 @@ const Steppers = () => {
     formData.append('enddate', endDate);
     formData.append('carseat', carseat);
     formData.append('type', type);
-    formData.append('positionlat',positionlat)
-    formData.append('positionlng',positionlang)
+    formData.append('positionlat', positionlat)
+    formData.append('positionlng', positionlang)
     formData.append('description', description);
     featuresArray.forEach((feature, index) => {
       // Concatenate the feature name and icon URL into a single string
@@ -288,11 +290,11 @@ const Steppers = () => {
     photos.forEach((photo, index) => {
       formData.append(`photos`, photo);
     });
-    if (!photos.length ) {
+    if (!photos.length) {
       message.error('Please Add photos');
       return;
     }
-    if(photos.length < 3){
+    if (photos.length < 3) {
       message.error('3 photos at least')
       return;
     }
@@ -306,8 +308,7 @@ const Steppers = () => {
       });
       const result = await response.json();
       if (result) {
-        message.success(result.message);
-        navigate('/account/my-listing')
+        toast.success(result.message);
         localStorage.setItem('currentStep', 0);
       } else {
         message.error(result.error);
@@ -398,15 +399,18 @@ const Steppers = () => {
   const sanitizedDescription = sanitizeHtml(description, sanitizeConfig);
 
   const [isModalOpenn, setIsModalOpenn] = useState(false);
-    const showModall = () => {
-        setIsModalOpenn(true);
-    };
-    const handleOkk = () => {
-        setIsModalOpenn(false);
-    };
-    const handleCancell = () => {
-        setIsModalOpenn(false);
-    };
+  const showModall = () => {
+    setIsModalOpenn(true);
+  };
+  const handleOkk = () => {
+    setIsModalOpenn(false);
+  };
+  const handleCancell = () => {
+    setIsModalOpenn(false);
+  };
+  const handleToastClose = () => {
+    navigate('/account/my-listing');
+  };
   return (
     <>
       <Steps current={current} items={items} />
@@ -416,11 +420,11 @@ const Steppers = () => {
             <div className='content-your-car '>
               <p className='font-bold text-black mb-3'>Your car</p>
               <div className='flex flex-col gap-3 ' >
-                <div>
-                <label htmlFor="">Location</label>
-                  <div className='flex gap-2'>
+                <div >
+                  <label htmlFor="">Location</label>
+                  <div className='flex gap-2' id='stage1'>
                     <div>
-                      
+
                       <Form.Item
                         className='w-[400px]'
                         name="location"
@@ -435,31 +439,28 @@ const Steppers = () => {
                       </Form.Item>
 
                     </div>
-                    <div>
 
-                      <div name='map' className='p-1 cursor-pointer rounded-md bg-black text-white' onClick={showModall}><MapIcon/> Map</div>
+                    <div>
+                      <div name='map' className='p-1 cursor-pointer rounded-md bg-black text-white' onClick={showModall}><MapIcon /> Map</div>
                       <Modal
-                      title='please choose your location'
-                      className='text-center'
-                      
-                      style={{
-                        top: 20,
-                        padding: '0 !importent',
-                      
-                      }}
-                      open={isModalOpenn} onOk={handleOkk} onCancel={handleCancell} footer={null} width={900}
+                        title='please choose your location'
+                        className='text-center'
+
+                        style={{
+                          top: 20,
+                          padding: '0 !importent',
+
+                        }}
+                        open={isModalOpenn} onOk={handleOkk} onCancel={handleCancell} footer={null} width={900}
                       >
                         <Map setpositionlat={setpositionlat} setpositionlng={setpositionlng} />
 
                       </Modal>
 
                     </div>
-
-
-
                   </div>
                 </div>
-                <div className='year-model-make grid grid-cols-3 gap-2'>
+                <div className='year-model-make grid grid-cols-3 gap-2' id='stage2'>
                   <div>
                     <label htmlFor="caryear">Year</label>
                     <Form.Item
@@ -512,7 +513,7 @@ const Steppers = () => {
                   </div>
                 </div>
                 <div className='w-[100%]'>
-                  <div className='flex gap-2'>
+                  <div className='flex gap-2' id='stage3'>
                     <div className='w-[100%]'>
                       <label htmlFor="distance">Distance</label>
                       <Form.Item
@@ -597,7 +598,7 @@ const Steppers = () => {
             <div style={contentStyle} className='flex flex-col justify-center w-[95%]'>
               <div className='content-your-car '>
                 <p className='font-bold text-black mb-3'>Car availibility</p>
-                <div className='flex flex-col gap-3' >
+                <div className='flex flex-col gap-3' id='stage4' >
                   <div>
                     <label htmlFor=""> price of your car (DH) /Day</label>
                     <Form.Item
@@ -684,7 +685,7 @@ const Steppers = () => {
                 <p className='font-bold text-black mb-3'>Car Details</p>
                 <div className='flex flex-col gap-2' >
                   <p>Car features</p>
-                  <div className='grid grid-cols-3'>
+                  <div className='grid grid-cols-3 gap-2' id='featuresstage'>
 
                     {featuresList.map((feature, index) => (
                       <div key={index}>
@@ -700,10 +701,10 @@ const Steppers = () => {
                     ))}
                   </div>
                   <div className='flex items-center'>
-                    <div className='mr-5'>
+                    <div className='mr-5 grow'>
                       <label htmlFor="" className='text-[14px]'> car seats</label>
                       <Form.Item
-                        className='w-[400px] mt-2'
+                        className='w-[100%] mt-2'
                         name="car seats"
                         rules={[
                           {
@@ -715,10 +716,10 @@ const Steppers = () => {
                         <Input placeholder="car seats" className='rounded-[0px]' value={carseat} onChange={(e) => setcarseat(parseInt(e.target.value))} />
                       </Form.Item>
                     </div>
-                    <div className=''>
+                    <div className='grow'>
                       <label htmlFor="" className='text-[14px]'> car doors</label>
                       <Form.Item
-                        className='w-[400px] mt-2'
+                        className='w-[100%] mt-2'
                         name="car doors"
                         rules={[
                           {
@@ -788,7 +789,7 @@ const Steppers = () => {
                           </div>
                         </div>
                       </Modal>
-                      <div className='border rounded-[6px] p-3 w-[400px] mt-3 mb-3'>
+                      <div className='border rounded-[6px] p-3 w-[400px] mt-3 mb-3 max-[700px]:w-[100%] '>
                         <p className='font-bold text-black'>Tips to get more bookings</p>
                         <div className='border rounded-[6px] p-2 mt-2'>
                           <div className='flex gap-3 mb-2'>
@@ -804,7 +805,7 @@ const Steppers = () => {
                     </div>
                     <div >
                       <Form.Item
-                        className='mt-2 h-[250px]'
+                        className='mt-2 h-[250px] max-[552px]:h-[100%] '
                         name="description"
                         rules={[
                           {
@@ -814,7 +815,7 @@ const Steppers = () => {
                         ]}
                       >
                         <ReactQuill theme="snow" className='mt-2 min-h-[100%]' value={description} onChange={setdescription} />
-                        
+
                         {/* <Input.TextArea showCount maxLength={1000} className='h-24' value={description} onChange={(e) => setdescription(e.target.value)} /> */}
                       </Form.Item>
                     </div>
@@ -831,9 +832,9 @@ const Steppers = () => {
                   <div>
                     High quality photos increase your earning potential by attracting more guests. Upload at least 6 photos, including multiple exterior angles with the whole car in frame, as well as interior shots.
                   </div>
-                  <div className='car-photo flex justify-center gap-[80px] mt-7'>
-                    <div className='flex flex-col gap-3'>
-                      <div className='flex gap-2' >
+                  <div className='car-photo flex justify-center gap-[80px] mt-7 max-[861px]:grid max-[861px]:gap-2'>
+                    <div className='flex flex-col gap-3 max-[861px]:gap-2'>
+                      <div className='flex gap-2 '  >
                         <LightModeIcon className='text-black' />
                         <p>Shoot during the daytime</p>
                       </div>
@@ -842,7 +843,7 @@ const Steppers = () => {
                         <p>Try somewhere open or scenic</p>
                       </div>
                     </div>
-                    <div className='flex flex-col gap-3'>
+                    <div className='flex flex-col gap-3 max-[861px]:gap-2'>
                       <div className='flex gap-2' >
                         <RemoveRedEyeIcon className='text-black' />
                         <p>Take clear, crisp photos</p>
@@ -856,7 +857,7 @@ const Steppers = () => {
                   <div>
                     <p>Example :</p>
                   </div>
-                  <div className='w-[650px] flex m-auto items-center mt-5'>
+                  <div className='w-[650px] max-[915px]:w-[100%] flex m-auto items-center mt-5'>
                     <div>
                       <button className='review-swiper-button-prev'><ChevronLeftIcon /></button>
                     </div>
@@ -873,35 +874,43 @@ const Steppers = () => {
                       breakpoints={{
                         640: {
                           slidesPerView: 2,
-                          spaceBetween: 20
+                          spaceBetween: 10
                         },
                         600: {
                           slidesPerView: 2,
-                          spaceBetween: 20
+                          spaceBetween: 10
                         },
                         530: {
                           slidesPerView: 2,
-                          spaceBetween: 20
+                          spaceBetween: 10
                         },
                         500: {
-                          slidesPerView: 3,
-                          spaceBetween: 20
+                          slidesPerView: 1,
+                          spaceBetween: 10
                         },
                         400: {
-                          slidesPerView: 2,
+                          slidesPerView: 1,
                           spaceBetween: 20
                         },
                         300: {
-                          slidesPerView: 2,
+                          slidesPerView: 1,
                           spaceBetween: 20
                         },
                         768: {
                           slidesPerView: 2,
-                          spaceBetween: 30
+                          spaceBetween: 10
                         },
                         700: {
                           slidesPerView: 2,
                           spaceBetween: 30
+                        },
+                        915: {
+                          slidesPerView: 2,
+                          spaceBetween: 10
+                        },
+                        916: {
+                          slidesPerView: 3,
+                          spaceBetween: 15
                         },
                         1024: {
                           slidesPerView: 3,
@@ -910,28 +919,28 @@ const Steppers = () => {
                       }}
                       className="mySwiper">
                       <SwiperSlide className='card w-[190px] h-[107px]'>
-                        <img src="../../src/assets/Example1.jpg" alt="" className='object-cover w-[190px] h-[107px] rounded-[6px]' />
+                        <img src="../../src/assets/Example1.jpg" alt="" className='object-cover w-[190px] h-[107px] max-[915px]:w-full max-[915px]:h-full rounded-[6px]' />
                       </SwiperSlide>
                       <SwiperSlide className='card w-[190px] h-[107px]'>
-                        <img src="../../src/assets/Example2.jpg" alt="" className='object-cover  w-[190px] h-[107px] rounded-[6px]' />
+                        <img src="../../src/assets/Example2.jpg" alt="" className='object-cover  w-[190px] h-[107px] max-[915px]:w-full max-[915px]:h-full rounded-[6px]' />
                       </SwiperSlide>
                       <SwiperSlide className='card w-[190px] h-[107px]'>
-                        <img src="../../src/assets/Example3.jpg" alt="" className='object-cover  w-[190px] h-[107px] rounded-[6px]' />
+                        <img src="../../src/assets/Example3.jpg" alt="" className='object-cover  w-[190px] h-[107px] max-[915px]:w-full max-[915px]:h-full rounded-[6px]' />
                       </SwiperSlide>
                       <SwiperSlide className='card w-[190px] h-[107px]'>
-                        <img src="../../src/assets/Example4.jpg" alt="" className='object-cover  w-[190px] h-[107px] rounded-[6px]' />
+                        <img src="../../src/assets/Example4.jpg" alt="" className='object-cover  w-[190px] h-[107px] max-[915px]:w-full max-[915px]:h-full rounded-[6px]' />
                       </SwiperSlide>
                       <SwiperSlide className='card w-[190px] h-[107px]'>
-                        <img src="../../src/assets/Example5.jpg" alt="" className='object-cover  w-[190px] h-[107px] rounded-[6px]' />
+                        <img src="../../src/assets/Example5.jpg" alt="" className='object-cover  w-[190px] h-[107px] max-[915px]:w-full max-[915px]:h-full rounded-[6px]' />
                       </SwiperSlide>
                       <SwiperSlide className='card w-[190px] h-[107px]'>
-                        <img src="../../src/assets/Example6.jpg" alt="" className='object-cover  w-[190px] h-[107px] rounded-[6px]' />
+                        <img src="../../src/assets/Example6.jpg" alt="" className='object-cover  w-[190px] h-[107px] max-[915px]:w-full max-[915px]:h-full rounded-[6px]' />
                       </SwiperSlide>
                       <SwiperSlide className='card w-[190px] h-[107px]'>
-                        <img src="../../src/assets/Example7.jpg" alt="" className='object-cover  w-[190px] h-[107px] rounded-[6px]' />
+                        <img src="../../src/assets/Example7.jpg" alt="" className='object-cover  w-[190px] h-[107px] max-[915px]:w-full max-[915px]:h-full rounded-[6px]' />
                       </SwiperSlide>
                       <SwiperSlide className='card w-[190px] h-[107px]'>
-                        <img src="../../src/assets/Example8.jpg" alt="" className='object-cover  w-[190px] h-[107px] rounded-[6px]' />
+                        <img src="../../src/assets/Example8.jpg" alt="" className='object-cover  w-[190px] h-[107px] max-[915px]:w-full max-[915px]:h-full rounded-[6px]' />
                       </SwiperSlide>
                     </Swiper>
                     <div>
@@ -946,11 +955,11 @@ const Steppers = () => {
                         {(provided) => (
                           <>
 
-                            <div className='mb-5'>
+                            <div className='mb-5 '>
                               <input type="file" id='image' name='photos' style={{ display: "none" }} accept='image/*' onChange={handleuplaodphotos} multiple />
-                              <label htmlFor="image" className='alone text-[#5c3cfc] w-[100%] '>
-                                <div className='flex flex-col justify-center items-center h-[200px]  border-dotted border-2 border-[#a694ffb7] rounded-md '>
-                                  <div className='icon k'><CollectionsOutlinedIcon /></div>
+                              <label htmlFor="image" className='alone text-[gray] w-[100%] '>
+                                <div className='flex flex-col justify-center items-center h-[200px] cursor-pointer  border-dotted border-[2px] border-[#d1d1d1] rounded-md '>
+                                  <div className='icon' id='icon'><CollectionsOutlinedIcon /></div>
                                   <p>Upload photos</p>
                                 </div>
                               </label>
@@ -1002,9 +1011,23 @@ const Steppers = () => {
             </Button>
           )}
           {current === steps.length - 1 && (
-            <Button id="nextbtn" type="primary" htmlType="submit" onClick={handlesubmitlisting}>
-              Submit Your Listing
-            </Button>
+            <>
+              <Button id="nextbtn" type="primary" htmlType="submit" onClick={handlesubmitlisting}>
+                Submit Your Listing
+              </Button>
+              <ToastContainer
+                position="top-right"
+                autoClose={1000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                onClose={handleToastClose}
+              />
+            </>
           )}
         </div>
       </Form>

@@ -113,6 +113,10 @@ function Main() {
     }
 
     const handleSubmit = async () => {
+        if(!email){
+            message.error('email required')
+            return
+        }
         try {
             setloading(true);
             const res = await fetch('https://easlycars-server.vercel.app/api/newsletter', {

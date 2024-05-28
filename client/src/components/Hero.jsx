@@ -56,7 +56,7 @@ function Hero() {
         </p>
         <div className="flex justify-center space-x-4 ">
           <a
-            className="inline-flex h-12 items-center justify-center rounded-md bg-[#000000] px-6 py-2 text-base font-medium text-[white] shadow-sm transition-colors hover:bg-black focus:outline-none focus:ring-2 focus:ring-[#6366F1] focus:ring-offset-2"
+            className="inline-flex h-12 items-center justify-center rounded-md bg-[#000000] px-6 py-2 text-base font-medium text-[white] shadow-sm transition-colors hover:bg-black focus:outline-none focus:ring-2 focus:ring-[black] focus:ring-offset-2"
             href="#"
           >
             Rent Now

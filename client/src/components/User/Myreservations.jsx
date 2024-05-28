@@ -64,7 +64,7 @@ function Myreservations() {
     }, [search, sort])
     return (
         <div>
-            <div className='myBookinginfo border-gray-100  rounded-xl p-3 h-fit' >
+            <div className='scroll-smooth myBookinginfo border-gray-100  rounded-xl p-3 h-fit' >
                 <p className='text-[18px] font-semibold text-gray-700'>My Reservations</p>
                 <div>
                     <div className='flex justify-between items-center mb-3 mt-3 max-[606px]:flex-col max-[606px]:items-center'>

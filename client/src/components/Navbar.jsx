@@ -693,7 +693,11 @@ function Navbar() {
 
           <div className="navbar bg-base-100 sticky z-20 " style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
             <div className="navbar-start">
-              <a className="btn btn-ghost text-xl" href='/'>daisyUI</a>
+              <a href="/">
+
+                <img src='/easlycarslogo.png' className=" btn btn-ghost text-xl" />
+              </a>
+
             </div>
             <div className="navbar-center hidden lg:flex">
               <ul className="menu menu-horizontal px-1">
@@ -733,7 +737,10 @@ function Navbar() {
         ) : (
           <div className="navbar bg-base-100 relative z-20" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
             <div className="navbar-start">
-              <a className="btn btn-ghost text-xl" href='/'>daisyUI</a>
+              <a href="/">
+
+                <img src='/easlycarslogo.png' className=" btn btn-ghost text-xl" />
+              </a>
             </div>
             <div className="navbar-center hidden lg:flex">
               <ul className="menu menu-horizontal px-1">

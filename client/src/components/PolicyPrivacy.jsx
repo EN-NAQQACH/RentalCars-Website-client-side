@@ -2,7 +2,7 @@ import React from 'react'
 
 function PolicyPrivacy() {
     return (
-        <div className='ml-[150px] mr-[150px] mt-11 text-justify mb-[50px] max-[756px]:m-[50px] max-[756px]:text-[13px] text-[14px] '>
+        <div className='scroll-smooth ml-[150px] mr-[150px] mt-11 text-justify mb-[50px] max-[756px]:m-[50px] max-[756px]:text-[13px] text-[14px] '>
             <h1 className='text-[30px] font-semibold text-center mb-8'>EaslyCars's Privacy Policies</h1>
             <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
             <p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the <a href="https://www.freeprivacypolicy.com/free-privacy-policy-generator/" target="_blank">Free Privacy Policy Generator</a>.</p>

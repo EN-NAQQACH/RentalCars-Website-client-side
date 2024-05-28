@@ -8,7 +8,7 @@ import { format } from 'timeago.js';
 
 function MessageBox({ message, receiver, sender, index, currentuserId, handleRemoveMessage, image }) {
     return (
-        <div>
+        <div className='scroll-smooth'>
             {message.userId === currentuserId ? (
                 <div className='chat-room p-3 flex justify-end ' key={index}>
                     <div className='flex items-end gap-3'>

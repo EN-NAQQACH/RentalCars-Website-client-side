@@ -171,7 +171,7 @@ function Account() {
   return (
     <>
       {!token ? <Authorisation /> : (
-        <div className=' text-black mb-[20px] min-h-[140vh]' >
+        <div className='scroll-smooth text-black mb-[20px] min-h-[140vh]' >
           <div className='profile-section ml-[80px] mt-[20px]  mr-[80px] max-[1102px]:m-[20px] max-[980px]:block  '>
             {loading ? (<>
               <div className="asideprofile h-fit border rounded-xl shadow-sm">
