@@ -171,7 +171,7 @@ function CarpageBydestination() {
                                             <input type="text" className='border-none w-[100%] max-[980px]:mt-1 max-[980px]:mb-2 h-[20px] rounded-[7px] pl-2 text-[13px] bg-transparent text-black outline-none' placeholder='Enter Location' value={location} onChange={(e) => setlocation(e.target.value)} />
                                         </div>
                                         <div className='flex flex-col justify-center border-r-[1px] max-[980px]:border-b-[1px] max-[980px]:border-r-[0px] w-[100%] '>
-                                            <label htmlFor="" className='text-[13px] font-bold text-gray-500'>Check in-out</label>
+                                            <label htmlFor="" className='text-[13px] font-bold text-gray-500'>Pick up / Drop off</label>
                                             <div className='flex items-center justify-between w-[100%] '>
                                                 <Space direction="vertical" size={12} className='bg-transparent'>
                                                     <RangePicker disabledDate={disabledDate} onChange={onchange} format={dateFormat} className='bg-transparent text-black max-[980px]:mt-1 max-[980px]:mb-2 ' />

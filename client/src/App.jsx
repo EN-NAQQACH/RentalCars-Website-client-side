@@ -30,25 +30,26 @@ import TermsofService from './components/TermsofService';
 import PolicyPrivacy from './components/PolicyPrivacy';
 import ContactUs from './components/ContactUs';
 import Myreservations from './components/User/Myreservations';
+import ScrollToTop from "./utils/ScrollToTop";
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
     gapi.load("client:auth2", () => {
       gapi.client.init({
-        clientId:"xxxxx.apps.googleusercontent.com",
+        clientId: "xxxxx.apps.googleusercontent.com",
         plugin_name: "chat",
       });
     });
   }, []);
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  }, [pathname]);
+  // useEffect(() => {
+  //   window.scrollTo({
+  //     top: 0,
+  //     behavior: 'smooth'
+  //   });
+  // }, [pathname]);
   useEffect(() => {
 
     if (location.pathname === '/carhome/search' && location.search === '') {
@@ -63,41 +64,43 @@ function App() {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path='/' element={<Rentalcar/>} />
-        <Route path='/termsofService' element={<TermsofService />} />
-        <Route path='/EaslyCars-Policies' element={<PolicyPrivacy />} />
-        <Route path='/contactUs' element={<ContactUs />} />
-        <Route path='/profile/:firstName/:lastName/:userid' element={<Profile />} />
-        <Route path='/account' element={<Account />} >
-          <Route index element={<PersonalDetails />} />
-          <Route path='personal_details' element={<PersonalDetails />} />
-          <Route path='my-listing' element={<MyListing />} />
-          <Route path='my-Favorities' element={<Myfavorite />} />
-          <Route path='my-notifications' element={<MyNotifications />}>
-            <Route index element={<ChatHome />} />
-            <Route path='chats/:chatId' element={<ChatRoom />} />
+      <ScrollToTop>
+        <Routes>
+          <Route path='/' element={<Rentalcar />} />
+          <Route path='/termsofService' element={<TermsofService />} />
+          <Route path='/EaslyCars-Policies' element={<PolicyPrivacy />} />
+          <Route path='/contactUs' element={<ContactUs />} />
+          <Route path='/profile/:firstName/:lastName/:userid' element={<Profile />} />
+          <Route path='/account' element={<Account />} >
+            <Route index element={<PersonalDetails />} />
+            <Route path='personal_details' element={<PersonalDetails />} />
+            <Route path='my-listing' element={<MyListing />} />
+            <Route path='my-Favorities' element={<Myfavorite />} />
+            <Route path='my-notifications' element={<MyNotifications />}>
+              <Route index element={<ChatHome />} />
+              <Route path='chats/:chatId' element={<ChatRoom />} />
+            </Route>
+            <Route path='my-listing/edit-your-car/:carId' element={<EditYourCar />} />
+            <Route path='my-booking' element={<MyBooking />} />
+            <Route path='my-reservations' element={<Myreservations />} />
           </Route>
-          <Route path='my-listing/edit-your-car/:carId' element={<EditYourCar />} />
-          <Route path='my-booking' element={<MyBooking />} />
-          <Route path='my-reservations' element={<Myreservations />} />
-        </Route>
-        <Route path='/car-rental/cars/search/bymake/:make' element={<CarpageBymake />} />
-        <Route path='/car-rental/cars/search/bydestination/:destination' element={<CarpageBydestination />} />
-        <Route path='/accounttoUser' element={<AccounttoUser />} />
-        <Route path='/my_listing' element={<MyListing />} />
-        <Route path='/become_a_host' >
-          <Route index element={<Listyourcar />} />
-          <Route path='list-your-car' element={<List />} />
-        </Route>
-        <Route path='/car/car-rental/:make/:model/:year/:carId' element={<CarPage />} />
-        {/* <Route path='/carhome' element={<CarHome />} /> */}
-        <Route path='/carhome' element={<CarHome />}>
-          <Route index element={<CarsListing />} />
-          <Route path="search" element={<CarsListing />} />
-        </Route>
-        <Route path='*' element={<Page404 />} />
-      </Routes>
+          <Route path='/car-rental/cars/search/bymake/:make' element={<CarpageBymake />} />
+          <Route path='/car-rental/cars/search/bydestination/:destination' element={<CarpageBydestination />} />
+          <Route path='/accounttoUser' element={<AccounttoUser />} />
+          <Route path='/my_listing' element={<MyListing />} />
+          <Route path='/become_a_host' >
+            <Route index element={<Listyourcar />} />
+            <Route path='list-your-car' element={<List />} />
+          </Route>
+          <Route path='/car/car-rental/:make/:model/:year/:carId' element={<CarPage />} />
+          {/* <Route path='/carhome' element={<CarHome />} /> */}
+          <Route path='/carhome' element={<CarHome />}>
+            <Route index element={<CarsListing />} />
+            <Route path="search" element={<CarsListing />} />
+          </Route>
+          <Route path='*' element={<Page404 />} />
+        </Routes>
+      </ScrollToTop>
       <Footer />
     </>
   )

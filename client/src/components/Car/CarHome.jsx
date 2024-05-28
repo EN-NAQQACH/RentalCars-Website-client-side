@@ -210,7 +210,7 @@ function CarHome() {
                         <input type="text" className='border-none w-[100%] max-[780px]:mt-1 max-[780px]:mb-2 h-[20px] rounded-[7px] pl-2 text-[13px] bg-transparent text-black outline-none' placeholder='Enter Location' value={location} onChange={(e) => setlocation(e.target.value)} />
                     </div>
                     <div className='flex flex-col justify-center border-r-[1px]  w-[100%] max-[780px]:border-transparent max-[780px]:border-[1px] max-[780px]:pl-1 max-[780px]:pt-1 max-[780px]:rounded-[5px] max-[780px]:shadow-md '>
-                        <label htmlFor="" className='text-[13px] font-bold text-gray-500'>Check in-out</label>
+                        <label htmlFor="" className='text-[13px] font-bold text-gray-500'>Pick up / Drop off</label>
                         <div className='flex items-center justify-between w-[100%] '>
                             <Space direction="vertical" size={12} className='bg-transparent'>
                                 <RangePicker disabledDate={disabledDate} onChange={onchange} format={dateFormat} className='bg-transparent text-black max-[780px]:mt-1 max-[780px]:mb-2  ' />

@@ -175,6 +175,18 @@ function CarsListing() {
         setpricemin(value[0]);
         setpricemax(value[1]);
     };
+    const handleTextFieldChange = (index) => (event) => {
+        const newValue = event.target.value.trim() !== '' ? parseInt(event.target.value) : 0;
+        const newSliderValue = [...sliderValue];
+        newSliderValue[index] = newValue;
+        setSliderValue(newSliderValue);
+        if (index === 0) {
+            setpricemin(newValue);
+        } else if (index === 1) {
+            setpricemax(newValue);
+        }
+    };
+    
     const onChange = (e) => {
         settransmission(e.target.value);
     };
@@ -234,7 +246,7 @@ function CarsListing() {
                                             draggableTrack: true,
                                         }}
                                         defaultValue={[194, 499]}
-                                        max={999}
+                                        max={2000}
                                         trackStyle={{ backgroundColor: 'black' }}
                                         handleStyle={{
                                             backgroundColor: 'black',
@@ -246,12 +258,13 @@ function CarsListing() {
                                     <div className='flex gap-3 mt-5'>
                                         <TextField
                                             id="outlined-number"
-                                            label="Max (DH)"
+                                            label="Min (DH)"
                                             type="text"
                                             value={sliderValue[0]}
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            onChange={handleTextFieldChange(0)}
                                         />
                                         <TextField
                                             id="outlined-number"
@@ -261,6 +274,7 @@ function CarsListing() {
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            onChange={handleTextFieldChange(1)}
                                         />
                                     </div>
 

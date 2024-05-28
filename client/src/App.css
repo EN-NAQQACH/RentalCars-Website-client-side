@@ -47,3 +47,7 @@
     grid-row: 1 / 2;
     grid-column: 4 / 6;
 }
+html {
+    scroll-behavior: smooth;
+  }
+  

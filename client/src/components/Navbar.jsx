@@ -695,7 +695,7 @@ function Navbar() {
             <div className="navbar-start">
               <a href="/">
 
-                <img src='/easlycarslogo.png' className=" btn btn-ghost text-xl" />
+                <img src='/easlycarslogo.png' className=" btn btn-ghost text-xl" width={80} height={20} />
               </a>
 
             </div>
@@ -739,7 +739,7 @@ function Navbar() {
             <div className="navbar-start">
               <a href="/">
 
-                <img src='/easlycarslogo.png' className=" btn btn-ghost text-xl" />
+                <img src='/easlycarslogo.png' className=" btn btn-ghost text-xl"  width={20} height={20}  />
               </a>
             </div>
             <div className="navbar-center hidden lg:flex">
