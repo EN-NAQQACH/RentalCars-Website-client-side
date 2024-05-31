@@ -950,7 +950,7 @@ nav h6 {
     height: 200px !important;
 }
 :where(.css-dev-only-do-not-override-1qfezbu).ant-modal .ant-modal-content{
-    padding: 0;
+    padding: 10px;
     padding-top: 20px;
 }
 
@@ -1025,3 +1025,6 @@ nav h6 {
 :where(.css-1qfezbu).ant-slider .ant-slider-handle:hover::after, :where(.css-1qfezbu).ant-slider .ant-slider-handle:active::after, :where(.css-1qfezbu).ant-slider .ant-slider-handle:focus::after {
     box-shadow: 0 0 0 4px #000000;
 }
+/* :where(.css-dev-only-do-not-override-1qfezbu).ant-modal .ant-modal-header {
+    text-align: center;
+} */

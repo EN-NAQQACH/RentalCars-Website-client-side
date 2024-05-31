@@ -221,7 +221,10 @@ function Account() {
                   </>) : (<>
                     <img src={photo} alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' />
                   </>)} */}
-                    <img src={photo} alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' />
+                  {photo ? 
+                  <img src={photo} alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' /> : <img src='/Accountphoto.png' alt="" className=' h-[100px] w-[100px] object-cover rounded-[50%]' />
+                }
+                    
 
                     <div className='mt-2'>
                       {/* <StarIcon className='text-[#9e8df1]' />

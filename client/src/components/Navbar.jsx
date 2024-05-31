@@ -135,7 +135,7 @@ function Navbar() {
         localStorage.setItem('T_ID_Auth', data.token);
         localStorage.setItem('T_ID_User', data.userId);
         setIsLoggedIn(true);
-        window.location.href = "/"
+        window.location.href = "/account/personal_details"
         localStorage.setItem('photo', data.photo);
         localStorage.setItem('lastName', data.lastName);
       } else {
@@ -693,10 +693,12 @@ function Navbar() {
 
           <div className="navbar bg-base-100 sticky z-20 " style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
             <div className="navbar-start">
-              <a href="/">
+             
 
-                <img src='/easlycarslogo.png' className=" btn btn-ghost text-xl" width={80} height={20} />
+            <a href="/">
+                <img src='/easlycarslogo2.png' className=" btn btn-ghost text-xl"   />
               </a>
+             
 
             </div>
             <div className="navbar-center hidden lg:flex">
@@ -738,8 +740,7 @@ function Navbar() {
           <div className="navbar bg-base-100 relative z-20" style={{ fontFamily: style.fontFamily, fontWeight: style.fontWeight, letterSpacing: style.LetterSpacing }}>
             <div className="navbar-start">
               <a href="/">
-
-                <img src='/easlycarslogo.png' className=" btn btn-ghost text-xl"  width={20} height={20}  />
+                <img src='/easlycarslogo2.png' className=" btn btn-ghost text-xl"   />
               </a>
             </div>
             <div className="navbar-center hidden lg:flex">

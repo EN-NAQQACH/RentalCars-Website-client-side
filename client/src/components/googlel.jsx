@@ -39,7 +39,7 @@ const GoogleLoginButton2 = (props) => {
         localStorage.setItem('T_ID_User', data.userId);
         localStorage.setItem('image', response.picture);
         props.userauth(true)
-        window.location.pathname = '/';
+        window.location.pathname = '/account/personal_details';
       } else {
         console.error(data.error);
       }

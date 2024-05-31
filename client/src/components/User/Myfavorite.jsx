@@ -61,7 +61,7 @@ function MyFavorites() {
     return (
         <div className='scroll-smooth myfavoritiesinfo border rounded-xl p-3 h-[100%]'>
             <div className='flex justify-between items-center mb-3'>
-                <p className='text-[18px] font-semibold text-gray-700'>Mohssine’s favorites</p>
+                <p className='text-[18px] font-semibold text-gray-700'>My favorites</p>
             </div>
             <div className={loading ? 'h-[100%] flex  justify-center items-center' : 'favorites-componentss mt-5 max-w-[100%] h-fit felx items-center '}>
 

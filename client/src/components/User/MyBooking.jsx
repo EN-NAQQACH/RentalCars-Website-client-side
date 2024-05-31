@@ -130,7 +130,7 @@ function MyBooking() {
       <div className='scroll-smooth myBookinginfo border-gray-100 border rounded-xl p-3 h-[100%]' >
         <div>
           <div className='flex justify-between items-center mb-3'>
-            <p className='text-[18px] font-semibold text-gray-700'>Mohssine’s Booking</p>
+            <p className='text-[18px] font-semibold text-gray-700'>My Booking</p>
           </div>
           {loading ? (
             <>
@@ -224,7 +224,7 @@ function MyBooking() {
                       </div>
 
                       <div className='border mt-2 rounded-md max-[680px]:overflow-scroll ' >
-                        <div>
+                        <div >
                           <Table dataSource={data} className='p-3' pagination={pagination} onChange={handleTableChange} loading={false}>
                             <Table.Column title="Client" dataIndex="client" key="client" sorter={(a, b) => a.client.localeCompare(b.client)} />
                             <Table.Column title="Email" dataIndex="email" key="email" sorter={(a, b) => a.email.localeCompare(b.email)} />
@@ -232,18 +232,20 @@ function MyBooking() {
                             <Table.Column title="Action" dataIndex="action" key="action" />
                           </Table>
                           <Modal
-                            title="Reservation Details"
+                            
+                            
                             visible={modal}
                             onCancel={closeModal}
                             footer={null}
                             style={
                               {
                                 minWidth: "80%",
+                                
                               }
                             }
                           >
                             {selectedUser && (
-                              <div>
+                              <div className=''>
                                 {/* <p>Name: {selectedUser.firstName} {selectedUser.lastName}</p>
                     <p>Email: {selectedUser.email}</p>
                     Display other user information  */}
@@ -276,7 +278,7 @@ function MyBooking() {
                                       <div>
                                         <div className='car-info max-h-[70vh] overflow-y-scroll'>
                                           <div className="max-w-4xl mx-auto px-4 md:px-6 py-10">
-                                            <h1 className="text-2xl font-bold mb-6">Your Car Rental Reservations</h1>
+                                            <h1 className="text-2xl font-bold mb-6">Your Booking</h1>
                                             <div className="grid gap-6">
 
                                               {selectdCarsreserved &&

@@ -28,7 +28,7 @@ const GoogleLoginButton = ({ setiserrorgoogle, seterrorgoogle }) => {
         console.log(data.message);
         localStorage.setItem('T_ID_Auth', data.token);
         localStorage.setItem('T_ID_User', data.userId);
-        window.location.href = "/"
+        window.location.pathname = '/account/personal_details';
       } else {
         setiserrorgoogle(true);
         seterrorgoogle(data.error);

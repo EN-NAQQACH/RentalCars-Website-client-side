@@ -685,11 +685,11 @@ const Steppers = () => {
                 <p className='font-bold text-black mb-3'>Car Details</p>
                 <div className='flex flex-col gap-2' >
                   <p>Car features</p>
-                  <div className='grid grid-cols-3 gap-2' id='featuresstage'>
+                  <div className='grid items-center grid-cols-3 gap-2' id='featuresstage'>
 
                     {featuresList.map((feature, index) => (
-                      <div key={index}>
-                        <label>
+                      <div key={index} >
+                        <label className="flex items-center gap-1">
                           <input
                             type="checkbox"
                             checked={isSelected(feature)}
@@ -830,7 +830,7 @@ const Steppers = () => {
                 <p className='font-bold text-black mb-3'>Car photos</p>
                 <div>
                   <div>
-                    High quality photos increase your earning potential by attracting more guests. Upload at least 6 photos, including multiple exterior angles with the whole car in frame, as well as interior shots.
+                    High quality photos increase your earning potential by attracting more guests. Upload at least 3 photos, including multiple exterior angles with the whole car in frame, as well as interior shots.
                   </div>
                   <div className='car-photo flex justify-center gap-[80px] mt-7 max-[861px]:grid max-[861px]:gap-2'>
                     <div className='flex flex-col gap-3 max-[861px]:gap-2'>
