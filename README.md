@@ -1,7 +1,8 @@
-## Quiz-App
+## Car Renatl Website E.
 Welcome to our Car Rental website ! Our website offers a comprehensive solution for renting vehicles seamlessly. 
 Whether you're planning a road trip, need a temporary replacement, 
 or simply exploring new rides, our website provides an extensive inventory of cars to suit your needs.
+the website Api hosted on https://easlycars-server.vercel.app/api-docs/api/
 ## Project Structure
 The project is structured as follows:
 
