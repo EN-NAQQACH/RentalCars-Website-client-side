@@ -12,8 +12,8 @@ const firebaseConfig = {
   projectId: "easlycarswebsite",
   storageBucket: "easlycarswebsite.appspot.com",
   messagingSenderId: "301875949158",
-  appId: "1:301875949158:web:60726d9709faf36df287a7",
-  measurementId: "G-CK2R28ZSCL"
+  appId: "1:301875949158:web:14f951c770d509e6f287a7",
+  measurementId: "G-L6GPQQLEPG"
 };
 
 // Initialize Firebase
