@@ -288,7 +288,7 @@ function CarpageBymake() {
 
                             </Swiper>
 
-                            <Link to={`/carhome/search?where=${location}`} className='text-center flex justify-center m-auto rounded-md mt-8 border w-fit p-2 font-semibold text-[14px] text-white bg-[#5c3cfc] hover:bg-[#3d2b97]'>Rent By {make}</Link>
+                            <Link to={`/carhome/search?make=${make}`} className='text-center flex justify-center m-auto rounded-md mt-8 border w-fit p-2 font-semibold text-[14px] text-white bg-[#5c3cfc] hover:bg-[#3d2b97]'>Rent By {make}</Link>
                         </div>
                     </div>
                     : <div className='h-lvh justify-center flex items-center flex-col'>
